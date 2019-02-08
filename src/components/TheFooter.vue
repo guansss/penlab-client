@@ -44,15 +44,26 @@
 </style>
 
 <script>
-import $ from 'jquery';
-
 export default {
     name: 'TheFooter',
     methods: {
         scrollToTop() {
-            // html for desktop browser, body for mobile
-            $('html,body').animate({scrollTop: 0}, 500);
+            // documentElement for desktop browser, body for mobile
+            scrollToTop(document.documentElement);
+            scrollToTop(document.body);
         }
     }
 };
+
+/**
+ * @param {Element} elm
+ */
+function scrollToTop(elm) {
+    elm.animate([
+        {scrollTop: elm.scrollTop},
+        {scrollTop: 0}], {
+        easing: 'ease-out',
+        duration: 500
+    });
+}
 </script>

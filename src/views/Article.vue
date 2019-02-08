@@ -14,7 +14,7 @@
                         <h1 class="mb-2 display-2">{{title}}</h1>
                         <small class="grey--text">{{date}}</small>
                     </header>
-                    <div id="content" class="markdown-body" v-html="mdHtml"></div>
+                    <div class="markdown-body" ref="content" v-html="mdHtml"></div>
                 </article>
             </v-flex>
             <v-flex :class="{'aside-mobile':mobile}">
@@ -78,7 +78,6 @@
 
 <script>
 import Debug from 'debug';
-import $ from 'jquery';
 import marked from 'marked';
 import hljs from 'highlight.js';
 import PingPong from '../components/fx/PingPong';
@@ -86,8 +85,6 @@ import FabGroup from '../components/fab/FabGroup';
 import ArticleCatalog from '../components/utils/ArticleCatalog';
 
 const debug = Debug('plab:article');
-
-window.$ = $;
 
 export default {
     name: 'Article',
@@ -178,7 +175,7 @@ export default {
             this.animate();
         },
         animate() {
-            $(this.$el).find('#content')[0].animate({
+            this.$refs.content.animate({
                 opacity: [0, 1]
             }, {
                 duration: 150

@@ -30,8 +30,6 @@
 </style>
 
 <script>
-import $ from 'jquery';
-
 export default {
     name: 'BrowserWarning',
     data: () => ({
@@ -40,7 +38,6 @@ export default {
     mounted() {
         if (this.IE && !sessionStorage.getItem('IEWarned')) {
             sessionStorage.setItem('IEWarned', '1');
-            $('#browser-warning').modal();
         }
     }
 };

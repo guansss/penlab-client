@@ -50,7 +50,6 @@ import {mapState} from 'vuex';
 import {getObjectValueByPath} from 'vuetify/es5/util/helpers';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
-import $ from 'jquery';
 import Debug from 'debug';
 
 const debug = Debug('plab:article:navigator');

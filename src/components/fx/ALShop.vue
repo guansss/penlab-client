@@ -9,7 +9,6 @@
 
 <script>
 import {Application, Sprite, loader} from 'pixi.js';
-import $ from 'jquery';
 
 export default {
     name: 'ALShop',
@@ -23,7 +22,8 @@ export default {
 
         jumpBirds(this.pixiApp);
 
-        $(this.$el).on('touchstart mouseover', () => jumpBirds(this.pixiApp));
+        this.$el.addEventListener('touchstart', () => jumpBirds(this.pixiApp));
+        this.$el.addEventListener('mouseover', () => jumpBirds(this.pixiApp));
     },
     beforeDestroy() {
         finishAnim(this.pixiApp);
