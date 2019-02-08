@@ -79,7 +79,7 @@
 <script>
 import Debug from 'debug';
 import marked from 'marked';
-import hljs from 'highlight.js';
+import hljs from 'highlight.js/lib/highlight';
 import PingPong from '../components/fx/PingPong';
 import FabGroup from '../components/fab/FabGroup';
 import ArticleCatalog from '../components/utils/ArticleCatalog';
@@ -183,6 +183,12 @@ export default {
         }
     }
 };
+
+hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'));
+hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'));
+hljs.registerLanguage('css', require('highlight.js/lib/languages/css'));
+hljs.registerLanguage('stylus', require('highlight.js/lib/languages/stylus'));
+hljs.registerLanguage('kotlin', require('highlight.js/lib/languages/kotlin'));
 
 marked.setOptions({
     highlight(code, lang) {
