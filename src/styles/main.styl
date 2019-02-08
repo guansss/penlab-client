@@ -1,0 +1,66 @@
+$body-font-family = Roboto, "Microsoft YaHei UI"
+
+@require '~vuetify/src/stylus/app.styl'
+
+@require 'variables.styl'
+
+base-a(_color)
+    color _color
+    text-decoration none
+
+    &:hover
+        color: lighten(_color, 30%)
+
+html
+    font-size 16px
+    -webkit-font-smoothing antialiased
+    -moz-osx-font-smoothing grayscale
+
+code
+    box-shadow none
+    font-weight normal
+
+    &:before, &:after
+        content none
+
+a
+    base-a($color.primary)
+
+::selection
+    background-color: lighten($color.primary, 20)
+    color #FFF
+
+@media only screen and (min-width: 1904px)
+    .container
+        max-width 1185px !important
+
+.spoiler
+    display inline
+    color black
+    background-color black
+
+    &:hover
+        color white
+
+/* markdown styles */
+
+.markdown-body
+    color inherit
+    font-family inherit
+
+    a
+        base-a($color.accent)
+        font-weight bold
+
+    code
+        font-family "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, "Microsoft YaHei UI"
+
+    pre code
+        color inherit
+
+    .highlight pre, pre, code
+        background-color #EEE
+
+.theme--dark .markdown-body
+    .highlight pre, pre, code
+        background-color #3A3A3A

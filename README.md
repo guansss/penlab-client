@@ -1,4 +1,4 @@
-# plab-front
+# plab client
 
 ## Project setup
 ```
