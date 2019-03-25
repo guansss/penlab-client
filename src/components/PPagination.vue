@@ -28,7 +28,7 @@ export default VPagination.extend({
                 style: {
                     width: navBtnWidth + 'px',
                     height: navBtnWidth + 'px',
-                    minWidth: 0
+                    minWidth: 0,
                 },
                 props: {
                     disabled,
@@ -39,10 +39,10 @@ export default VPagination.extend({
                         path: this.$route.path,
                         query: {
                             ...this.$route.query,
-                            page: this.value + (fn === this.next ? 1 : -1)
-                        }
-                    }
-                }
+                            page: this.value + (fn === this.next ? 1 : -1),
+                        },
+                    },
+                },
             }, [h(VIcon, [icon])])]);
         },
 
@@ -55,7 +55,7 @@ export default VPagination.extend({
                 class: 'mx-1',
                 style: {
                     width: btnWidth + 'px',
-                    minWidth: 0
+                    minWidth: 0,
                 },
                 props: {
                     activeClass: null,
@@ -65,13 +65,13 @@ export default VPagination.extend({
                         path: this.$route.path,
                         query: {
                             ...this.$route.query,
-                            page: i
-                        }
-                    }
-                }
+                            page: i,
+                        },
+                    },
+                },
             }, [i]);
-        }
-    }
+        },
+    },
 });
 </script>
 

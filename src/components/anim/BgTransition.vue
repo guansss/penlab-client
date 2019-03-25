@@ -27,20 +27,20 @@ export default {
     props: {
         position: {
             type: Array,
-            default: () => [0, 0]
+            default: () => [0, 0],
         },
         fromColor: String,
-        toColor: String
+        toColor: String,
     },
     data: () => ({
-        transitioning: false
+        transitioning: false,
     }),
     watch: {
         fromColor(color) {
         },
         toColor(color) {
             this.start();
-        }
+        },
     },
     methods: {
         start() {
@@ -51,17 +51,17 @@ export default {
             const scaleTo = 5 * this.$el.getBoundingClientRect().width / 100;
             console.log(scaleTo);
             this.$el.childNodes[0].animate({
-                transform: ['scale(1)', `scale(${scaleTo})`]
+                transform: ['scale(1)', `scale(${scaleTo})`],
             }, {
                 duration: 1000,
-                easing: 'ease-out'
+                easing: 'ease-out',
             })
                 .onfinish = () => this.finish();
         },
         finish() {
             this.transitioning = false;
             this.$emit('finish');
-        }
-    }
+        },
+    },
 };
 </script>

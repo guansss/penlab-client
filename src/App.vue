@@ -1,11 +1,11 @@
 <template>
     <v-app :dark="dark">
-        <the-header id="header"/>
+        <the-header id="header" />
         <v-content>
-            <bg-transition :position="bgTransPosition" :from-color="bgTransFromColor" :to-color="bgTransToColor"/>
-            <router-view id="main-router-view"/>
+            <bg-transition :position="bgTransPosition" :from-color="bgTransFromColor" :to-color="bgTransToColor" />
+            <router-view id="main-router-view" />
         </v-content>
-        <the-footer/>
+        <the-footer />
     </v-app>
 </template>
 
@@ -56,10 +56,10 @@ import BrowserWarning from './components/utils/BrowserWarning';
 import BgTransition from './components/anim/BgTransition';
 
 export default {
-    components: {BgTransition, BrowserWarning, TheFooter, TheHeader},
+    components: { BgTransition, BrowserWarning, TheFooter, TheHeader },
     data: () => ({
         bgTransFromColor: '',
-        bgTransToColor: ''
+        bgTransToColor: '',
     }),
     computed: {
         dark() {
@@ -67,13 +67,13 @@ export default {
         },
         bgTransPosition() {
             return this.$store.state.darkThemeTransitionOrigin;
-        }
+        },
     },
     watch: {
         dark() {
             this.bgTransFromColor = getComputedStyle(this.$el)['background-color'];
             this.$nextTick(() => this.bgTransToColor = getComputedStyle(this.$el)['background-color']);
-        }
-    }
+        },
+    },
 };
 </script>

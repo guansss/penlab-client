@@ -15,7 +15,7 @@
 export default {
     name: 'FabGroup',
     props: {
-        loading: false
-    }
+        loading: false,
+    },
 };
 </script>

@@ -13,7 +13,7 @@
                 <div class="modal-body">
                     <span v-if="IE">
                         请勿使用IE浏览器访问，否则可能会出现不可名状的显示效果 :(
-                        <br/>
+                        <br />
                         虽然有些地方会做适配，但无法保证不出问题……
                     </span>
                 </div>
@@ -33,12 +33,12 @@
 export default {
     name: 'BrowserWarning',
     data: () => ({
-        IE: navigator.userAgent.match(/(MSIE|Trident)/)
+        IE: navigator.userAgent.match(/(MSIE|Trident)/),
     }),
     mounted() {
         if (this.IE && !sessionStorage.getItem('IEWarned')) {
             sessionStorage.setItem('IEWarned', '1');
         }
-    }
+    },
 };
 </script>

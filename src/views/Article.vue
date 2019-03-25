@@ -88,12 +88,12 @@ const debug = Debug('plab:article');
 
 export default {
     name: 'Article',
-    components: {ArticleCatalog, FabGroup, PingPong},
+    components: { ArticleCatalog, FabGroup, PingPong },
     props: {
         id: {
             type: String,
-            default: '-1'
-        }
+            default: '-1',
+        },
     },
     data: () => ({
         loading: false,
@@ -101,7 +101,7 @@ export default {
         title: '',
         date: '',
         mdHtml: '',
-        headings: []
+        headings: [],
     }),
     computed: {
         mobile() {
@@ -110,12 +110,12 @@ export default {
         breadcrumbItems() {
             return [{
                 text: '文章',
-                href: '#/posts'
+                href: '#/posts',
             }, {
                 text: this.title,
-                disabled: true
+                disabled: true,
             }];
-        }
+        },
     },
     async mounted() {
         await this.loadContent();
@@ -165,9 +165,9 @@ export default {
 
             this.mdHtml = marked.setOptions({
                 renderer: getRenderer({
-                    beforeHeading: (text, level, raw) => headings.push({text: raw, level}),
-                    afterHeading: id => headings[headings.length - 1].id = id
-                })
+                    beforeHeading: (text, level, raw) => headings.push({ text: raw, level }),
+                    afterHeading: id => headings[headings.length - 1].id = id,
+                }),
             })(post.article.content);
 
             this.headings = headings;
@@ -176,12 +176,12 @@ export default {
         },
         animate() {
             this.$refs.content.animate({
-                opacity: [0, 1]
+                opacity: [0, 1],
             }, {
-                duration: 150
+                duration: 150,
             });
-        }
-    }
+        },
+    },
 };
 
 hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'));
@@ -201,7 +201,7 @@ marked.setOptions({
             result = code;
         }
         return result;
-    }
+    },
 });
 
 /**
@@ -239,7 +239,7 @@ function headingRenderer(renderer, before, after) {
     };
 }
 
-function getRenderer({beforeHeading, afterHeading}) {
+function getRenderer({ beforeHeading, afterHeading }) {
     const renderer = new marked.Renderer();
     renderer.link = linkRenderer(renderer);
     renderer.heading = headingRenderer(renderer, beforeHeading, afterHeading);

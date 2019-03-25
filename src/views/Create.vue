@@ -2,7 +2,7 @@
     <div class="container">
         <form>
             <h2>Title</h2>
-            <input class="w-100" title="Title" v-model="postTitle"/>
+            <input class="w-100" title="Title" v-model="postTitle" />
             <h2>Summary</h2>
             <textarea class="w-100" rows="3" title="Summary" v-model="postSummary"></textarea>
             <h2>Content</h2>
@@ -21,7 +21,7 @@
 </style>
 
 <script>
-import {postFetch} from '../utils/common';
+import { postFetch } from '../utils/common';
 
 export default {
     name: 'Create',
@@ -32,7 +32,7 @@ export default {
 
         submitButtonText: 'Submit',
         infoText: '',
-        link: ''
+        link: '',
     }),
     methods: {
         async submit() {
@@ -42,7 +42,7 @@ export default {
                 const response = await postFetch('/api/posts/', {
                     title: this.postTitle,
                     summary: this.postSummary,
-                    content: this.postContent
+                    content: this.postContent,
                 });
 
                 if (response.status === 201) {
@@ -57,7 +57,7 @@ export default {
             } finally {
                 this.submitButtonText = 'Submit';
             }
-        }
-    }
+        },
+    },
 };
 </script>

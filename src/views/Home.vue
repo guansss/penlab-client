@@ -7,13 +7,13 @@
             <v-flex xs12 md6>
                 <v-layout fill-height column justify-center text-xs-center>
                     <h1 id="logo">Pencil's Lab</h1>
-                    <p>这里是铅笔的实验室，用于展示博客以及一些奇怪的东西<br/>
+                    <p>这里是铅笔的实验室，用于展示博客以及一些奇怪的东西<br />
                         <span class="spoiler">还在建造中，暂时并没有什么实质性的内容</span>
                     </p>
                 </v-layout>
             </v-flex>
         </v-layout>
-        <post-list id="article-list" filter="articles" order="created" :number="2"/>
+        <post-list id="article-list" filter="articles" order="created" :number="2" />
     </v-container>
 </template>
 
@@ -26,6 +26,7 @@
 
     cursor default
     transition letter-spacing .1s
+
     &:hover
         letter-spacing 2px
 
@@ -55,10 +56,10 @@ export default {
     name: 'home',
     components: {
         ALShop,
-        PostList
+        PostList,
     },
     data: () => ({}),
     mounted() {
-    }
+    },
 };
 </script>

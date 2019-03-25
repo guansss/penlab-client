@@ -10,5 +10,5 @@ export default {
 //        secondary: colors.grey.darken1,
         accent: colors.orange.accent4,
 //        error: colors.red.accent3
-    }
+    },
 };

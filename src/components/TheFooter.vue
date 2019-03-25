@@ -31,6 +31,7 @@
         height @height
         width @height
         color @color
+
         &:hover
             background-color lighten(@background-color, 10)
 
@@ -51,8 +52,8 @@ export default {
             // documentElement for desktop browser, body for mobile
             scrollToTop(document.documentElement);
             scrollToTop(document.body);
-        }
-    }
+        },
+    },
 };
 
 /**
@@ -60,10 +61,10 @@ export default {
  */
 function scrollToTop(elm) {
     elm.animate([
-        {scrollTop: elm.scrollTop},
-        {scrollTop: 0}], {
+        { scrollTop: elm.scrollTop },
+        { scrollTop: 0 }], {
         easing: 'ease-out',
-        duration: 500
+        duration: 500,
     });
 }
 </script>

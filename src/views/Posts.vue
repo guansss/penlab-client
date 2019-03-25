@@ -9,7 +9,7 @@
                         :order="order"
                         :details="['date']"
                         @prepare="postsPrepare($event)"
-                        @finish="postsLoaded($event)"/>
+                        @finish="postsLoaded($event)" />
                 <p-pagination :value="page" :length="pages"></p-pagination>
             </v-flex>
 
@@ -18,7 +18,10 @@
                     :mobile="mobile"
                     v-model="drawer"
                     :class="['drawer','py-2',{'drawer-desktop':!mobile}]">
-                <h3><v-icon>sort</v-icon>排序</h3>
+                <h3>
+                    <v-icon>sort</v-icon>
+                    排序
+                </h3>
                 <div class="px-3">
                     <v-btn flat
                             color="primary"
@@ -77,7 +80,7 @@ const debug = Debug('plab:Post');
 
 export default {
     name: 'Posts',
-    components: {PPagination, PNavigationDrawer, PostList},
+    components: { PPagination, PNavigationDrawer, PostList },
     data: () => ({
         drawer: null,
         availableOrders: [{
@@ -85,19 +88,19 @@ export default {
             name: '日期',
             linkTo: {},
             active: true,
-            ascend: true
+            ascend: true,
         }, {
             tag: 'title',
             name: '标题',
             linkTo: {},
             active: true,
-            ascend: true
+            ascend: true,
         }],
         order: '-created',
         page: 1,
         pages: 1,
         postsPerPage: 10,
-        loading: false
+        loading: false,
     }),
     computed: {
         mobile() {
@@ -105,12 +108,12 @@ export default {
         },
         orders() {
             return [];
-        }
+        },
     },
     watch: {
         $route(to) {
             this.updateParams();
-        }
+        },
     },
     created() {
         this.updateParams();
@@ -136,8 +139,8 @@ export default {
                     path: this.$route.path,
                     query: {
                         ...this.$route.query,
-                        o: (order.ascend ? '-' : '') + order.tag // reverse
-                    }
+                        o: (order.ascend ? '-' : '') + order.tag, // reverse
+                    },
                 };
             });
         },
@@ -149,8 +152,8 @@ export default {
             if (!isNaN(event.totalPosts)) {
                 this.pages = normalizePageNumber(Math.ceil(event.totalPosts / this.postsPerPage), this.pages);
             }
-        }
-    }
+        },
+    },
 };
 
 function normalizePageNumber(page, defaultVal) {

@@ -6,7 +6,7 @@
             </transition>
         </div>
         <list-transition offset-y="20px">
-            <post-list-item class="item" v-for="post in posts" :key="post.key" :post="post" :details="details"/>
+            <post-list-item class="item" v-for="post in posts" :key="post.key" :post="post" :details="details" />
         </list-transition>
     </div>
 </template>
@@ -42,29 +42,29 @@ const debug = Debug('plab:PostList');
  */
 export default {
     name: 'PostList',
-    components: {ListTransition, PingPong, PostListItem},
+    components: { ListTransition, PingPong, PostListItem },
     props: {
         filter: {
             default: '',
-            type: String
+            type: String,
         },
         number: {
             default: 10,
-            type: Number
+            type: Number,
         },
         order: {
             default: '-created',
-            type: String
+            type: String,
         },
         details: {
             type: Array,
-            default: () => []
+            default: () => [],
         },
-        page: Number
+        page: Number,
     },
     data: () => ({
         loading: false,
-        posts: []
+        posts: [],
     }),
     watch: {
         page() {
@@ -75,7 +75,7 @@ export default {
         },
         order() {
             this.loadPosts();
-        }
+        },
     },
     mounted() {
         this.loadPosts();
@@ -91,7 +91,7 @@ export default {
                 const url = '/api/posts/?' + new URLSearchParams({
                     limit: this.number,
                     order: this.order,
-                    ...(this.page && {page: this.page})
+                    ...(this.page && { page: this.page }),
                 });
                 debug('load >>> %o', url);
 
@@ -111,14 +111,14 @@ export default {
 
             this.loading = false;
             this.$emit('finish', {
-                totalPosts: result.total
+                totalPosts: result.total,
             });
         },
         displayPosts(posts) {
             // set unique keys to prevent item reusing, because reused items won't show transition
             posts.forEach(p => p.key = Symbol());
             this.posts = posts;
-        }
-    }
+        },
+    },
 };
 </script>

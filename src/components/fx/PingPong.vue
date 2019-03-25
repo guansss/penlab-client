@@ -26,6 +26,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
     * {
         line-height: 0;
         box-sizing: border-box;
@@ -129,16 +130,16 @@
 export default {
     props: {
         size: {
-            default: '60px'
-        }
+            default: '60px',
+        },
     },
     computed: {
         innerStyles() {
             let size = parseInt(this.size);
             return {
-                transform: 'scale(' + (size / 250) + ')'
+                transform: 'scale(' + (size / 250) + ')',
             };
-        }
-    }
+        },
+    },
 };
 </script>

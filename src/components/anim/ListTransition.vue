@@ -25,16 +25,16 @@ export default {
     props: {
         offsetY: {
             type: String,
-            default: '20%'
+            default: '20%',
         },
         delayEach: {
             type: Number,
-            default: 10
+            default: 10,
         },
         duration: {
             type: Number,
-            default: 300
-        }
+            default: 300,
+        },
     },
     methods: {
         beforeEnter(el) {
@@ -42,11 +42,11 @@ export default {
             const index = indexOf.call(el.parentNode.children, el);
             el.animate({
                 transform: [`translateY(${this.offsetY})`, 'translateY(0)'],
-                opacity: [0, 1]
+                opacity: [0, 1],
             }, {
                 delay: index * this.delayEach,
                 duration: this.duration,
-                easing: 'ease-out'
+                easing: 'ease-out',
             }).onfinish = () => {
                 el.style.opacity = 1;
             };
@@ -57,6 +57,6 @@ export default {
         leave(el, done) {
             done();
         },
-    }
+    },
 };
 </script>

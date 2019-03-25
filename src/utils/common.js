@@ -22,8 +22,8 @@ export function postFetch(url, json, options) {
     return fetch(url, Object.assign({
         method: 'post',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(json)
+        body: JSON.stringify(json),
     }, options));
 }

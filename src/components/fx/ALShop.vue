@@ -8,14 +8,14 @@
 </style>
 
 <script>
-import {Application, Sprite, loader} from 'pixi.js';
+import { Application, loader, Sprite } from 'pixi.js';
 
 export default {
     name: 'ALShop',
     data: () => ({
         width: META.width,
         height: META.height,
-        pixiApp: null
+        pixiApp: null,
     }),
     async mounted() {
         this.pixiApp = await initAnim(this.$el);
@@ -27,7 +27,7 @@ export default {
     },
     beforeDestroy() {
         finishAnim(this.pixiApp);
-    }
+    },
 };
 
 const META = {
@@ -36,7 +36,7 @@ const META = {
     height: 568,
     birds: [[390, 46], [364, 40], [338, 34], [312, 28]],
     frameOffsetY: [0, -7, -20, -25],
-    duration: 100 // ms per frame
+    duration: 100, // ms per frame
 };
 
 const BIRDS = Symbol();
@@ -48,7 +48,7 @@ async function initAnim(canvas) {
         view: canvas,
         width: META.width,
         height: META.height,
-        transparent: true
+        transparent: true,
     }));
 
     app.renderer.plugins.interaction.autoPreventDefault = false;
@@ -119,7 +119,7 @@ async function initAnim(canvas) {
         .slice()
         .reverse()
         .forEach(bird =>
-            bird.sprites.forEach(sprite => app.stage.addChild(sprite))
+            bird.sprites.forEach(sprite => app.stage.addChild(sprite)),
         );
 
     app[BIRDS] = birds;
@@ -153,7 +153,7 @@ async function jumpBirds(pixiApp) {
 function finishAnim(pixiApp) {
     if (pixiApp) {
         pixiApp[ALIVE] = false;
-        pixiApp.destroy(false, {children: true});
+        pixiApp.destroy(false, { children: true });
     }
 }
 </script>

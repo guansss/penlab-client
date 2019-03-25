@@ -7,15 +7,15 @@ Vue.use(Router);
 export const routes = [{
     path: '/',
     name: 'home',
-    component: Home
+    component: Home,
 }, {
     path: '/posts',
     name: 'posts',
-    component: () => import(/* webpackChunkName: "posts" */ './views/Posts.vue')
+    component: () => import(/* webpackChunkName: "posts" */ './views/Posts.vue'),
 }, {
     path: '/posts/create',
     name: 'create post',
-    component: () => import(/* webpackChunkName: "posts" */ './views/Create.vue')
+    component: () => import(/* webpackChunkName: "posts" */ './views/Create.vue'),
 }, {
     path: '/articles/:id',
     name: 'articles',
@@ -23,12 +23,12 @@ export const routes = [{
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "article" */ './views/Article.vue'),
-    props: true
+    props: true,
 }, {
     path: '*',
-    redirect: '/'
+    redirect: '/',
 }];
 
 export default new Router({
-    routes
+    routes,
 });

@@ -7,7 +7,7 @@ export default {
     name: 'PNavigationDrawer',
     extends: VNavigationDrawer,
     props: {
-        mobile: false
+        mobile: false,
     },
     computed: {
         styles() {
@@ -23,7 +23,7 @@ export default {
                 !this.permanent &&
                 !this.temporary &&
                 this.mobile;
-        }
-    }
+        },
+    },
 };
 </script>

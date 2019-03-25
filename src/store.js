@@ -10,7 +10,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         darkTheme: !!+localStorage.darkTheme,
-        darkThemeTransitionOrigin: [0, 0]
+        darkThemeTransitionOrigin: [0, 0],
     },
     mutations: {
         /**
@@ -30,7 +30,7 @@ export default new Vuex.Store({
             dark = !!dark;
             state.darkTheme = dark;
             localStorage.darkTheme = +dark;
-        }
+        },
     },
     actions: {},
 
@@ -38,14 +38,14 @@ export default new Vuex.Store({
         article: {
             namespaced: true,
             state: {
-                headings: []
+                headings: [],
             },
             mutations: {
                 updateHeadings(state, headings) {
                     state.headings = headings;
-                }
+                },
             },
-            actions: {}
-        }
-    }
+            actions: {},
+        },
+    },
 });

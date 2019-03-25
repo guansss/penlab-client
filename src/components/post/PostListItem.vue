@@ -48,8 +48,8 @@ export default {
         post: Object,
         details: {
             type: Array,
-            default: () => []
-        }
+            default: () => [],
+        },
     },
     computed: {
         link() {
@@ -62,7 +62,7 @@ export default {
         },
         date() {
             return !isNaN(this.post.created) ? new Date(+this.post.created).toLocaleDateString() : '';
-        }
-    }
+        },
+    },
 };
 </script>

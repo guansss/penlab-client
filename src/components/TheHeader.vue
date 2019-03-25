@@ -80,26 +80,26 @@ export default {
     data: () => ({
         routes: [{
             path: '/',
-            name: '首页'
+            name: '首页',
         }, {
             path: '/posts',
-            name: '文章'
+            name: '文章',
         }],
-        showTabs: true
+        showTabs: true,
     }),
     computed: {
         mobile() {
             return this.$vuetify.breakpoint.smAndDown;
-        }
+        },
     },
     methods: {
         toggleDarkTheme(event) {
             const rect = event.target.getBoundingClientRect();
             this.$store.commit('setDarkTheme', {
                 dark: !this.$store.state.darkTheme,
-                origin: [rect.x + rect.width / 2, rect.y + rect.height / 2]
+                origin: [rect.x + rect.width / 2, rect.y + rect.height / 2],
             });
-        }
-    }
+        },
+    },
 };
 </script>

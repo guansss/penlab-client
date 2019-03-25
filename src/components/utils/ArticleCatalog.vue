@@ -46,10 +46,6 @@
 
 <script>
 // Utilities
-import {mapState} from 'vuex';
-import {getObjectValueByPath} from 'vuetify/es5/util/helpers';
-import upperFirst from 'lodash/upperFirst';
-import camelCase from 'lodash/camelCase';
 import Debug from 'debug';
 
 const debug = Debug('plab:article:navigator');
@@ -64,7 +60,7 @@ export default {
         isBooted: false,
         list: [],
         headings: [],
-        timeout: null
+        timeout: null,
     }),
 
     computed: {
@@ -88,7 +84,7 @@ export default {
         items: 'genList',
         isBooted(val) {
             val && this.genList();
-        }
+        },
     },
 
     created() {
@@ -116,12 +112,12 @@ export default {
                 staticClass: 'body-2 mb-3 d-block',
                 'class': {
                     'primary--text': isActive,
-                    'grey--text text--darken-1': !isActive
+                    'grey--text text--darken-1': !isActive,
                 },
-                attrs: {href: id},
-                domProps: {innerText: this.$t(item.text)},
+                attrs: { href: id },
+                domProps: { innerText: this.$t(item.text) },
                 style: {
-                    borderColor: isActive ? 'inherit' : null
+                    borderColor: isActive ? 'inherit' : null,
                 },
                 on: {
                     click(e) {
@@ -129,9 +125,9 @@ export default {
                         e.preventDefault();
 
                         goTo.call(vm, index && id);
-                    }
+                    },
                 },
-                key: `${item.text}-${index}`
+                key: `${item.text}-${index}`,
             });
 
             return this.$createElement('li', [link]);
@@ -152,7 +148,7 @@ export default {
                 list.push({
                     ...item,
                     target,
-                    offsetTop: 0
+                    offsetTop: 0,
                 });
             }
 
@@ -201,7 +197,7 @@ export default {
             clearTimeout(this.timeout);
 
             this.timeout = setTimeout(this.findActiveIndex, 10);
-        }
+        },
     },
 
     render(h) {
@@ -210,10 +206,10 @@ export default {
             style: this.styles,
             directives: [{
                 name: 'scroll',
-                value: this.onScroll
+                value: this.onScroll,
             }],
             attrs: this.$attrs,
-            listeners: this.$listeners
+            listeners: this.$listeners,
         };
 
         let children = [];
@@ -231,7 +227,7 @@ export default {
         }
 
         return h('ul', data, children);
-    }
+    },
 };
 
 /**
@@ -247,7 +243,7 @@ function structureHeadings(flatHeadings) {
         const heading = {
             id: '#' + h.id,
             level: h.level,
-            text: h.text
+            text: h.text,
         };
 
         if (h.level === 2) {

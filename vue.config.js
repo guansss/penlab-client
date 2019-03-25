@@ -6,15 +6,15 @@ module.exports = {
             '/api': {
                 target: 'http://localhost:3000',
                 changeOrigin: true,
-                pathRewrite: {'^/api': ''}
-            }
-        }
+                pathRewrite: { '^/api': '' },
+            },
+        },
     },
     configureWebpack: {
         entry: ['whatwg-fetch', 'web-animations-js', './src/main.js'],
         plugins: [
-            new VuetifyLoaderPlugin()
-        ]/*,
+            new VuetifyLoaderPlugin(),
+        ],/*,
         module: {
             rules: [
                 {
@@ -23,5 +23,5 @@ module.exports = {
                 }
             ]
         }*/
-    }
+    },
 };
