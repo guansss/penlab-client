@@ -3,7 +3,7 @@
         <v-toolbar dark :tabs="mobile&&showTabs" color="primary" class="px-0">
             <v-container fill-height mx-auto my-0 py-0>
                 <v-layout row wrap align-center>
-                    <v-toolbar-title id="toolbar-title" class="fill-height" @click="toggleDarkTheme">
+                    <v-toolbar-title id="toolbar-title" class="fill-height">
                         <div id="logo" class="fill-height">
                             <p id="logo-sup">铅笔的实验室</p>
                             Pencil's Lab
