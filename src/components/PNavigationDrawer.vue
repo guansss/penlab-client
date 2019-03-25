@@ -1,7 +1,7 @@
 <script>
 import VNavigationDrawer from 'vuetify/lib/components/VNavigationDrawer';
 
-const superStyles = VNavigationDrawer.computed.styles;
+const superStyles = VNavigationDrawer.prototype.constructor.options.computed.styles;
 
 export default {
     name: 'PNavigationDrawer',
