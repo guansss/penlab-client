@@ -39,6 +39,8 @@ export default {
     methods: {
         beforeEnter(el) {
             el.style.opacity = 0;
+        },
+        enter(el, done) {
             const index = indexOf.call(el.parentNode.children, el);
             el.animate({
                 transform: [`translateY(${this.offsetY})`, 'translateY(0)'],
@@ -49,10 +51,8 @@ export default {
                 easing: 'ease-out',
             }).onfinish = () => {
                 el.style.opacity = 1;
+                done();
             };
-        },
-        enter(el, done) {
-            done();
         },
         leave(el, done) {
             done();
