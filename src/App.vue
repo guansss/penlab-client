@@ -42,9 +42,6 @@
     src url(./assets/fonts/Drafting.woff2) format('woff2')
     src url(./assets/fonts/Drafting.woff) format('woff')
 
-#header
-    z-index 1100
-
 #main-router-view
     position relative
 </style>
