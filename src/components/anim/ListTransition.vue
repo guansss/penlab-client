@@ -1,5 +1,5 @@
 <template>
-    <transition-group
+    <TransitionGroup
             @before-enter="beforeEnter"
             @enter="enter"
             @leave="leave"
@@ -7,7 +7,7 @@
             tag="div"
     >
         <slot></slot>
-    </transition-group>
+    </TransitionGroup>
 </template>
 
 <style scoped lang="stylus">

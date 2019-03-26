@@ -1,12 +1,12 @@
 <template>
-    <v-app :dark="dark">
-        <the-header id="header" />
-        <v-content>
-            <bg-transition :position="bgTransPosition" :from-color="bgTransFromColor" :to-color="bgTransToColor" />
-            <router-view id="main-router-view" />
-        </v-content>
-        <the-footer />
-    </v-app>
+    <VApp :dark="dark">
+        <TheHeader id="header" />
+        <VContent>
+            <BgTransition :position="bgTransPosition" :from-color="bgTransFromColor" :to-color="bgTransToColor" />
+            <RouterView id="main-router-view" />
+        </VContent>
+        <TheFooter />
+    </VApp>
 </template>
 
 <style lang="stylus">

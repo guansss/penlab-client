@@ -1,9 +1,9 @@
 <template>
-    <router-link v-ripple class="item d-block pa-3" :to="link">
+    <RouterLink v-ripple class="item d-block pa-3" :to="link">
         <h2 class="headline d-inline-block mb-2">{{post.title}}</h2>
         <span class="date body-1 grey--text" v-if="display.date&&date">{{date}}</span>
         <p class="summary mb-0">{{post.summary}}</p>
-    </router-link>
+    </RouterLink>
 </template>
 
 <style scoped lang="stylus">

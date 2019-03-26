@@ -1,6 +1,6 @@
 <template>
     <ul class="catalog-list pl-0">
-        <transition-group name="slide-fade">
+        <TransitionGroup name="slide-fade">
             <li v-for="(heading,i) in headings" :key="i">
                 <a v-ripple @click="$vuetify.goTo(heading.id)">{{heading.text}}</a>
 
@@ -10,7 +10,7 @@
                     </li>
                 </ul>
             </li>
-        </transition-group>
+        </TransitionGroup>
     </ul>
 </template>
 

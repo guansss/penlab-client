@@ -1,40 +1,40 @@
 <template>
     <header>
-        <v-toolbar dark :tabs="mobile&&showTabs" color="primary" class="px-0">
-            <v-container fill-height mx-auto my-0 py-0>
-                <v-layout row wrap align-center>
-                    <v-toolbar-title id="toolbar-title" class="fill-height">
+        <VToolbar dark :tabs="mobile&&showTabs" color="primary" class="px-0">
+            <VContainer fill-height mx-auto my-0 py-0>
+                <VLayout row wrap align-center>
+                    <VToolbarTitle id="toolbar-title" class="fill-height">
                         <div id="logo" class="fill-height">
                             <p id="logo-sup">铅笔的实验室</p>
                             Pencil's Lab
                         </div>
-                    </v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-toolbar-items v-if="!mobile">
-                        <v-btn flat v-for="(route,i) in routes" :key="i" :to="route.path">
+                    </VToolbarTitle>
+                    <VSpacer></VSpacer>
+                    <VToolbarItems v-if="!mobile">
+                        <VBtn flat v-for="(route,i) in routes" :key="i" :to="route.path">
                             {{route.name}}
-                        </v-btn>
-                    </v-toolbar-items>
-                    <v-toolbar-items v-if="mobile">
-                        <v-btn flat icon @click="showTabs=!showTabs">
-                            <v-icon>more_vert</v-icon>
-                        </v-btn>
-                        <v-menu bottom left offset-y min-width="30%" transition="slide-y-transition">
-                            <v-list>
-                                <v-list-tile ripple v-for="(route,i) in routes" :key="i" :to="route.path">
-                                    <v-list-tile-title></v-list-tile-title>
-                                </v-list-tile>
-                            </v-list>
-                        </v-menu>
-                    </v-toolbar-items>
-                </v-layout>
-            </v-container>
-            <v-tabs dark right slot="extension" color="transparent" v-if="mobile&&showTabs">
-                <v-tab v-for="(route,i) in routes" :key="i" :to="route.path">
+                        </VBtn>
+                    </VToolbarItems>
+                    <VToolbarItems v-if="mobile">
+                        <VBtn flat icon @click="showTabs=!showTabs">
+                            <VIcon>more_vert</VIcon>
+                        </VBtn>
+                        <VMenu bottom left offset-y min-width="30%" transition="slide-y-transition">
+                            <VList>
+                                <VListTile ripple v-for="(route,i) in routes" :key="i" :to="route.path">
+                                    <VListTileTitle></VListTileTitle>
+                                </VListTile>
+                            </VList>
+                        </VMenu>
+                    </VToolbarItems>
+                </VLayout>
+            </VContainer>
+            <VTabs dark right slot="extension" color="transparent" v-if="mobile&&showTabs">
+                <VTab v-for="(route,i) in routes" :key="i" :to="route.path">
                     {{route.name}}
-                </v-tab>
-            </v-tabs>
-        </v-toolbar>
+                </VTab>
+            </VTabs>
+        </VToolbar>
     </header>
 </template>
 

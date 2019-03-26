@@ -1,9 +1,9 @@
 <template>
-    <v-layout column id="fab-group">
-        <v-btn fab bottom dark color="accent" :loading="loading" @click="$vuetify.goTo(0,{easing:'easeInOutCubic'})">
-            <v-icon>arrow_upward</v-icon>
-        </v-btn>
-    </v-layout>
+    <VLayout column id="fab-group">
+        <VBtn fab bottom dark color="accent" :loading="loading" @click="$vuetify.goTo(0,{easing:'easeInOutCubic'})">
+            <VIcon>arrow_upward</VIcon>
+        </VBtn>
+    </VLayout>
 </template>
 
 <style scoped lang="stylus">

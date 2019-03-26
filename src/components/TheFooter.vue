@@ -1,13 +1,13 @@
 <template>
-    <v-footer dark height="auto" color="secondary">
-        <v-container py-3>
-            <v-layout row wrap justify-center>
-                <v-flex>
+    <VFooter dark height="auto" color="secondary">
+        <VContainer py-3>
+            <VLayout row wrap justify-center>
+                <VFlex>
                     ©Pencil
-                </v-flex>
-            </v-layout>
-        </v-container>
-    </v-footer>
+                </VFlex>
+            </VLayout>
+        </VContainer>
+    </VFooter>
 </template>
 
 <style scoped lang="stylus">

@@ -1,11 +1,11 @@
 <template>
-    <v-container grid-list-lg fill-height>
-        <v-layout row fill-height>
-            <v-flex xs12 md9 fill-height>
-                <v-breadcrumbs :items="breadcrumbItems" class="pa-0 mb-3"></v-breadcrumbs>
+    <VContainer grid-list-lg fill-height>
+        <VLayout row fill-height>
+            <VFlex xs12 md9 fill-height>
+                <VBreadcrumbs :items="breadcrumbItems" class="pa-0 mb-3"></VBreadcrumbs>
                 <article id="article" class="fill-height">
-                    <v-progress-circular indeterminate color="accent" class="progress"
-                            v-if="loading"></v-progress-circular>
+                    <VProgressCircular indeterminate color="accent" class="progress"
+                            v-if="loading"></VProgressCircular>
                     <div id="error" class="text-center" v-if="notFound">
                         <p id="emotion">:(</p>
                         <p>找不到指定的文章</p>
@@ -16,19 +16,19 @@
                     </header>
                     <div class="markdown-body" ref="content" v-html="mdHtml"></div>
                 </article>
-            </v-flex>
-            <v-flex :class="{'aside-mobile':mobile}">
-                <v-layout column fill-height>
-                    <v-flex shrink id="sidebar">
-                        <article-catalog></article-catalog>
-                    </v-flex>
-                    <v-flex shrink id="fab-panel">
-                        <fab-group id="fab-group" :loading="loading"></fab-group>
-                    </v-flex>
-                </v-layout>
-            </v-flex>
-        </v-layout>
-    </v-container>
+            </VFlex>
+            <VFlex :class="{'aside-mobile':mobile}">
+                <VLayout column fill-height>
+                    <VFlex shrink id="sidebar">
+                        <ArticleCatalog></ArticleCatalog>
+                    </VFlex>
+                    <VFlex shrink id="fab-panel">
+                        <FabGroup id="fab-group" :loading="loading"></FabGroup>
+                    </VFlex>
+                </VLayout>
+            </VFlex>
+        </VLayout>
+    </VContainer>
 </template>
 
 <style scoped lang="stylus">

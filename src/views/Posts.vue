@@ -1,8 +1,8 @@
 <template>
-    <v-container grid-list-lg :class="['fill-height',{'px-0':mobile}]">
-        <v-layout row align-space-around fill-height :class="mobile?'mx-0':'my-0'">
-            <v-flex xs12 md9 id="post-area">
-                <post-list
+    <VContainer grid-list-lg :class="['fill-height',{'px-0':mobile}]">
+        <VLayout row align-space-around fill-height :class="mobile?'mx-0':'my-0'">
+            <VFlex xs12 md9 id="post-area">
+                <PostList
                         class="grow mb-2"
                         :number="postsPerPage"
                         :page="page"
@@ -10,20 +10,20 @@
                         :details="['date']"
                         @prepare="postsPrepare($event)"
                         @finish="postsLoaded($event)" />
-                <p-pagination :value="page" :length="pages"></p-pagination>
-            </v-flex>
+                <PPagination :value="page" :length="pages"></PPagination>
+            </VFlex>
 
-            <p-navigation-drawer floating right
+            <PNavigationDrawer floating right
                     width=""
                     :mobile="mobile"
                     v-model="drawer"
                     :class="['drawer','py-2',{'drawer-desktop':!mobile}]">
                 <h3>
-                    <v-icon>sort</v-icon>
+                    <VIcon>sort</VIcon>
                     排序
                 </h3>
                 <div class="px-3">
-                    <v-btn flat
+                    <VBtn flat
                             color="primary"
                             active-class=""
                             exact-active-class=""
@@ -32,19 +32,19 @@
                             :to="order.linkTo"
                             :class="['order-item', {'order-item-reverse':order.ascend}]">
                         {{order.name}}
-                        <v-icon v-show="order.active">keyboard_arrow_down</v-icon>
-                    </v-btn>
+                        <VIcon v-show="order.active">keyboard_arrow_down</VIcon>
+                    </VBtn>
                 </div>
-            </p-navigation-drawer>
-        </v-layout>
-        <v-btn fab dark fixed right bottom
+            </PNavigationDrawer>
+        </VLayout>
+        <VBtn fab dark fixed right bottom
                 color="accent"
                 :loading="loading"
                 @click="drawer=!drawer"
                 v-if="mobile">
-            <v-icon>menu</v-icon>
-        </v-btn>
-    </v-container>
+            <VIcon>menu</VIcon>
+        </VBtn>
+    </VContainer>
 </template>
 
 <style scoped lang="stylus">

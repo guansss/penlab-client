@@ -2,12 +2,12 @@
     <div class="list">
         <div id="progress">
             <transition name="slide-fade">
-                <v-progress-linear class="ma-0" v-if="loading" indeterminate></v-progress-linear>
+                <VProgressLinear class="ma-0" v-if="loading" indeterminate></VProgressLinear>
             </transition>
         </div>
-        <list-transition offset-y="20px">
-            <post-list-item class="item" v-for="post in posts" :key="post.key" :post="post" :details="details" />
-        </list-transition>
+        <ListTransition offset-y="20px">
+            <PostListItem class="item" v-for="post in posts" :key="post.key" :post="post" :details="details" />
+        </ListTransition>
     </div>
 </template>
 

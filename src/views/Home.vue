@@ -1,20 +1,20 @@
 <template>
-    <v-container id="home" class="pa-3">
-        <v-layout row wrap justify-center class="jumbotron">
-            <v-flex xs12 md6>
-                <a-l-shop id="al-shop"></a-l-shop>
-            </v-flex>
-            <v-flex xs12 md6>
-                <v-layout fill-height column justify-center text-xs-center>
+    <VContainer id="home" class="pa-3">
+        <VLayout row wrap justify-center class="jumbotron">
+            <VFlex xs12 md6>
+                <ALShop id="al-shop"></ALShop>
+            </VFlex>
+            <VFlex xs12 md6>
+                <VLayout fill-height column justify-center text-xs-center>
                     <h1 id="logo">Pencil's Lab</h1>
                     <p>这里是铅笔的实验室，用于展示博客以及一些奇怪的东西<br />
                         <span class="spoiler">还在建造中，暂时并没有什么实质性的内容</span>
                     </p>
-                </v-layout>
-            </v-flex>
-        </v-layout>
-        <post-list id="article-list" filter="articles" order="created" :number="2" />
-    </v-container>
+                </VLayout>
+            </VFlex>
+        </VLayout>
+        <PostList id="article-list" filter="articles" order="created" :number="2" />
+    </VContainer>
 </template>
 
 <style scoped lang="stylus">
