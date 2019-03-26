@@ -54,11 +54,7 @@
         color white*/
 
 #toolbar-title
-    cursor pointer
     transition transform .1s ease-out
-
-    &:hover
-        transform scale(1.1)
 
 #logo
     display flex
