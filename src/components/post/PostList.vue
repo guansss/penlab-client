@@ -1,10 +1,6 @@
 <template>
     <div class="list">
-        <div id="progress">
-            <transition name="slide-fade">
-                <VProgressLinear class="ma-0" v-if="loading" indeterminate></VProgressLinear>
-            </transition>
-        </div>
+        <VProgressLinear class="progress ma-0" :active="loading" indeterminate></VProgressLinear>
         <ListTransition offset-y="20px">
             <PostListItem class="item" v-for="post in posts" :key="post.key" :post="post" :details="details" />
         </ListTransition>
@@ -15,10 +11,11 @@
 .list
     position relative
 
-#progress
+.progress
     position absolute
-    width 100%
-    overflow hidden
+    top 0
+    right 0
+    left 0
 
 .slide-fade-enter-active, .slide-fade-leave-active
     transition transform .1s ease-out
