@@ -83,6 +83,7 @@ import hljs from 'highlight.js/lib/highlight';
 import PingPong from '../components/fx/PingPong';
 import FabGroup from '../components/fab/FabGroup';
 import ArticleCatalog from '../components/utils/ArticleCatalog';
+import { setPageTitle } from '../tools/dom';
 
 const debug = Debug('plab:article');
 
@@ -159,7 +160,7 @@ export default {
         displayPost(post) {
             this.title = post.title;
             this.date = new Date(post.created).toLocaleString('zh-cn');
-            document.title = this.title;
+            setPageTitle(this.title);
 
             const headings = [];
 
