@@ -18,11 +18,11 @@
                     :mobile="mobile"
                     v-model="drawer"
                     :class="['drawer','py-2',{'drawer-desktop':!mobile}]">
-                <h3>
+                <h3 class="px-3">
                     <VIcon>sort</VIcon>
                     排序
                 </h3>
-                <div class="px-3">
+                <div class="px-1">
                     <VBtn flat
                             color="primary"
                             active-class=""
@@ -88,13 +88,13 @@ export default {
             name: '日期',
             linkTo: {},
             active: true,
-            ascend: true,
-        }, {
-            tag: 'title',
-            name: '标题',
-            linkTo: {},
-            active: true,
-            ascend: true,
+            ascend: false,
+            // }, {
+            //     tag: 'title',
+            //     name: '标题',
+            //     linkTo: {},
+            //     active: true,
+            //     ascend: true,
         }],
         order: '-created',
         page: 1,
