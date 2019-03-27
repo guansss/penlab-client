@@ -8,7 +8,7 @@
                 <VLayout fill-height column justify-center text-xs-center>
                     <h1 id="logo">Pencil's Lab</h1>
                     <p>这里是铅笔的实验室，用于展示博客以及一些奇怪的东西<br />
-                        <span class="spoiler">还在建造中，暂时并没有什么实质性的内容</span>
+                        <span class="spoiler">还很简陋，实在没时间更新 _(: 」∠)_</span>
                     </p>
                 </VLayout>
             </VFlex>
