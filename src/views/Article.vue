@@ -233,7 +233,7 @@ function headingRenderer(renderer, before, after) {
     return (text, level, raw) => {
         before && before(text, level, raw);
 
-        const id = raw.toLowerCase().replace(/[^\w\u4e00-\u9fa5]+/g, '-');
+        const id = raw.toLowerCase().replace(/[^\w\u4e00-\u9fa5]+/g, '-').replace(/^([^A-Za-z])/, 'h$1');
         after && after(id);
 
         return `<h${level} id="${id}">${text}</h${level}>`;
