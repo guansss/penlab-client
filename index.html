@@ -4,27 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,shrink-to-fit=no">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link rel="icon" href="/favicon.ico">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.css"
-            integrity="sha256-qTBXiGmok0OwSTNA1uvNgoO6GSylS8Ty3TBjogwOxVo=" crossorigin="anonymous" />
+          integrity="sha256-qTBXiGmok0OwSTNA1uvNgoO6GSylS8Ty3TBjogwOxVo=" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github-gist.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons">
 
     <title>Pencil's Lab</title>
 </head>
 <body>
-<noscript>
-    <strong>We're sorry but this project doesn't work properly without JavaScript enabled. Please enable it to
-        continue.</strong>
-</noscript>
 <div id="page-loading" style="margin-top: 1em; text-align: center">
-    如果加载很慢的话，先喝杯茶吧☕
+    如果加载很慢的话，先喝杯 Java 吧 ☕
 </div>
 <div id="app"></div>
-<!-- built files will be auto injected -->
-</body>
+<script type="module" src="/src/main.ts"></script>
 <script>
-document.getElementById('page-loading').outerHTML = '';
+    document.getElementById('page-loading').outerHTML = '';
 </script>
+</body>
 </html>
