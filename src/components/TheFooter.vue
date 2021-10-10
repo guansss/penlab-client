@@ -1,52 +1,13 @@
 <template>
-    <VFooter dark height="auto" color="secondary">
-        <VContainer py-3>
-            <VLayout row wrap justify-center>
-                <VFlex>
-                    ©Pencil
-                </VFlex>
-            </VLayout>
-        </VContainer>
-    </VFooter>
+    <footer class="footer">
+        <div class="content container">
+            <div class="copyright">©Pencil</div>
+        </div>
+    </footer>
 </template>
 
-<style scoped lang="stylus">
-@require '../styles/global.styl'
-
-#footer
-    position relative
-    height 90px
-    background-color $color-normal
-    color white
-
-    .container
-        height @height
-
-        #desc
-            align-self center
-            margin-bottom 0
-            font-size 0.8em
-
-    #top
-        height @height
-        width @height
-        color @color
-
-        &:hover
-            background-color lighten(@background-color, 10)
-
-        i
-            position relative
-            top 50%
-            left 50%
-            transform translateX(-50%) translateY(-30%) rotate(90deg)
-            font-size 36px
-
-</style>
-
-<script>
+<script lang="ts">
 export default {
-    name: 'TheFooter',
     methods: {
         scrollToTop() {
             // documentElement for desktop browser, body for mobile
@@ -56,10 +17,7 @@ export default {
     },
 };
 
-/**
- * @param {Element} elm
- */
-function scrollToTop(elm) {
+function scrollToTop(elm: HTMLElement) {
     elm.animate([
         { scrollTop: elm.scrollTop },
         { scrollTop: 0 }], {
@@ -68,3 +26,16 @@ function scrollToTop(elm) {
     });
 }
 </script>
+
+<style scoped>
+.footer {
+    background: var(--bg-color-dark);
+    color: var(--color-dark);
+}
+
+.content {
+    padding: 16px 0;
+    display: flex;
+    align-items: center;
+}
+</style>

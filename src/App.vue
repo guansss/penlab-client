@@ -1,76 +1,42 @@
 <template>
-    <VApp :dark="dark">
-        <TheHeader id="header" />
-        <VContent>
-            <BgTransition :position="bgTransPosition" :from-color="bgTransFromColor" :to-color="bgTransToColor" />
+    <div class="app">
+        <TheHeader />
+        <div class="main">
             <RouterView id="main-router-view" />
-        </VContent>
+        </div>
         <TheFooter />
-    </VApp>
+    </div>
 </template>
 
-<style lang="stylus">
-/*@require './assets/cdn/bootstrap.min.css'
-@require './assets/cdn/github-markdown.css'
-@require './assets/cdn/github-gist.min.css'
-@font-face {
-    font-family: 'Material Icons';
-    font-style: normal;
-    font-weight: 400;
-    src: url(./assets/cdn/material-icons.woff2) format('woff2');
+<script setup lang="ts">
+import TheFooter from './components/TheFooter.vue';
+import TheHeader from './components/TheHeader.vue';</script>
+
+<style>
+@import "bootstrap/dist/css/bootstrap-grid.css";
+
+:root {
+    --theme-primary: #546e7a;
+    --bg-color: #EEE;
+    --bg-color-dark: #333;
+    --color: #333;
+    --color-dark: #FFF;
 }
 
-.material-icons {
-    font-family: 'Material Icons';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    -webkit-font-feature-settings: 'liga';
-    -webkit-font-smoothing: antialiased;
-}*/
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
 
-@font-face
-    font-family logo
-    font-style normal
-    src url(./assets/fonts/Drafting.woff2) format('woff2')
-    src url(./assets/fonts/Drafting.woff) format('woff')
+.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    background: var(--bg-color);
+}
 
-#main-router-view
-    position relative
+.main {
+    flex-grow: 1;
+}
 </style>
-
-<script>
-import TheHeader from './components/TheHeader';
-import TheFooter from './components/TheFooter';
-import BrowserWarning from './components/utils/BrowserWarning';
-import BgTransition from './components/anim/BgTransition';
-
-export default {
-    components: { BgTransition, BrowserWarning, TheFooter, TheHeader },
-    data: () => ({
-        bgTransFromColor: '',
-        bgTransToColor: '',
-    }),
-    computed: {
-        dark() {
-            return this.$store.state.darkTheme;
-        },
-        bgTransPosition() {
-            return this.$store.state.darkThemeTransitionOrigin;
-        },
-    },
-    watch: {
-        dark() {
-            this.bgTransFromColor = getComputedStyle(this.$el)['background-color'];
-            this.$nextTick(() => this.bgTransToColor = getComputedStyle(this.$el)['background-color']);
-        },
-    },
-};
-</script>
