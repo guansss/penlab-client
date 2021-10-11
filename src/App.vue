@@ -1,7 +1,7 @@
 <template>
     <div class="app">
         <TheHeader />
-        <div class="main">
+        <div class="view">
             <RouterView id="main-router-view" />
         </div>
         <TheFooter />
@@ -9,18 +9,46 @@
 </template>
 
 <script setup lang="ts">
+import { provide } from 'vue';
 import TheFooter from './components/TheFooter.vue';
-import TheHeader from './components/TheHeader.vue';</script>
+import TheHeader from './components/TheHeader.vue';
+import {
+    colorAccent,
+    colorBg,
+    colorBgDark,
+    colorPrimary,
+    colorText,
+    colorTextDark,
+    INJECTION_COLOR_ACCENT,
+    INJECTION_COLOR_BG,
+    INJECTION_COLOR_BG_DARK,
+    INJECTION_COLOR_PRIMARY,
+    INJECTION_COLOR_TEXT,
+    INJECTION_COLOR_TEXT_DARK,
+} from './tools/theme';
+
+provide(INJECTION_COLOR_PRIMARY, colorPrimary);
+provide(INJECTION_COLOR_ACCENT, colorAccent);
+provide(INJECTION_COLOR_BG, colorBg);
+provide(INJECTION_COLOR_BG_DARK, colorBgDark);
+provide(INJECTION_COLOR_TEXT, colorText);
+provide(INJECTION_COLOR_TEXT_DARK, colorTextDark);
+</script>
 
 <style>
 @import "bootstrap/dist/css/bootstrap-grid.css";
 
 :root {
-    --theme-primary: #546e7a;
-    --bg-color: #EEE;
-    --bg-color-dark: #333;
-    --color: #333;
-    --color-dark: #FFF;
+    /*
+     * these vars will be assigned by tools/theme.ts,
+     * they are here only for code hinting
+     */
+    --color-primary: #FFF;
+    --color-accent: #FFF;
+    --color-bg: #FFF;
+    --color-bg-dark: #FFF;
+    --color-text: #FFF;
+    --color-text-dark: #FFF;
 }
 
 * {
@@ -28,15 +56,29 @@ import TheHeader from './components/TheHeader.vue';</script>
     box-sizing: border-box;
 }
 
+a {
+    color: inherit;
+    text-decoration: none;
+
+    &:active,
+    &:visited {
+        color: inherit;
+    }
+}
+</style>
+
+<style scoped>
 .app {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
-    background: var(--bg-color);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-size: 18px;
 }
 
-.main {
+.view {
     flex-grow: 1;
 }
 </style>

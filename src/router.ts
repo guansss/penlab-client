@@ -40,7 +40,7 @@ const routes = [
         props: true,
     },
     {
-        path: '*',
+        path: '/:pathMatch(.*)',
         redirect: '/',
     },
 ];
@@ -51,6 +51,9 @@ export const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    setPageTitle(to.meta && to.meta.title);
+    if (typeof to.meta.title === 'string') {
+        setPageTitle(to.meta.title);
+    }
+
     next();
 });

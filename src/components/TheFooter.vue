@@ -29,8 +29,8 @@ function scrollToTop(elm: HTMLElement) {
 
 <style scoped>
 .footer {
-    background: var(--bg-color-dark);
-    color: var(--color-dark);
+    background: var(--color-bg-dark);
+    color: var(--color-text-dark);
 }
 
 .content {

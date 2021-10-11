@@ -31,8 +31,8 @@ export default {
 
 <style scoped>
 .header {
-    background: var(--theme-primary);
-    color: var(--color-dark);
+    background: var(--color-primary);
+    color: var(--color-text-dark);
 }
 
 .content {
