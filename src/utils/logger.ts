@@ -3,7 +3,7 @@ export const LOG_LEVEL_WARNING = 1;
 export const LOG_LEVEL_ERROR = 2;
 export const LOG_LEVEL_NONE = 999;
 
-export let logLevel = (import.meta as any).env.PROD ? LOG_LEVEL_WARNING : LOG_LEVEL_VERBOSE;
+export let logLevel = import.meta.env.PROD ? LOG_LEVEL_WARNING : LOG_LEVEL_VERBOSE;
 
 /**
  * A simple tagged logger.

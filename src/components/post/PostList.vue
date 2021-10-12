@@ -1,121 +1,89 @@
 <template>
     <div class="list">
-        <VProgressLinear class="progress ma-0" :active="loading" indeterminate></VProgressLinear>
         <ListTransition offset-y="20px">
-            <PostListItem class="item" v-for="post in posts" :key="post.key" :post="post" :details="details" />
+            <PostListItem class="item" v-for="post in posts" :key="post.key" :post="post" />
         </ListTransition>
     </div>
 </template>
 
-<style scoped lang="stylus">
-.list
-    position relative
+<script setup lang="ts">
+import { reactive, ref, watch } from 'vue';
+import { PostModel } from '../../models/post';
+import { getPosts } from '../../net/apis';
+import { logger } from '../../utils/logger';
+import ListTransition from '../anim/ListTransition.vue';
+import PostListItem from './PostListItem.vue';
 
-.progress
-    position absolute
-    top 0
-    right 0
-    left 0
+interface ListPost extends PostModel {
+    // assign a unique key to prevent item reusing, because reused items won't be transitioned
+    key: Symbol;
+}
 
-.slide-fade-enter-active, .slide-fade-leave-active
-    transition transform .1s ease-out
-
-.slide-fade-enter, .slide-fade-leave-to
-    transform translateY(-100%)
-</style>
-
-<script>
-import PostListItem from './PostListItem';
-import ListTransition from '../anim/ListTransition';
-import PingPong from '../fx/PingPong';
-
-import Debug from 'debug';
-
-const debug = Debug('plab:PostList');
-
-/**
- * @event prepare
- * @event finish (totalPosts)
- */
-export default {
-    name: 'PostList',
-    components: { ListTransition, PingPong, PostListItem },
-    props: {
-        filter: {
-            default: '',
-            type: String,
-        },
-        number: {
-            default: 10,
-            type: Number,
-        },
-        order: {
-            default: '-created',
-            type: String,
-        },
-        details: {
-            type: Array,
-            default: () => [],
-        },
-        page: Number,
+const props = defineProps({
+    filter: {
+        default: '',
+        type: String,
     },
-    data: () => ({
-        loading: false,
-        posts: [],
-    }),
-    watch: {
-        page() {
-            this.loadPosts();
-        },
-        filter() {
-            this.loadPosts();
-        },
-        order() {
-            this.loadPosts();
-        },
+    amount: {
+        default: 10,
+        type: Number,
     },
-    mounted() {
-        this.loadPosts();
+    order: {
+        default: '-created',
+        type: String,
     },
-    methods: {
-        async loadPosts() {
-            this.$emit('prepare');
-            this.loading = true;
-
-            let result;
-
-            try {
-                const url = '/api/posts/?' + new URLSearchParams({
-                    limit: this.number,
-                    order: this.order,
-                    ...(this.page && { page: this.page }),
-                });
-                debug('load >>> %o', url);
-
-                const res = await fetch(url);
-                const json = await res.json();
-
-                if (res.ok)
-                    result = json;
-                else
-                    console.warn(`Error [${json.error.code}]: ${json.error.message}`);
-            } catch (e) {
-                console.warn('Failed to fetch: ' + e);
-            }
-
-            if (result)
-                this.displayPosts(result.posts);
-
-            this.loading = false;
-            this.$emit('finish', {
-                totalPosts: result.total,
-            });
-        },
-        displayPosts(posts) {
-            // set unique keys to prevent item reusing, because reused items won't show transition
-            posts.forEach(p => p.key = Symbol());
-            this.posts = posts;
-        },
+    details: {
+        type: Array,
+        default: () => [],
     },
-};
+    page: {
+        type: Number,
+        default: 0,
+    },
+});
+
+const emit = defineEmits(['beforeLoad', 'load']);
+
+const loading = ref(false);
+const posts = reactive<ListPost[]>([]);
+
+watch(() => [props.page, props.filter, props.order], updatePosts);
+
+updatePosts();
+
+async function updatePosts() {
+    emit('beforeLoad');
+
+    loading.value = true;
+
+    try {
+        const postList = await getPosts({
+            limit: props.amount,
+            order: props.order,
+            page: props.page,
+        });
+
+        displayPosts(postList.posts);
+
+        emit('load', {
+            totalPosts: postList.total,
+        });
+    } catch (e) {
+        logger.warn('Failed to update posts: ' + e);
+    }
+
+    loading.value = false;
+}
+
+function displayPosts(postsModels: PostModel[]) {
+    posts.splice(0);
+
+    for (const post of postsModels as ListPost[]) {
+        post.key = Symbol();
+
+        posts.push(post);
+    }
+}
 </script>
+
+<style scoped></style>

@@ -36,19 +36,22 @@ provide(INJECTION_COLOR_TEXT_DARK, colorTextDark);
 </script>
 
 <style>
-@import "bootstrap/dist/css/bootstrap-grid.css";
+@import 'bootstrap/dist/css/bootstrap-grid.css';
 
 :root {
     /*
      * these vars will be assigned by tools/theme.ts,
      * they are here only for code hinting
      */
-    --color-primary: #FFF;
-    --color-accent: #FFF;
-    --color-bg: #FFF;
-    --color-bg-dark: #FFF;
-    --color-text: #FFF;
-    --color-text-dark: #FFF;
+    --color-primary: #fff;
+    --color-primary-rgb: 0, 0, 0;
+    --color-accent: 0, 0, 0;
+    --color-accent-rgb: #fff;
+    --color-bg: #fff;
+    --color-bg-dark: #fff;
+    --color-text: #fff;
+    --color-text-secondary: #fff;
+    --color-text-dark: #fff;
 }
 
 * {
@@ -57,13 +60,43 @@ provide(INJECTION_COLOR_TEXT_DARK, colorTextDark);
 }
 
 a {
-    color: inherit;
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-primary);
     text-decoration: none;
+    transition: color 0.1s ease-out, background-color 0.2s ease-out;
 
     &:active,
     &:visited {
-        color: inherit;
+        color: var(--color-primary);
     }
+
+    &:hover {
+        color: var(--color-accent);
+    }
+}
+
+svg {
+    fill: currentColor;
+}
+
+.selectable,
+.button {
+    transition: background-color 0.2s ease-out;
+
+    &:hover {
+        color: var(--color-primary);
+        background: rgba(var(--color-primary-rgb), 0.1);
+    }
+
+    &:active {
+        background: rgba(var(--color-primary-rgb), 0.3);
+    }
+}
+
+.button {
+    padding: 6px 12px;
+    border-radius: 2px;
 }
 </style>
 

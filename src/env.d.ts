@@ -6,3 +6,11 @@ declare module '*.vue' {
     const component: DefineComponent<{}, {}, any>;
     export default component;
 }
+
+interface ImportMetaEnv extends Readonly<Record<string, string>> {
+    VITE_API_SERVER: string;
+}
+
+interface ImportMeta {
+    readonly env: ImportMetaEnv;
+}

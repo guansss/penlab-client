@@ -1,162 +1,129 @@
 <template>
-    <VContainer grid-list-lg :class="['fill-height',{'px-0':mobile}]">
-        <VLayout row align-space-around fill-height :class="mobile?'mx-0':'my-0'">
-            <VFlex xs12 md9 id="post-area">
-                <PostList
-                        class="grow mb-2"
-                        :number="postsPerPage"
-                        :page="page"
-                        :order="order"
-                        :details="['date']"
-                        @prepare="postsPrepare($event)"
-                        @finish="postsLoaded($event)" />
-                <PPagination :value="page" :length="pages"></PPagination>
-            </VFlex>
-
-            <PNavigationDrawer floating right
-                    width=""
-                    :mobile="mobile"
-                    v-model="drawer"
-                    :class="['drawer','py-2',{'drawer-desktop':!mobile}]">
-                <h3 class="px-3">
-                    <VIcon>sort</VIcon>
-                    排序
-                </h3>
-                <div class="px-1">
-                    <VBtn flat
-                            color="primary"
-                            active-class=""
-                            exact-active-class=""
-                            v-for="(order,i) in availableOrders"
-                            :key="i"
-                            :to="order.linkTo"
-                            :class="['order-item', {'order-item-reverse':order.ascend}]">
-                        {{order.name}}
-                        <VIcon v-show="order.active">keyboard_arrow_down</VIcon>
-                    </VBtn>
+    <div class="posts container">
+        <div class="list-panel col-12 col-lg-9">
+            <PostList class="post-list" :amount="postsPerPage" :page="page" :order="order" @load="pagesLoaded" />
+            <Pagination :pages="pages" :current="page" />
+        </div>
+        <div class="control-panel col-12 col-lg-3 order-first order-lg-last">
+            <div class="order-pane">
+                <sort-icon class="sort icon" />
+                <div class="order-items">
+                    <router-link
+                        v-for="(order, i) in orderOptions"
+                        :key="i"
+                        :to="order.link"
+                        :class="['order-item button', { reverse: order.ascend }]"
+                    >
+                        {{ order.name }}
+                        <arrow-top-right class="icon" v-show="order.active" />
+                    </router-link>
                 </div>
-            </PNavigationDrawer>
-        </VLayout>
-        <VBtn fab dark fixed right bottom
-                color="accent"
-                :loading="loading"
-                @click="drawer=!drawer"
-                v-if="mobile">
-            <VIcon>menu</VIcon>
-        </VBtn>
-    </VContainer>
+            </div>
+        </div>
+    </div>
 </template>
 
-<style scoped lang="stylus">
-.drawer
-    position fixed
-    min-width 30%
+<script setup lang="ts">
+import ArrowTopRight from '@mdi/svg/svg/arrow-top-right.svg';
+import SortIcon from '@mdi/svg/svg/sort.svg';
+import { reactive, ref } from 'vue';
+import { onBeforeRouteUpdate, RouteLocationNormalized, useRoute } from 'vue-router';
+import Pagination from '../components/Pagination.vue';
+import PostList from '../components/post/PostList.vue';
+import { postOrders } from '../models/post';
+import { qualifyQueryInteger, qualifyQueryString } from '../tools/query';
 
-.drawer-desktop
-    position relative
-    flex-grow 1
-    min-width 0
-    background-color transparent
-
-.order-item .v-icon
-    transition transform .2s ease-out !important
-
-.order-item-reverse .v-icon
-    transform rotate(-180deg)
-
-#post-area
-    display flex
-    flex-direction column
-</style>
-
-<script>
-import PostList from '../components/post/PostList';
-import PNavigationDrawer from '../components/PNavigationDrawer';
-import PPagination from '../components/PPagination';
-
-import Debug from 'debug';
-
-const debug = Debug('plab:Post');
-
-export default {
-    name: 'Posts',
-    components: { PPagination, PNavigationDrawer, PostList },
-    data: () => ({
-        drawer: null,
-        availableOrders: [{
-            tag: 'created',
-            name: '日期',
-            linkTo: {},
-            active: true,
-            ascend: false,
-            // }, {
-            //     tag: 'title',
-            //     name: '标题',
-            //     linkTo: {},
-            //     active: true,
-            //     ascend: true,
-        }],
-        order: '-created',
-        page: 1,
-        pages: 1,
-        postsPerPage: 10,
-        loading: false,
-    }),
-    computed: {
-        mobile() {
-            return this.$vuetify.breakpoint.smAndDown;
-        },
-        orders() {
-            return [];
-        },
+const orderOptions = reactive([
+    {
+        tag: 'created',
+        name: '日期',
+        link: {},
+        active: true,
+        ascend: false,
     },
-    watch: {
-        $route(to) {
-            this.updateParams();
-        },
-    },
-    created() {
-        this.updateParams();
-    },
-    methods: {
-        updateParams() {
-            this.page = normalizePageNumber(this.$route.query.page, this.page);
-            this.order = this.$route.query.o || this.order;
+]);
 
-            const orderParam = this.$route.query.o;
-            this.availableOrders.forEach(order => {
-                if (orderParam) {
-                    let ascend = orderParam.charAt(0) !== '-';
-                    if (orderParam.slice(ascend ? 0 : 1) === order.tag) {
-                        order.active = true;
-                        order.ascend = ascend;
-                    } else {
-                        order.active = false;
-                        order.ascend = true;
-                    }
-                }
-                order.linkTo = {
-                    path: this.$route.path,
-                    query: {
-                        ...this.$route.query,
-                        o: (order.ascend ? '-' : '') + order.tag, // reverse
-                    },
-                };
-            });
-        },
-        postsPrepare(event) {
-            this.loading = true;
-        },
-        postsLoaded(event) {
-            this.loading = false;
-            if (!isNaN(event.totalPosts)) {
-                this.pages = normalizePageNumber(Math.ceil(event.totalPosts / this.postsPerPage), this.pages);
-            }
-        },
-    },
-};
+const order = ref('-created');
+const page = ref(1);
+const pages = ref(0);
+const postsPerPage = ref(10);
 
-function normalizePageNumber(page, defaultVal) {
-    return page && !isNaN(page) ? Math.max(1, ~~page) : defaultVal;
+const route = useRoute();
+
+onBeforeRouteUpdate((to) => updateParams(to));
+
+updateParams(route);
+
+function updateParams(route: RouteLocationNormalized) {
+    page.value = qualifyQueryInteger(route.query.page, 1, pages.value || Infinity);
+    order.value = qualifyQueryString<string>(route.query.o, postOrders, order.value);
+
+    for (const orderOption of orderOptions) {
+        const ascend = order.value.charAt(0) !== '-';
+
+        orderOption.ascend = ascend;
+        orderOption.active = orderOption.tag === order.value.slice(ascend ? 0 : 1);
+        orderOption.link = {
+            path: route.path,
+            query: {
+                ...route.query,
+
+                // the link is to reverse the order
+                o: (ascend ? '-' : '') + orderOption.tag,
+            },
+        };
+    }
+}
+
+function pagesLoaded(event: { totalPosts: number }) {
+    if (!isNaN(event.totalPosts)) {
+        pages.value = Math.max(Math.ceil(event.totalPosts / postsPerPage.value), 1);
+    }
 }
 </script>
+
+<style scoped>
+.posts {
+    padding: 16px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.list-panel {
+    flex-grow: 1;
+}
+
+.post-list {
+    margin-bottom: 24px;
+}
+
+.control-panel {
+    padding: 16px 16px 0 16px;
+}
+
+.order-pane {
+    display: flex;
+    align-items: center;
+}
+
+.sort.icon {
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+
+    &.reverse {
+        .icon {
+            transform: scale(0.8) rotate(-45deg);
+        }
+    }
+
+    .icon {
+        transition: transform 0.3s cubic-bezier(0.04, 0.3, 0.54, 1.57);
+        transform: scale(0.8) rotate(135deg);
+    }
+}
+</style>

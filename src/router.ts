@@ -1,12 +1,11 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { setPageTitle } from './tools/dom';
-import Home from './views/Home.vue';
 
 const routes = [
     {
         path: '/',
         name: 'home',
-        component: Home,
+        component: () => import('./views/Home.vue'),
         meta: {
             title: '',
         },
@@ -14,7 +13,7 @@ const routes = [
     {
         path: '/posts',
         name: 'posts',
-        component: () => import(/* webpackChunkName: "posts" */ './views/Posts.vue'),
+        component: () => import('./views/Posts.vue'),
         meta: {
             title: '文章',
         },
@@ -22,7 +21,7 @@ const routes = [
     {
         path: '/posts/create',
         name: 'create post',
-        component: () => import(/* webpackChunkName: "posts" */ './views/Create.vue'),
+        component: () => import('./views/Create.vue'),
         meta: {
             title: '新文章',
         },
