@@ -1,249 +1,175 @@
 <template>
-    <VContainer grid-list-lg fill-height>
-        <VLayout row fill-height>
-            <VFlex xs12 md9 fill-height>
-                <VBreadcrumbs :items="breadcrumbItems" class="pa-0 mb-3"></VBreadcrumbs>
-                <article id="article" class="fill-height">
-                    <VProgressCircular indeterminate color="accent" class="progress"
-                            v-if="loading"></VProgressCircular>
-                    <div id="error" class="text-center" v-if="notFound">
-                        <p id="emotion">:(</p>
-                        <p>找不到指定的文章</p>
-                    </div>
-                    <header class="mb-4">
-                        <h1 class="mb-2 display-2">{{title}}</h1>
-                        <small class="grey--text">{{date}}</small>
-                    </header>
-                    <div class="markdown-body" ref="content" v-html="mdHtml"></div>
-                </article>
-            </VFlex>
-            <VFlex :class="{'aside-mobile':mobile}">
-                <VLayout column fill-height>
-                    <VFlex shrink id="sidebar">
-                        <ArticleCatalog></ArticleCatalog>
-                    </VFlex>
-                    <VFlex shrink id="fab-panel">
-                        <FabGroup id="fab-group" :loading="loading"></FabGroup>
-                    </VFlex>
-                </VLayout>
-            </VFlex>
-        </VLayout>
-    </VContainer>
+    <div class="article container">
+        <nav class="nav col-12">
+            <router-link class="nav-item" to="/posts">文章</router-link>
+            /
+            <router-link class="nav-item" :to="'/articles/' + props.id">{{ title }}</router-link>
+        </nav>
+        <article class="article-body col-12 col-lg-9">
+            <div v-if="error" class="error-msg">
+                <p id="emotion">:(</p>
+                <p>加载失败</p>
+                <p>错误：{{ ERRORS[error] }}</p>
+            </div>
+            <header class="article-header">
+                <h1 class="title">{{ title }}</h1>
+                <small class="date">{{ date }}</small>
+            </header>
+            <div class="markdown-body" ref="articleBody" v-html="articleHTML"></div>
+        </article>
+        <aside class="sidebar col-3 d-none d-lg-block">
+            <ArticleToc class="toc" ref="toc" @vnode-mounted="tocCreated" />
+        </aside>
+    </div>
 </template>
 
-<style scoped lang="stylus">
-@require '../styles/markdown-custom.styl'
-
-#article
-    position relative
-
-.progress
-    position absolute
-    top 0
-    right 0
-    bottom 0
-    left 0
-    margin auto
-
-#error
-    position absolute
-    width 100%
-
-    #emotion
-        color gray
-        font-size 10em
-
-.aside-mobile
-    width 0 !important
-    padding 0 !important
-    margin 0 !important
-    overflow hidden !important
-
-    #fab-group
-        right 16px !important
-
-#sidebar
-    position sticky
-    top 0
-
-#fab-panel1
-    position sticky
-    bottom 0
-    height 0
-
-#fab-group
-    position fixed
-    bottom 0
-</style>
-
-<script>
-import Debug from 'debug';
-import marked from 'marked';
-import hljs from 'highlight.js/lib/highlight';
-import PingPong from '../components/fx/PingPong';
-import FabGroup from '../components/fab/FabGroup';
-import ArticleCatalog from '../components/utils/ArticleCatalog';
+<script setup lang="ts">
+import { nextTick, ref, watchEffect } from 'vue';
+import ArticleToc from '../components/utils/ArticleToc.vue';
+import { ERRORS } from '../models/errors';
+import { PostModel } from '../models/post';
+import { getPost } from '../net/apis';
 import { setPageTitle } from '../tools/dom';
+import { parseMarkdown } from '../tools/markdown';
+import { logger } from '../utils/logger';
 
-const debug = Debug('plab:article');
-
-export default {
-    name: 'Article',
-    components: { ArticleCatalog, FabGroup, PingPong },
-    props: {
-        id: {
-            type: String,
-            default: '-1',
-        },
-    },
-    data: () => ({
-        loading: false,
-        notFound: false,
-        title: '',
-        date: '',
-        mdHtml: '',
-        headings: [],
-    }),
-    computed: {
-        mobile() {
-            return this.$vuetify.breakpoint.smAndDown;
-        },
-        breadcrumbItems() {
-            return [{
-                text: '文章',
-                href: '#/posts',
-            }, {
-                text: this.title,
-                disabled: true,
-            }];
-        },
-    },
-    async mounted() {
-        await this.loadContent();
-    },
-    methods: {
-        startLoading() {
-            this.loading = true;
-            this.headings = [];
-            this.$store.commit('article/updateHeadings', this.headings);
-        },
-        stopLoading() {
-            this.loading = false;
-            this.$store.commit('article/updateHeadings', this.headings);
-        },
-        async loadContent() {
-            this.startLoading();
-
-            let result;
-
-            try {
-                const res = await fetch('/api/posts/' + this.id);
-                if (res.status === 404)
-                    this.notFound = true;
-                else {
-                    const json = await res.json();
-                    if (res.ok) {
-                        result = json;
-                    } else {
-                        console.warn(`Error [${json.error.code}]: ${json.error.message}`);
-                    }
-                }
-            } catch (e) {
-                console.warn('Failed to fetch: ' + e);
-            }
-
-            if (result)
-                this.displayPost(result);
-
-            this.stopLoading();
-        },
-        displayPost(post) {
-            this.title = post.title;
-            this.date = new Date(post.created).toLocaleString('zh-cn');
-            setPageTitle(this.title);
-
-            const headings = [];
-
-            this.mdHtml = marked.setOptions({
-                renderer: getRenderer({
-                    beforeHeading: (text, level, raw) => headings.push({ text: raw, level }),
-                    afterHeading: id => headings[headings.length - 1].id = id,
-                }),
-            })(post.article.content);
-
-            this.headings = headings;
-
-            this.animate();
-        },
-        animate() {
-            this.$refs.content.animate({
-                opacity: [0, 1],
-            }, {
-                duration: 150,
-            });
-        },
-    },
-};
-
-hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'));
-hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'));
-hljs.registerLanguage('css', require('highlight.js/lib/languages/css'));
-hljs.registerLanguage('stylus', require('highlight.js/lib/languages/stylus'));
-hljs.registerLanguage('kotlin', require('highlight.js/lib/languages/kotlin'));
-
-marked.setOptions({
-    highlight(code, lang) {
-        let result;
-        try {
-            result = lang
-                ? hljs.highlight(lang, code, false).value
-                : hljs.highlightAuto(code).value;
-        } catch (e) {
-            result = code;
-        }
-        return result;
+const props = defineProps({
+    id: {
+        type: String,
+        default: '-1',
     },
 });
 
-/**
- * Lets every link open in new tab.
- * @param renderer marked renderer
- * @see https://github.com/markedjs/marked/issues/655#issuecomment-383226346
- * @return link renderer
- */
-function linkRenderer(renderer) {
-    const baseRenderer = renderer.link;
+const loading = ref(false);
+const error = ref<'' | keyof typeof ERRORS>('');
+const title = ref('');
+const date = ref('');
+const articleHTML = ref('');
+const articleBody = ref<HTMLElement>();
+const toc = ref<typeof ArticleToc>();
 
-    return (href, title, text) => {
-        const html = baseRenderer.call(renderer, href, title, text);
-        return html.replace(/^<a /, '<a target="_blank" rel="noopener noreferrer"');
-    };
+watchEffect(() => {
+    const id = parseInt(props.id as string);
+
+    if (isNaN(id) || id < 0) {
+        error.value = 'invalidParams';
+        logger.warn('Invalid ID:', props.id);
+        return;
+    }
+
+    loadArticle();
+});
+
+watchEffect(() => {});
+
+async function loadArticle() {
+    startLoading();
+
+    try {
+        const postModel = await getPost(props.id);
+
+        // in case the page has switched to another article
+        if ('' + postModel.id !== props.id) {
+            return;
+        }
+
+        stopLoading();
+
+        await processArticle(postModel);
+    } catch (e: any) {
+        if (e) {
+            if (e.status === 404) {
+                error.value = 'articleNotFound';
+            } else if (e.status) {
+                error.value = 'unknown';
+            }
+        }
+
+        console.warn('Failed to load article.' + e);
+    }
 }
 
-/**
- * Custom heading renderer with hooks.
- * @see https://github.com/markedjs/marked/blob/master/lib/marked.js#L949
- * @see https://github.com/markedjs/marked/issues/1329#issuecomment-418299042
- * @param renderer marked renderer
- * @param before callback before rendering
- * @param after callback before rendering
- * @return heading renderer
- */
-function headingRenderer(renderer, before, after) {
-    return (text, level, raw) => {
-        before && before(text, level, raw);
+async function processArticle(post: PostModel) {
+    title.value = post.title;
+    date.value = new Date(post.created).toLocaleString();
 
-        const id = raw.toLowerCase().replace(/[^\w\u4e00-\u9fa5]+/g, '-').replace(/^([^A-Za-z])/, 'h$1');
-        after && after(id);
+    setPageTitle(title.value);
 
-        return `<h${level} id="${id}">${text}</h${level}>`;
-    };
+    articleHTML.value = parseMarkdown(post.article?.content ?? '');
+
+    animate();
+
+    // wait until the content has been rendered
+    await nextTick();
+
+    (toc.value as any).updateHeadings(articleBody.value!);
 }
 
-function getRenderer({ beforeHeading, afterHeading }) {
-    const renderer = new marked.Renderer();
-    renderer.link = linkRenderer(renderer);
-    renderer.heading = headingRenderer(renderer, beforeHeading, afterHeading);
-    return renderer;
+function startLoading() {
+    loading.value = true;
+    error.value = '';
+}
+
+function stopLoading() {
+    loading.value = false;
+}
+
+function animate() {
+    articleBody.value!.animate(
+        {
+            opacity: [0, 1],
+        },
+        {
+            duration: 150,
+        }
+    );
+}
+
+function tocCreated() {
+    // automatically update headings after a hot-reload, so I don't have to refresh the page all the time
+    if (articleBody.value) {
+        (toc.value as any).updateHeadings(articleBody.value!);
+    }
 }
 </script>
+
+<style scoped>
+.article {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.nav {
+    padding: 16px 0;
+    color: var(--color-text-secondary);
+    font-size: 14px;
+}
+
+.nav-item {
+    padding: 8px;
+
+    &:first-child {
+        padding-left: 0;
+    }
+}
+
+.article-header {
+    margin-bottom: 24px;
+
+    .title {
+        font-size: 48px;
+    }
+
+    .date {
+        color: var(--color-text-secondary);
+    }
+}
+
+.sidebar {
+    position: sticky;
+    top: 16px;
+
+    align-self: flex-start;
+}
+</style>

@@ -29,10 +29,7 @@ const routes = [
     {
         path: '/articles/:id',
         name: 'articles',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "article" */ './views/Article.vue'),
+        component: () => import('./views/Article.vue'),
         meta: {
             title: '文章',
         },
@@ -47,6 +44,15 @@ const routes = [
 export const router = createRouter({
     routes,
     history: createWebHashHistory(),
+
+    scrollBehavior(to, from, savedPosition) {
+        if (to.hash) {
+            return {
+                el: to.hash,
+                behavior: 'smooth',
+            };
+        }
+    },
 });
 
 router.beforeEach((to, from, next) => {

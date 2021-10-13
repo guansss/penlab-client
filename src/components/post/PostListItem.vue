@@ -1,5 +1,5 @@
 <template>
-    <router-link class="item selectable" :to="'/articles/' + post.id">
+    <router-link class="item selectable gradient" :to="'/articles/' + post.id">
         <h2 class="title">{{ post.title }}</h2>
         <span class="date">{{ date }}</span>
         <p class="summary">{{ post.summary }}</p>
@@ -26,17 +26,6 @@ const date = computed(() => (isNaN(props.post.created) ? '' : formatDate(+props.
     position: relative;
     padding: 32px 16px;
     display: block;
-    font-size: 16px;
-    background: linear-gradient(
-        90deg,
-        rgba(var(--color-primary-rgb), 0.1) 0,
-        rgba(var(--color-primary-rgb), 0.05) 45%,
-        #0000 55%,
-        #0000 100%
-    );
-    background-size: 220% 100%;
-    background-position-x: right;
-    transition: background-position 0.2s ease-out;
 
     &:not(:last-child):after {
         content: '';
@@ -50,7 +39,6 @@ const date = computed(() => (isNaN(props.post.created) ? '' : formatDate(+props.
 
     &:hover {
         color: var(--color-accent);
-        background-position-x: left;
     }
 
     .title {

@@ -14,3 +14,7 @@ interface ImportMetaEnv extends Readonly<Record<string, string>> {
 interface ImportMeta {
     readonly env: ImportMetaEnv;
 }
+
+declare module 'highlight.js/lib/languages/*' {
+    export default function (): any;
+}
