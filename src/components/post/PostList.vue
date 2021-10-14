@@ -1,5 +1,5 @@
 <template>
-    <div class="list">
+    <div class="list" ref="list">
         <ListTransition offset-y="20px">
             <PostListItem class="item" v-for="post in posts" :key="post.key" :post="post" />
         </ListTransition>
@@ -8,6 +8,8 @@
 
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue';
+import { onBeforeRouteLeave, RouteLocationNormalized } from 'vue-router';
+import { emitter } from '../../event';
 import { PostModel } from '../../models/post';
 import { getPosts } from '../../net/apis';
 import { logger } from '../../utils/logger';
@@ -45,11 +47,12 @@ const props = defineProps({
 const emit = defineEmits(['beforeLoad', 'load']);
 
 const loading = ref(false);
+const list = ref<HTMLElement | undefined>();
 const posts = reactive<ListPost[]>([]);
 
-watch(() => [props.page, props.filter, props.order], updatePosts);
+watch(() => [props.page, props.filter, props.order], updatePosts, { immediate: true });
 
-updatePosts();
+onBeforeRouteLeave(openArticle);
 
 async function updatePosts() {
     emit('beforeLoad');
@@ -83,6 +86,37 @@ function displayPosts(postsModels: PostModel[]) {
 
         posts.push(post);
     }
+}
+
+function openArticle(dest: RouteLocationNormalized) {
+    if (!list.value || dest.name !== 'articles') {
+        return;
+    }
+
+    const id = dest.params.id;
+    const postIndex = posts.findIndex((p) => p.id === Number(id));
+
+    if (postIndex === -1) {
+        return;
+    }
+
+    const titleElms = list.value?.getElementsByClassName('title') as HTMLCollectionOf<HTMLHeadingElement>;
+    const titleElm = titleElms[postIndex];
+
+    // ensure the data and element are exactly matched
+    if (titleElm?.innerText !== posts[postIndex]!.title.trim()) {
+        return;
+    }
+
+    const rect = titleElm.getBoundingClientRect();
+
+    emitter.emit('articleOpenedByTitle', {
+        title: posts[postIndex]!.title,
+        x: rect.x,
+        y: rect.y,
+        width: rect.width,
+        pressed: true,
+    });
 }
 </script>
 

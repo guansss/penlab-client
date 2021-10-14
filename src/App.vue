@@ -5,11 +5,13 @@
             <router-view />
         </div>
         <TheFooter />
+        <FloatingTitle />
     </div>
 </template>
 
 <script setup lang="ts">
 import { provide } from 'vue';
+import FloatingTitle from './components/FloatingTitle.vue';
 import TheFooter from './components/TheFooter.vue';
 import TheHeader from './components/TheHeader.vue';
 import {

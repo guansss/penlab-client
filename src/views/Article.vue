@@ -3,7 +3,7 @@
         <nav class="nav col-12">
             <router-link class="nav-item" to="/posts">文章</router-link>
             /
-            <router-link class="nav-item" :to="'/articles/' + props.id">{{ title }}</router-link>
+            <router-link class="nav-item" :to="'/articles/' + id">{{ title }}</router-link>
         </nav>
         <article class="article-body col-12 col-lg-9">
             <div v-if="error" class="error-msg">
@@ -12,7 +12,7 @@
                 <p>错误：{{ ERRORS[error] }}</p>
             </div>
             <header class="article-header">
-                <h1 class="title">{{ title }}</h1>
+                <h1 ref="titleElm" :class="['title', { invisible: !titleVisible }]">{{ title }}</h1>
                 <small class="date">{{ date }}</small>
             </header>
             <div class="markdown-body" ref="articleBody" v-html="articleHTML"></div>
@@ -24,8 +24,10 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref, watchEffect } from 'vue';
+import { nextTick, ref } from 'vue';
+import { onBeforeRouteLeave, onBeforeRouteUpdate, RouteLocationNormalized, useRoute } from 'vue-router';
 import ArticleToc from '../components/utils/ArticleToc.vue';
+import { emitter } from '../event';
 import { ERRORS } from '../models/errors';
 import { PostModel } from '../models/post';
 import { getPost } from '../net/apis';
@@ -33,43 +35,56 @@ import { setPageTitle } from '../tools/dom';
 import { parseMarkdown } from '../tools/markdown';
 import { logger } from '../utils/logger';
 
-const props = defineProps({
-    id: {
-        type: String,
-        default: '-1',
-    },
-});
+const LOG_TAG = 'Article';
 
 const loading = ref(false);
 const error = ref<'' | keyof typeof ERRORS>('');
+
+const id = ref(-1);
 const title = ref('');
 const date = ref('');
 const articleHTML = ref('');
-const articleBody = ref<HTMLElement>();
+const articleBody = ref<HTMLElement | undefined>();
+const titleElm = ref<HTMLHeadingElement | undefined>();
+const titleVisible = ref(false);
 const toc = ref<typeof ArticleToc>();
 
-watchEffect(() => {
-    const id = parseInt(props.id as string);
+onBeforeRouteUpdate(updateID);
+onBeforeRouteLeave(() => emitter.emit('articleClosed'));
 
-    if (isNaN(id) || id < 0) {
-        error.value = 'invalidParams';
-        logger.warn('Invalid ID:', props.id);
+updateID(useRoute());
+
+function updateID(dest: RouteLocationNormalized) {
+    const newID = parseInt(dest.params.id as string);
+
+    if (newID === id.value) {
         return;
     }
 
-    loadArticle();
-});
+    if (isNaN(newID) || newID < 0) {
+        error.value = 'invalidParams';
+        logger.warn(LOG_TAG, 'Invalid ID:', dest.params.id);
+        return;
+    }
 
-watchEffect(() => {});
+    id.value = newID;
+
+    loadArticle().catch(logger.warn);
+}
 
 async function loadArticle() {
     startLoading();
 
     try {
-        const postModel = await getPost(props.id);
+        const postModel = await getPost(id.value);
+
+        // in case the component has been destroyed
+        if (!articleBody.value) {
+            return;
+        }
 
         // in case the page has switched to another article
-        if ('' + postModel.id !== props.id) {
+        if (postModel.id !== id.value) {
             return;
         }
 
@@ -85,7 +100,7 @@ async function loadArticle() {
             }
         }
 
-        console.warn('Failed to load article.' + e);
+        logger.warn(LOG_TAG, 'Failed to load article.', e);
     }
 }
 
@@ -101,6 +116,18 @@ async function processArticle(post: PostModel) {
 
     // wait until the content has been rendered
     await nextTick();
+
+    const rect = titleElm.value!.getBoundingClientRect();
+
+    emitter.emit('articleTitlePrinted', {
+        x: rect.x,
+        y: rect.y,
+        width: rect.width,
+
+        onfinish() {
+            titleVisible.value = true;
+        },
+    });
 
     (toc.value as any).updateHeadings(articleBody.value!);
 }
@@ -127,8 +154,8 @@ function animate() {
 
 function tocCreated() {
     // automatically update headings after a hot-reload, so I don't have to refresh the page all the time
-    if (articleBody.value) {
-        (toc.value as any).updateHeadings(articleBody.value!);
+    if (import.meta.env.DEV) {
+        (toc.value as any)?.updateHeadings(articleBody.value!);
     }
 }
 </script>

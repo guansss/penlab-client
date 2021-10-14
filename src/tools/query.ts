@@ -3,7 +3,7 @@ import { LocationQueryValue } from 'vue-router';
 import { clamp } from '../utils/misc';
 
 export function qualifyQueryInteger(
-    value: LocationQueryValue | LocationQueryValue[] | number,
+    value: LocationQueryValue | LocationQueryValue[] | number | undefined,
     min: number,
     max: number
 ) {
@@ -17,7 +17,7 @@ export function qualifyQueryInteger(
 }
 
 export function qualifyQueryString<T extends string[] | string>(
-    value: LocationQueryValue | LocationQueryValue[],
+    value: LocationQueryValue | LocationQueryValue[] | undefined,
     samples: string[],
     defaultValue?: string
 ): T {

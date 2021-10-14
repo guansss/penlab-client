@@ -43,7 +43,7 @@ const date = computed(() => (isNaN(props.post.created) ? '' : formatDate(+props.
 
     .title {
         margin-bottom: 12px;
-        font-weight: normal;
+        font-size: 24px;
     }
 
     .summary {
@@ -51,9 +51,11 @@ const date = computed(() => (isNaN(props.post.created) ? '' : formatDate(+props.
     }
 
     .date {
+        margin-left: 16px;
         color: var(--color-text-secondary);
         font-family: Arial, serif;
         font-size: 14px;
+        line-height: 20px;
     }
 }
 

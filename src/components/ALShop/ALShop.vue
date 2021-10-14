@@ -19,7 +19,7 @@ const canvas = ref<HTMLCanvasElement>();
 // preload assets when creating the component
 loadSpriteSheet().catch(logger.warn);
 
-onMounted(async function() {
+onMounted(async function () {
     try {
         await setupAnimation(canvas.value!);
 
@@ -28,8 +28,8 @@ onMounted(async function() {
         logger.warn('ALShop', e);
     }
 
-    canvas.value!.addEventListener('touchstart', () => jumpBirds());
-    canvas.value!.addEventListener('mouseover', () => jumpBirds());
+    canvas.value?.addEventListener('touchstart', () => jumpBirds());
+    canvas.value?.addEventListener('mouseover', () => jumpBirds());
 });
 
 onBeforeUnmount(() => {

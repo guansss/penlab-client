@@ -50,7 +50,7 @@ const postsPerPage = ref(10);
 
 const route = useRoute();
 
-onBeforeRouteUpdate((to) => updateParams(to));
+onBeforeRouteUpdate(updateParams);
 
 updateParams(route);
 

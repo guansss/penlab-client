@@ -57,7 +57,8 @@ defineExpose({ updateHeadings });
 onMounted(() => window.addEventListener('scroll', updateActiveHeading, { passive: true }));
 onBeforeUnmount(() => window.removeEventListener('scroll', updateActiveHeading));
 
-onBeforeRouteUpdate(updateHeadingByHash);
+// always return true, or else the navigation may be canceled because this function can return false
+onBeforeRouteUpdate((to) => updateHeadingByHash(to) || true);
 
 watch(() => activeHeading.value, updateIndicator);
 
