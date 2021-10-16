@@ -1,11 +1,8 @@
 import mitt from 'mitt';
+import { BannerAnchor } from './tools/banner';
 
 export type Events = {
-    bannerAnchor: {
-        x: number;
-        y: number;
-        relative?: boolean;
-    };
+    bannerAnchor: BannerAnchor;
 
     articleOpenedByTitle: {
         title: string;

@@ -1,5 +1,5 @@
 <template>
-    <div :class="['banner', { 'no-transition': noTransition }]" v-bind="$attrs"></div>
+    <div :class="['banner', { collapsing, 'no-transition': noTransition }]" v-bind="$attrs"></div>
 
     <!-- a placeholder for tracking the container's size -->
     <div ref="container" class="container"></div>
@@ -7,11 +7,12 @@
 
 <script setup lang="ts">
 import { debounce } from 'lodash';
-import { onBeforeUnmount, ref } from 'vue';
+import { onBeforeUnmount, ref, watch } from 'vue';
 import { RouteLocationNormalized } from 'vue-router';
-import { emitter, Events } from '../event';
+import { emitter } from '../event';
 import { HEADER_HEIGHT } from '../globals';
 import { ROUTE_ARTICLE, ROUTE_HOME, ROUTE_POSTS, router } from '../router';
+import { BannerAnchor, getBannerAngle, normalizeAnchor } from '../tools/banner';
 import { logger } from '../utils/logger';
 
 const angle = ref('0');
@@ -19,8 +20,11 @@ const x = ref(0);
 const y = ref(0);
 const container = ref<HTMLElement | undefined>();
 const noTransition = ref(false);
+const collapsing = ref(true);
 
 const clearNoTransition = debounce(() => (noTransition.value = false), 100);
+
+watch(angle, (value, oldValue) => (collapsing.value = value >= oldValue));
 
 emitter.on('bannerAnchor', updateAnchor);
 window.addEventListener('resize', resizeShape);
@@ -63,25 +67,20 @@ function updateAnchorByRoute(dest: RouteLocationNormalized, from?: RouteLocation
     }
 }
 
-function updateAnchor(anchor: Events['bannerAnchor']) {
+function updateAnchor(anchor: BannerAnchor) {
     if (anchor.x === x.value && anchor.y === y.value) {
         return;
     }
 
-    if (anchor.relative) {
-        if (!container.value) {
-            logger.warn('Banner', 'Could not resolve relative coordinates because the component has not been mounted');
-            return;
-        }
-
-        const marginLeft = (document.body.clientWidth - container.value!.clientWidth) / 2;
-        x.value = anchor.x + marginLeft;
-
-        y.value = anchor.y + HEADER_HEIGHT;
-    } else {
-        x.value = anchor.x;
-        y.value = anchor.y;
+    if (anchor.relative && !container.value) {
+        logger.warn('Banner', 'Could not resolve relative coordinates because the component is not mounted.');
+        return;
     }
+
+    anchor = normalizeAnchor(anchor, container.value!.clientWidth);
+
+    x.value = anchor.x;
+    y.value = anchor.y;
 
     updateShape();
 }
@@ -98,7 +97,7 @@ function updateShape() {
         return;
     }
 
-    angle.value = Math.atan((y.value - HEADER_HEIGHT) / (x.value - document.body.clientWidth)) + 'rad';
+    angle.value = -getBannerAngle({ x: x.value, y: y.value }) + 'rad';
 }
 </script>
 
@@ -113,7 +112,11 @@ function updateShape() {
     background: var(--color-primary);
     transform-origin: bottom right;
     transform: rotate(v-bind(angle));
-    transition: transform 0.5s ease-out;
+    transition: transform 0.3s ease-out;
+
+    &.collapsing {
+        transition: transform 0.3s ease-out;
+    }
 
     &.no-transition {
         transition: none;

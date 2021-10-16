@@ -14,6 +14,7 @@ import { debounce } from 'lodash';
 import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import { emitter } from '../event';
 import { ARTICLE_CRUMB_HEIGHT, HEADER_HEIGHT } from '../globals';
+import { BannerAnchor, getBannerAngle } from '../tools/banner';
 
 const clipMarginBottom = 30;
 
@@ -72,26 +73,24 @@ function updateHeader() {
 
             vueEmit('animStart');
 
-            emitter.emit('bannerAnchor', {
+            const anchor = {
                 x: bounds.x,
-                y: bounds.bottom + clipMarginBottom,
-            });
+                y: bounds.height + HEADER_HEIGHT + ARTICLE_CRUMB_HEIGHT + clipMarginBottom,
+            };
 
-            updateClip(bounds);
+            emitter.emit('bannerAnchor', anchor);
+
+            updateClip(bounds, anchor);
         },
     });
 }
 
-function updateClip(titleBounds: DOMRect) {
-    const clipBottom = titleBounds.height + clipMarginBottom;
+function updateClip(headerBounds: DOMRect, anchor: BannerAnchor) {
+    const clipBottom = headerBounds.height + clipMarginBottom;
+    const angle = getBannerAngle(anchor);
 
     clipYLeft.value = clipBottom + 'px';
-
-    clipYRight.value =
-        clipBottom -
-        (titleBounds.width / (document.body.clientWidth - titleBounds.x)) *
-            (titleBounds.bottom + clipMarginBottom - HEADER_HEIGHT) +
-        'px';
+    clipYRight.value = clipBottom - headerBounds.width * Math.tan(angle) + 'px';
 }
 </script>
 
@@ -114,7 +113,7 @@ function updateClip(titleBounds: DOMRect) {
         top: 0;
         width: 100%;
         clip-path: polygon(0 v-bind(clipYLeft), 100% v-bind(clipYRight), 100% 100%, 0 100%);
-        transition: clip-path 0.5s ease-out;
+        transition: clip-path 0.3s ease-out;
 
         &.no-transition {
             transition: none;
