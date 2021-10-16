@@ -75,6 +75,8 @@ export async function setupAnimation(canvas: HTMLCanvasElement) {
     pixiApp = new Application({
         view: canvas,
         backgroundAlpha: 0,
+        width: canvasWidth,
+        height: canvasHeight,
     });
 
     const bg = new Sprite(textures['bg']);
