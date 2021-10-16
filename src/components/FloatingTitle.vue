@@ -1,17 +1,17 @@
 <template>
-    <div ref="element" class="floating-title">
-        <transition name="fade">
-            <h1 v-if="title" class="title">{{ title }}</h1></transition
-        >
+    <div ref="element" :class="['floating-title', { invisible: !visible }]">
+        <h1 class="title">{{ title }}</h1>
     </div>
 </template>
 
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue';
 import { emitter, Events } from '../event';
+import { ARTICLE_CRUMB_HEIGHT, HEADER_HEIGHT } from '../globals';
 
 const element = ref<HTMLDivElement | undefined>();
 const title = ref('');
+const visible = ref(false);
 
 const intermediateStyles = {
     top: '0',
@@ -22,12 +22,12 @@ const intermediateStyles = {
 let animationProcess: Promise<void> | undefined;
 
 emitter.on('articleOpenedByTitle', animate);
-emitter.on('articleTitlePrinted', transitionToDestination);
+emitter.on('articleHeaderPrinted', transitionToDestination);
 emitter.on('articleClosed', dismiss);
 
 onBeforeUnmount(() => {
     emitter.off('articleOpenedByTitle', animate);
-    emitter.off('articleTitlePrinted', transitionToDestination);
+    emitter.off('articleHeaderPrinted', transitionToDestination);
     emitter.off('articleClosed', dismiss);
 });
 
@@ -37,8 +37,9 @@ function animate(data: Events['articleOpenedByTitle']) {
     }
 
     title.value = data.title;
+    visible.value = true;
 
-    intermediateStyles.top = '128px';
+    intermediateStyles.top = HEADER_HEIGHT + ARTICLE_CRUMB_HEIGHT + 'px';
     intermediateStyles.left = data.x - 20 + 'px';
     intermediateStyles.width = data.width + 16 + 'px';
 
@@ -55,7 +56,7 @@ function animate(data: Events['articleOpenedByTitle']) {
                 top: intermediateStyles.top,
                 left: intermediateStyles.left,
                 width: intermediateStyles.width,
-                color: 'var(--color-text)',
+                color: 'var(--color-primary)',
                 fontSize: '48px',
             },
         ],
@@ -71,7 +72,7 @@ function animate(data: Events['articleOpenedByTitle']) {
     });
 }
 
-async function transitionToDestination(data: Events['articleTitlePrinted']) {
+async function transitionToDestination(data: Events['articleHeaderPrinted']) {
     if (!animationProcess) {
         data.onfinish();
         return;
@@ -105,36 +106,26 @@ async function transitionToDestination(data: Events['articleTitlePrinted']) {
         }
     );
 
-    animation.onfinish = async () => {
-        title.value = '';
+    animation.onfinish = () => {
+        visible.value = false;
 
         data.onfinish();
     };
 }
 
 function dismiss() {
-    title.value = '';
+    visible.value = false;
 }
 </script>
 
 <style scoped>
 .floating-title {
     position: absolute;
-    top: 128px;
-    color: var(--color-text);
+    transition: opacity 0.1s ease-out;
+    pointer-events: none;
 
     .title {
         font-size: inherit;
     }
-}
-
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.1s ease-out;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
 }
 </style>

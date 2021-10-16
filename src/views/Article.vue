@@ -1,20 +1,17 @@
 <template>
     <div class="article container">
-        <nav class="nav col-12">
-            <router-link class="nav-item" to="/posts">文章</router-link>
-            /
-            <router-link class="nav-item" :to="'/articles/' + id">{{ title }}</router-link>
+        <nav :class="['crumb col-12', { dark: crumbDark }]">
+            <router-link class="crumb-item" to="/posts">文章</router-link>
+            &gt;
+            <router-link class="crumb-item" :to="'/articles/' + id">{{ title }}</router-link>
         </nav>
+        <div v-if="error" class="error-msg">
+            <p id="emotion">:(</p>
+            <p>加载失败</p>
+            <p>错误：{{ ERRORS[error] }}</p>
+        </div>
         <article class="article-body col-12 col-lg-9">
-            <div v-if="error" class="error-msg">
-                <p id="emotion">:(</p>
-                <p>加载失败</p>
-                <p>错误：{{ ERRORS[error] }}</p>
-            </div>
-            <header class="article-header">
-                <h1 ref="titleElm" :class="['title', { invisible: !titleVisible }]">{{ title }}</h1>
-                <small class="date">{{ date }}</small>
-            </header>
+            <ArticleHeader :title="title" :date="date" @anim-start="crumbDark = true" />
             <div class="markdown-body" ref="articleBody" v-html="articleHTML"></div>
         </article>
         <aside class="sidebar col-3 d-none d-lg-block">
@@ -26,6 +23,7 @@
 <script setup lang="ts">
 import { nextTick, ref } from 'vue';
 import { onBeforeRouteLeave, onBeforeRouteUpdate, RouteLocationNormalized, useRoute } from 'vue-router';
+import ArticleHeader from '../components/ArticleHeader.vue';
 import ArticleToc from '../components/utils/ArticleToc.vue';
 import { emitter } from '../event';
 import { ERRORS } from '../models/errors';
@@ -45,9 +43,9 @@ const title = ref('');
 const date = ref('');
 const articleHTML = ref('');
 const articleBody = ref<HTMLElement | undefined>();
-const titleElm = ref<HTMLHeadingElement | undefined>();
-const titleVisible = ref(false);
 const toc = ref<typeof ArticleToc>();
+
+const crumbDark = ref(false);
 
 onBeforeRouteUpdate(updateID);
 onBeforeRouteLeave(() => emitter.emit('articleClosed'));
@@ -114,20 +112,8 @@ async function processArticle(post: PostModel) {
 
     animate();
 
-    // wait until the content has been rendered
+    // wait until the article has been rendered
     await nextTick();
-
-    const rect = titleElm.value!.getBoundingClientRect();
-
-    emitter.emit('articleTitlePrinted', {
-        x: rect.x,
-        y: rect.y,
-        width: rect.width,
-
-        onfinish() {
-            titleVisible.value = true;
-        },
-    });
 
     (toc.value as any).updateHeadings(articleBody.value!);
 }
@@ -167,30 +153,38 @@ function tocCreated() {
     flex-wrap: wrap;
 }
 
-.nav {
-    padding: 16px 0;
+.crumb {
+    height: 60px;
+    display: flex;
+    align-items: center;
     color: var(--color-text-secondary);
     font-size: 14px;
+
+    &.dark {
+        color: #ccc;
+
+        .crumb-item {
+            color: #fff;
+        }
+    }
 }
 
-.nav-item {
+.crumb-item {
     padding: 8px;
+    color: var(--color-text);
+    transition: color 0.2s ease-out;
+
+    &:hover {
+        color: var(--color-accent) !important;
+    }
 
     &:first-child {
         padding-left: 0;
     }
 }
 
-.article-header {
-    margin-bottom: 24px;
-
-    .title {
-        font-size: 48px;
-    }
-
-    .date {
-        color: var(--color-text-secondary);
-    }
+.article-body {
+    margin-bottom: 48px;
 }
 
 .sidebar {

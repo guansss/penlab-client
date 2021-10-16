@@ -1,5 +1,6 @@
 <template>
     <div class="app">
+        <div class="background"></div>
         <TheHeader />
         <div class="view">
             <router-view />
@@ -44,14 +45,21 @@ provide(INJECTION_COLOR_TEXT_DARK, colorTextDark);
 
 <style scoped>
 .app {
+    position: relative;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: var(--color-bg);
     color: var(--color-text);
 }
 
+.background {
+    position: relative;
+    z-index: -999;
+    background: var(--color-bg);
+}
+
 .view {
+    display: flex;
     flex-grow: 1;
 }
 </style>

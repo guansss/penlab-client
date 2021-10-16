@@ -1,10 +1,15 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { setPageTitle } from './tools/dom';
 
+export const ROUTE_HOME = 'home';
+export const ROUTE_POSTS = 'posts';
+export const ROUTE_POSTS_CREATE = 'posts_create';
+export const ROUTE_ARTICLE = 'article';
+
 const routes = [
     {
         path: '/',
-        name: 'home',
+        name: ROUTE_HOME,
         component: () => import('./views/Home.vue'),
         meta: {
             title: '',
@@ -12,7 +17,7 @@ const routes = [
     },
     {
         path: '/posts',
-        name: 'posts',
+        name: ROUTE_POSTS,
         component: () => import('./views/Posts.vue'),
         meta: {
             title: '文章',
@@ -20,7 +25,7 @@ const routes = [
     },
     {
         path: '/posts/create',
-        name: 'create post',
+        name: ROUTE_POSTS_CREATE,
         component: () => import('./views/Create.vue'),
         meta: {
             title: '新文章',
@@ -28,7 +33,7 @@ const routes = [
     },
     {
         path: '/articles/:id',
-        name: 'articles',
+        name: ROUTE_ARTICLE,
         component: () => import('./views/Article.vue'),
         meta: {
             title: '文章',

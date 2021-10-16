@@ -12,6 +12,7 @@ import { onBeforeRouteLeave, RouteLocationNormalized } from 'vue-router';
 import { emitter } from '../../event';
 import { PostModel } from '../../models/post';
 import { getPosts } from '../../net/apis';
+import { ROUTE_ARTICLE } from '../../router';
 import { logger } from '../../utils/logger';
 import ListTransition from '../anim/ListTransition.vue';
 import PostListItem from './PostListItem.vue';
@@ -89,7 +90,7 @@ function displayPosts(postsModels: PostModel[]) {
 }
 
 function openArticle(dest: RouteLocationNormalized) {
-    if (!list.value || dest.name !== 'articles') {
+    if (!list.value || dest.name !== ROUTE_ARTICLE) {
         return;
     }
 

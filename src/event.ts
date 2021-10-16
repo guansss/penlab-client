@@ -1,6 +1,12 @@
 import mitt from 'mitt';
 
 export type Events = {
+    bannerAnchor: {
+        x: number;
+        y: number;
+        relative?: boolean;
+    };
+
     articleOpenedByTitle: {
         title: string;
         x: number;
@@ -15,10 +21,11 @@ export type Events = {
         width: number;
     };
 
-    articleTitlePrinted: {
+    articleHeaderPrinted: {
         x: number;
         y: number;
         width: number;
+        height: number;
         onfinish: () => void;
     };
 
