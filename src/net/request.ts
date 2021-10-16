@@ -78,19 +78,21 @@ export async function api<T>(
         let message = '';
         let code = -1;
 
-        try {
-            const { error } = await res.json();
+        if (res.status !== 404) {
+            try {
+                const { error } = await res.json();
 
-            if (error) {
-                if (typeof error === 'string') {
-                    message = error;
-                } else if (error.message) {
-                    message = error.message;
-                    code = error.code;
+                if (error) {
+                    if (typeof error === 'string') {
+                        message = error;
+                    } else if (error.message) {
+                        message = error.message;
+                        code = error.code;
+                    }
                 }
+            } catch (e) {
+                logger.warn(LOG_TAG, 'Could not parse API error.', e);
             }
-        } catch (e) {
-            logger.warn(LOG_TAG, 'Could not parse API error.', e);
         }
 
         throw new APIError(message, fullURL, res.status, code);
