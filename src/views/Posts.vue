@@ -90,10 +90,13 @@ function pagesLoaded(event: { totalPosts: number }) {
 }
 
 .list-panel {
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
 }
 
 .post-list {
+    flex-grow: 1;
     margin-bottom: 24px;
 }
 
