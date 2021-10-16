@@ -76,13 +76,20 @@ const updateActiveHeading = debounce(() => {
     }
 }, 100);
 
-async function updateHeadings(articleBody: HTMLElement, scrollToHeading = true) {
+async function updateHeadings(articleBody: HTMLElement, scroll = true) {
     buildHeadings(articleBody);
 
     activeHeading.value = headings[0];
 
-    if (scrollToHeading && updateHeadingByHash(route)) {
-        document.getElementById(activeHeading.value!.id)?.scrollIntoView();
+    if (scroll) {
+        if (updateHeadingByHash(route)) {
+            document.getElementById(activeHeading.value!.id)?.scrollIntoView();
+        } else {
+            window.scroll({
+                top: 0,
+                behavior: 'smooth',
+            });
+        }
     }
 
     // wait for the DOM to render

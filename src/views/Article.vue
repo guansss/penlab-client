@@ -1,22 +1,43 @@
 <template>
-    <div class="article container">
+    <div class="main container">
         <nav :class="['crumb col-12', { dark: crumbDark }]">
             <router-link class="crumb-item" to="/posts">文章</router-link>
             &gt;
-            <router-link class="crumb-item" :to="'/articles/' + id">{{ title }}</router-link>
+            <router-link v-if="!error" class="crumb-item" :to="'/articles/' + id">{{ title }}</router-link>
         </nav>
-        <div v-if="error" class="error-msg">
-            <p id="emotion">:(</p>
+        <div v-if="error" class="error-msg col-12">
+            <p class="emoticon">:(</p>
             <p>加载失败</p>
             <p>错误：{{ ERRORS[error] }}</p>
         </div>
-        <article class="article-body col-12 col-lg-9">
-            <ArticleHeader :title="title" :date="date" @anim-start="crumbDark = true" />
-            <div class="markdown-body" ref="articleBody" v-html="articleHTML"></div>
-        </article>
-        <aside class="sidebar col-3 d-none d-lg-block">
-            <ArticleToc class="toc" ref="toc" @vnode-mounted="tocCreated" />
-        </aside>
+        <template v-else>
+            <div class="article-area col-12 col-lg-9">
+                <article class="article">
+                    <ArticleHeader :title="title" :date="date" @anim-start="crumbDark = true" />
+                    <div class="markdown-body" ref="articleBody" v-html="articleHTML"></div>
+                </article>
+                <div v-if="post && (post.prev || post.next)" class="bottom-nav">
+                    <navigation-arrow
+                        v-if="post.prev"
+                        class="prev"
+                        :to="'/articles/' + post.prev.id"
+                        desc="上一篇"
+                        :title="post.prev.title"
+                    />
+                    <navigation-arrow
+                        right
+                        v-if="post.next"
+                        class="next"
+                        :to="'/articles/' + post.next.id"
+                        desc="下一篇"
+                        :title="post.next.title"
+                    />
+                </div>
+            </div>
+            <aside class="sidebar col-3 d-none d-lg-block">
+                <ArticleToc class="toc" ref="toc" @vnode-mounted="tocCreated" />
+            </aside>
+        </template>
     </div>
 </template>
 
@@ -24,6 +45,7 @@
 import { nextTick, ref } from 'vue';
 import { onBeforeRouteLeave, onBeforeRouteUpdate, RouteLocationNormalized, useRoute } from 'vue-router';
 import ArticleHeader from '../components/ArticleHeader.vue';
+import NavigationArrow from '../components/NavigationArrow.vue';
 import ArticleToc from '../components/utils/ArticleToc.vue';
 import { emitter } from '../event';
 import { ERRORS } from '../models/errors';
@@ -39,6 +61,7 @@ const loading = ref(false);
 const error = ref<'' | keyof typeof ERRORS>('');
 
 const id = ref(-1);
+const post = ref<PostModel | undefined>();
 const title = ref('');
 const date = ref('');
 const articleHTML = ref('');
@@ -102,13 +125,14 @@ async function loadArticle() {
     }
 }
 
-async function processArticle(post: PostModel) {
-    title.value = post.title;
-    date.value = new Date(post.created).toLocaleString();
+async function processArticle(postModel: PostModel) {
+    post.value = postModel;
+    title.value = postModel.title;
+    date.value = new Date(postModel.created).toLocaleString();
 
     setPageTitle(title.value);
 
-    articleHTML.value = parseMarkdown(post.article?.content ?? '');
+    articleHTML.value = parseMarkdown(postModel.article?.content ?? '');
 
     animate();
 
@@ -147,10 +171,11 @@ function tocCreated() {
 </script>
 
 <style scoped>
-.article {
+.main {
     position: relative;
     display: flex;
     flex-wrap: wrap;
+    align-content: flex-start;
 }
 
 .crumb {
@@ -183,14 +208,23 @@ function tocCreated() {
     }
 }
 
-.article-body {
-    margin-bottom: 48px;
+.bottom-nav {
+    margin: 48px -16px 48px -12px;
+    display: flex;
+
+    .prev {
+        padding-left: 2px;
+    }
+
+    .next {
+        margin-left: auto;
+        padding-right: 2px;
+    }
 }
 
 .sidebar {
     position: sticky;
     top: 16px;
-
     align-self: flex-start;
 }
 </style>

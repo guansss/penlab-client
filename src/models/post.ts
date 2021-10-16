@@ -10,6 +10,9 @@ export interface PostModel {
     summary?: string;
     created: number;
 
+    prev: Pick<PostModel, 'id' | 'title'> | null;
+    next: Pick<PostModel, 'id' | 'title'> | null;
+
     type: PostType;
     article?: ArticleModel;
 }
