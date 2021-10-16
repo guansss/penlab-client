@@ -208,6 +208,18 @@ function tocCreated() {
     }
 }
 
+.error-msg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .emoticon {
+        margin: 24px;
+        font-size: 200px;
+    }
+}
+
 .bottom-nav {
     margin: 48px -16px 48px -12px;
     display: flex;

@@ -21,7 +21,18 @@
     }
 
     h1, h2 {
+        position: relative;
         border-image: linear-gradient(90deg, #0001, #0000) 1;
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -12px;
+            width: 4px;
+            background: var(--color-primary);
+        }
     }
 
     code {
@@ -30,5 +41,15 @@
 
     .highlight pre, pre, code {
         background-color: #EEE;
+    }
+}
+
+@media (min-width: 576px) {
+    .markdown-body {
+        h1, h2 {
+            &:before {
+                left: -16px;
+            }
+        }
     }
 }
