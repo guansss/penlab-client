@@ -7,7 +7,7 @@
                 <Logo />
                 <div class="tabs">
                     <span v-for="tab in tabs" :key="tab.title" class="tab">
-                        <router-link :to="tab.path">{{ tab.title }}</router-link>
+                        <router-link :to="tab">{{ tab.title }}</router-link>
                     </span>
                 </div>
 
@@ -20,6 +20,7 @@
 <script setup lang="ts">
 import MdiGithub from '@mdi/svg/svg/github.svg';
 import { HEADER_HEIGHT } from '../globals';
+import { ROUTE_POSTS, ROUTE_WORKS } from '../router';
 import Banner from './Banner.vue';
 import Logo from './Logo.vue';
 
@@ -29,7 +30,11 @@ const tabs = [
         title: '首页',
     },
     {
-        path: '/posts',
+        name: ROUTE_WORKS,
+        title: '作品',
+    },
+    {
+        name: ROUTE_POSTS,
         title: '文章',
     },
 ];

@@ -11,7 +11,7 @@ import { onBeforeUnmount, ref, watch } from 'vue';
 import { RouteLocationNormalized } from 'vue-router';
 import { emitter } from '../event';
 import { HEADER_HEIGHT } from '../globals';
-import { ROUTE_ARTICLE, ROUTE_HOME, ROUTE_POSTS, router } from '../router';
+import { ROUTE_ARTICLE, ROUTE_HOME, ROUTE_POSTS, ROUTE_WORKS, router } from '../router';
 import { BannerAnchor, getBannerAngle, normalizeAnchor } from '../tools/banner';
 import { logger } from '../utils/logger';
 
@@ -45,6 +45,14 @@ function updateAnchorByRoute(dest: RouteLocationNormalized, from?: RouteLocation
             updateAnchor({
                 x: 0,
                 y: 200,
+                relative: true,
+            });
+            break;
+
+        case ROUTE_WORKS:
+            updateAnchor({
+                x: 0,
+                y: window.innerHeight / 3,
                 relative: true,
             });
             break;

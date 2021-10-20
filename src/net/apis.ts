@@ -1,4 +1,4 @@
-import { PostListModel, PostModel } from '../models/post';
+import { PostListModel, PostModel } from '../data/post';
 import { api } from './request';
 
 export async function getPosts(params: {

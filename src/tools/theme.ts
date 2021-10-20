@@ -18,10 +18,13 @@ export const colorTextDark = '#FFF';
 document.documentElement.style.setProperty('--color-primary', colorPrimary);
 document.documentElement.style.setProperty('--color-accent', colorAccent);
 document.documentElement.style.setProperty('--color-bg', colorBg);
+document.documentElement.style.setProperty('--color-bg-invert', colorBgDark);
 document.documentElement.style.setProperty('--color-bg-dark', colorBgDark);
 document.documentElement.style.setProperty('--color-text', colorText);
+document.documentElement.style.setProperty('--color-text-invert', colorTextDark);
 document.documentElement.style.setProperty('--color-text-secondary', colorTextSecondary);
 document.documentElement.style.setProperty('--color-text-dark', colorTextDark);
 
+document.documentElement.style.setProperty('--color-bg-invert-rgb', '51, 51, 51');
 document.documentElement.style.setProperty('--color-primary-rgb', '84, 110, 122');
 document.documentElement.style.setProperty('--color-accent-rgb', '255, 109, 0');

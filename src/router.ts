@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import { setPageTitle } from './tools/dom';
 
 export const ROUTE_HOME = 'home';
+export const ROUTE_WORKS = 'works';
 export const ROUTE_POSTS = 'posts';
 export const ROUTE_POSTS_CREATE = 'posts_create';
 export const ROUTE_ARTICLE = 'article';
@@ -13,6 +14,14 @@ const routes = [
         component: () => import('./views/Home.vue'),
         meta: {
             title: '',
+        },
+    },
+    {
+        path: '/works',
+        name: ROUTE_WORKS,
+        component: () => import('./views/Works.vue'),
+        meta: {
+            title: '作品',
         },
     },
     {

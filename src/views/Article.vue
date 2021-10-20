@@ -47,9 +47,9 @@ import { onBeforeRouteLeave, onBeforeRouteUpdate, RouteLocationNormalized, useRo
 import ArticleHeader from '../components/ArticleHeader.vue';
 import NavigationArrow from '../components/NavigationArrow.vue';
 import ArticleToc from '../components/utils/ArticleToc.vue';
+import { ERRORS } from '../data/errors';
+import { PostModel } from '../data/post';
 import { emitter } from '../event';
-import { ERRORS } from '../models/errors';
-import { PostModel } from '../models/post';
 import { getPost } from '../net/apis';
 import { setPageTitle } from '../tools/dom';
 import { parseMarkdown } from '../tools/markdown';

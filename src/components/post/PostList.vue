@@ -9,8 +9,8 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue';
 import { onBeforeRouteLeave, RouteLocationNormalized } from 'vue-router';
+import { PostModel } from '../../data/post';
 import { emitter } from '../../event';
-import { PostModel } from '../../models/post';
 import { getPosts } from '../../net/apis';
 import { ROUTE_ARTICLE } from '../../router';
 import { logger } from '../../utils/logger';

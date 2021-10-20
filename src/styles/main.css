@@ -57,6 +57,7 @@ svg {
 .selectable,
 .button {
     --color-tint: var(--color-primary-rgb);
+    cursor: pointer;
     transition: background-color 0.2s ease-out;
 
     &.accent {
