@@ -6,8 +6,10 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { emitter, Events } from '../event';
 import { ARTICLE_CRUMB_HEIGHT, HEADER_HEIGHT } from '../globals';
+import { ROUTE_ARTICLE } from '../router';
 
 const element = ref<HTMLDivElement | undefined>();
 const title = ref('');
@@ -19,19 +21,29 @@ const intermediateStyles = {
     width: '0',
 };
 
-let animationProcess: Promise<void> | undefined;
+let raisingAnimation: Animation | undefined;
+let raisingProcess: Promise<void> | undefined;
 
-emitter.on('articleOpenedByTitle', animate);
-emitter.on('articleHeaderPrinted', transitionToDestination);
+// the raising animation is postponed until the afterEach guard is invoked
+// in order to wait for the lazy-load component
+const cancelNavGuard = useRouter().afterEach((to) => {
+    if (to.name === ROUTE_ARTICLE) {
+        startRaising();
+    }
+});
+
+emitter.on('articleOpenedByTitle', prepareRaising);
+emitter.on('articleHeaderPrinted', fitFinalBounds);
 emitter.on('articleClosed', dismiss);
 
 onBeforeUnmount(() => {
-    emitter.off('articleOpenedByTitle', animate);
-    emitter.off('articleHeaderPrinted', transitionToDestination);
+    emitter.off('articleOpenedByTitle', prepareRaising);
+    emitter.off('articleHeaderPrinted', fitFinalBounds);
     emitter.off('articleClosed', dismiss);
+    cancelNavGuard();
 });
 
-function animate(data: Events['articleOpenedByTitle']) {
+function prepareRaising(data: Events['articleOpenedByTitle']) {
     if (!element.value) {
         return;
     }
@@ -43,44 +55,57 @@ function animate(data: Events['articleOpenedByTitle']) {
     intermediateStyles.left = data.x - 20 + 'px';
     intermediateStyles.width = data.width + 16 + 'px';
 
-    const animation = element.value.animate(
-        [
+    raisingAnimation = new Animation(
+        new KeyframeEffect(
+            element.value,
+            [
+                {
+                    top: data.y + 'px',
+                    left: data.x + 'px',
+                    width: data.width + 'px',
+                    color: data.pressed ? 'var(--color-accent)' : 'var(--color-primary)',
+                    fontSize: '24px',
+                },
+                {
+                    top: intermediateStyles.top,
+                    left: intermediateStyles.left,
+                    width: intermediateStyles.width,
+                    color: 'var(--color-primary)',
+                    fontSize: '48px',
+                },
+            ],
             {
-                top: data.y + 'px',
-                left: data.x + 'px',
-                width: data.width + 'px',
-                color: data.pressed ? 'var(--color-accent)' : 'var(--color-primary)',
-                fontSize: '24px',
-            },
-            {
-                top: intermediateStyles.top,
-                left: intermediateStyles.left,
-                width: intermediateStyles.width,
-                color: 'var(--color-primary)',
-                fontSize: '48px',
-            },
-        ],
-        {
-            duration: 300,
-            easing: 'ease-in-out',
-            fill: 'forwards',
-        }
+                duration: 300,
+                easing: 'ease-in-out',
+                fill: 'forwards',
+            }
+        )
     );
-
-    animationProcess = new Promise((resolve) => {
-        animation.onfinish = animation.oncancel = resolve as any;
-    });
 }
 
-async function transitionToDestination(data: Events['articleHeaderPrinted']) {
-    if (!animationProcess) {
+function startRaising() {
+    if (raisingAnimation) {
+        raisingProcess = new Promise((resolve) => {
+            raisingAnimation!.onfinish = raisingAnimation!.oncancel = () => {
+                raisingAnimation = undefined;
+
+                resolve();
+            };
+        });
+
+        raisingAnimation.play();
+    }
+}
+
+async function fitFinalBounds(data: Events['articleHeaderPrinted']) {
+    if (!raisingProcess) {
         data.onfinish();
         return;
     }
 
-    await animationProcess;
+    await raisingProcess;
 
-    animationProcess = undefined;
+    raisingProcess = undefined;
 
     if (!element.value) {
         return;

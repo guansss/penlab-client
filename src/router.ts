@@ -69,10 +69,8 @@ export const router = createRouter({
     },
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
     if (typeof to.meta.title === 'string') {
         setPageTitle(to.meta.title);
     }
-
-    next();
 });

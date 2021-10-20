@@ -11,7 +11,7 @@ import { onBeforeUnmount, ref, watch } from 'vue';
 import { RouteLocationNormalized } from 'vue-router';
 import { emitter } from '../event';
 import { HEADER_HEIGHT } from '../globals';
-import { ROUTE_ARTICLE, ROUTE_HOME, ROUTE_POSTS, ROUTE_WORKS, router } from '../router';
+import { ROUTE_HOME, ROUTE_POSTS, ROUTE_WORKS, router } from '../router';
 import { BannerAnchor, getBannerAngle, normalizeAnchor } from '../tools/banner';
 import { logger } from '../utils/logger';
 
@@ -34,7 +34,14 @@ onBeforeUnmount(() => {
     window.removeEventListener('resize', resizeShape);
 });
 
-router.beforeEach(updateAnchorByRoute);
+// reset the anchor when navigating to a new route
+router.beforeEach((to, from) => {
+    if (to.name !== from.name) {
+        updateAnchor({ x: 0, y: HEADER_HEIGHT });
+    }
+});
+
+router.afterEach(updateAnchorByRoute);
 
 // initialize
 updateAnchorByRoute(router.currentRoute as any as RouteLocationNormalized);
@@ -63,15 +70,6 @@ function updateAnchorByRoute(dest: RouteLocationNormalized, from?: RouteLocation
                 y: HEADER_HEIGHT,
             });
             break;
-
-        case ROUTE_ARTICLE:
-            if (from?.name !== ROUTE_ARTICLE) {
-                updateAnchor({
-                    x: 0,
-                    y: HEADER_HEIGHT,
-                });
-            }
-            break;
     }
 }
 
@@ -80,12 +78,12 @@ function updateAnchor(anchor: BannerAnchor) {
         return;
     }
 
-    if (anchor.relative && !container.value) {
-        logger.warn('Banner', 'Could not resolve relative coordinates because the component is not mounted.');
+    try {
+        anchor = normalizeAnchor(anchor, container.value?.clientWidth);
+    } catch (e) {
+        logger.warn('Banner', e);
         return;
     }
-
-    anchor = normalizeAnchor(anchor, container.value!.clientWidth);
 
     x.value = anchor.x;
     y.value = anchor.y;
@@ -101,10 +99,6 @@ function resizeShape() {
 }
 
 function updateShape() {
-    if (!container.value) {
-        return;
-    }
-
     angle.value = -getBannerAngle({ x: x.value, y: y.value }) + 'rad';
 }
 </script>

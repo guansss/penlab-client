@@ -6,8 +6,12 @@ export interface BannerAnchor {
     relative?: boolean;
 }
 
-export function normalizeAnchor(anchor: BannerAnchor, containerWidth: number): BannerAnchor {
+export function normalizeAnchor(anchor: BannerAnchor, containerWidth?: number): BannerAnchor {
     if (anchor.relative) {
+        if (containerWidth === undefined) {
+            throw new Error('Could not resolve relative anchor because container width is undefined.');
+        }
+
         const marginLeft = (document.body.clientWidth - containerWidth) / 2;
 
         return {
