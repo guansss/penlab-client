@@ -21,7 +21,7 @@
                 </li>
             </transition-group>
         </ul>
-        <div ref="indicator" :class="['indicator', { upward: indicatorMovingUp }]" :style="indicatorStyles"></div>
+        <div ref="indicator" :class="['indicator', { upwards: indicatorMovingUp }]" :style="indicatorStyles"></div>
     </nav>
 </template>
 
@@ -164,7 +164,7 @@ function updateIndicator() {
         return;
     }
 
-    indicatorMovingUp.value = navItem.offsetTop < indicatorStyles.top;
+    indicatorMovingUp.value = navItem.offsetTop < +indicatorStyles.top.replace('px', '');
 
     indicatorStyles.top = navItem.offsetTop + 'px';
     indicatorStyles.bottom = `calc(100% - ${navItem.offsetTop + navItem.clientHeight}px)`;
@@ -202,7 +202,7 @@ function updateIndicator() {
     background: var(--color-accent);
     transition: top 0.3s cubic-bezier(0.04, 0.3, 0.49, 1.35), bottom 0.2s cubic-bezier(0.04, 0.3, 0.49, 1.35);
 
-    &.upward {
+    &.upwards {
         transition: top 0.2s cubic-bezier(0.04, 0.3, 0.49, 1.35), bottom 0.3s cubic-bezier(0.04, 0.3, 0.49, 1.35);
     }
 }
