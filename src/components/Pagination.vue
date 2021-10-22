@@ -80,7 +80,7 @@ function pageLink(page: number) {
 
     &.active {
         background: rgba(var(--color-primary-rgb), 0.8);
-        color: var(--color-text-dark);
+        color: #fff;
     }
 }
 </style>

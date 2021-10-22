@@ -47,7 +47,7 @@ class CustomRenderer extends Renderer {
     }
 
     /**
-     * Overwrite output anchors, finding the external links and make them open in new tab.
+     * Postprocess generated anchor, finding the external links and make them open in new tab.
      */
     override link(this: RendererThis, href: string | null, title: string | null, text: string): string {
         const anchorHTML = super.link.call(this, href, title, text);

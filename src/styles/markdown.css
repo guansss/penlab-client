@@ -41,10 +41,12 @@
 
     code {
         font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        background: rgba(var(--color-bg-invert-rgb), 0.08);
     }
 
-    .highlight pre, pre, code {
-        background-color: #EEE;
+    pre, pre code {
+        background: #2b2b2b !important;
+        color: #f8f8f2
     }
 }
 

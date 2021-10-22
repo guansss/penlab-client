@@ -1,30 +1,104 @@
-import { InjectionKey } from 'vue';
+import { kebabCase } from 'lodash';
+import { emitter, Events } from '../event';
+import { STORAGE_THEME } from '../globals';
+import { rgbHexToDecimal } from '../utils/string';
 
-export const INJECTION_COLOR_PRIMARY: InjectionKey<string> = Symbol();
-export const INJECTION_COLOR_ACCENT: InjectionKey<string> = Symbol();
-export const INJECTION_COLOR_BG: InjectionKey<string> = Symbol();
-export const INJECTION_COLOR_BG_DARK: InjectionKey<string> = Symbol();
-export const INJECTION_COLOR_TEXT: InjectionKey<string> = Symbol();
-export const INJECTION_COLOR_TEXT_DARK: InjectionKey<string> = Symbol();
+export interface Theme {
+    readonly name: string;
+    readonly bg: string;
+    readonly bgDarken: string;
+    readonly bgInvert: string;
+    readonly text: string;
+    readonly textSecondary: string;
+    readonly primary: string;
+    readonly accent: string;
+}
 
-export const colorPrimary = '#546e7a';
-export const colorAccent = '#ff6d00';
-export const colorBg = '#FAFAFA';
-export const colorBgDark = '#333';
-export const colorText = '#333';
-export const colorTextSecondary = '#888';
-export const colorTextDark = '#FFF';
+const themesUntyped = [
+    {
+        name: 'light',
+        bg: '#FAFAFA',
+        bgDarken: '#333',
+        bgInvert: '#333',
+        text: '#333',
+        textSecondary: '#888',
+        primary: '#546e7a',
+        accent: '#ff6d00',
+    },
+    {
+        name: 'dark',
+        bg: '#222',
+        bgDarken: '#151515',
+        bgInvert: '#FAFAFA',
+        text: '#C8C8C8',
+        textSecondary: '#888',
+        primary: '#546e7a',
+        accent: '#ff6d00',
+    },
+] as const;
 
-document.documentElement.style.setProperty('--color-primary', colorPrimary);
-document.documentElement.style.setProperty('--color-accent', colorAccent);
-document.documentElement.style.setProperty('--color-bg', colorBg);
-document.documentElement.style.setProperty('--color-bg-invert', colorBgDark);
-document.documentElement.style.setProperty('--color-bg-dark', colorBgDark);
-document.documentElement.style.setProperty('--color-text', colorText);
-document.documentElement.style.setProperty('--color-text-invert', colorTextDark);
-document.documentElement.style.setProperty('--color-text-secondary', colorTextSecondary);
-document.documentElement.style.setProperty('--color-text-dark', colorTextDark);
+export type ThemeName = typeof themesUntyped[number]['name'];
 
-document.documentElement.style.setProperty('--color-bg-invert-rgb', '51, 51, 51');
-document.documentElement.style.setProperty('--color-primary-rgb', '84, 110, 122');
-document.documentElement.style.setProperty('--color-accent-rgb', '255, 109, 0');
+export const themes: Readonly<Theme[]> = themesUntyped;
+
+// properties that should be set as CSS color variables
+const colorVars: (keyof Theme)[] = ['bg', 'bgDarken', 'bgInvert', 'text', 'textSecondary', 'primary', 'accent'];
+
+// properties that should be set as CSS color variables with an RGB format like "0, 0, 0"
+const colorVarsRGB: (keyof Theme)[] = ['bgInvert', 'primary', 'accent'];
+
+const DEFAULT_THEME: ThemeName = 'light';
+
+let currentTheme: Theme;
+
+emitter.on('themeChange', changeTheme);
+
+init();
+
+function init() {
+    const name = localStorage.getItem(STORAGE_THEME) || DEFAULT_THEME;
+
+    if (!setTheme(name)) {
+        setTheme(DEFAULT_THEME);
+    }
+}
+
+function setTheme(name: string) {
+    const newTheme = themes.find((theme) => theme.name === name);
+
+    if (!newTheme) {
+        return false;
+    }
+
+    if (currentTheme) {
+        document.body.classList.remove('theme-' + currentTheme.name);
+    }
+
+    currentTheme = newTheme;
+
+    document.body.classList.add('theme-' + newTheme.name);
+
+    for (const themeVar of colorVars) {
+        const colorVar = '--color-' + kebabCase(themeVar);
+
+        document.documentElement.style.setProperty(colorVar, newTheme[themeVar]);
+
+        if (colorVarsRGB.includes(themeVar)) {
+            document.documentElement.style.setProperty(colorVar + '-rgb', rgbHexToDecimal(newTheme[themeVar]));
+        }
+    }
+
+    return true;
+}
+
+export function changeTheme(data: Events['themeChange']) {
+    if (setTheme(data.name)) {
+        localStorage.setItem(STORAGE_THEME, data.name);
+
+        emitter.emit('themeChanged', { theme: currentTheme });
+    }
+}
+
+export function getTheme(): Theme {
+    return currentTheme;
+}

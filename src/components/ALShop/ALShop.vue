@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { emitter } from '../../event';
 import { logger } from '../../utils/logger';
 import { canvasHeight, canvasWidth, clearAnimation, jumpBirds, loadSpriteSheet, setupAnimation } from './animation';
 
@@ -18,6 +19,8 @@ const canvas = ref<HTMLCanvasElement>();
 
 // preload assets when creating the component
 loadSpriteSheet().catch(logger.warn);
+
+emitter.on('themeChanged', jumpBirds);
 
 onMounted(async function () {
     try {
@@ -33,6 +36,8 @@ onMounted(async function () {
 });
 
 onBeforeUnmount(() => {
+    emitter.off('themeChanged', jumpBirds);
+
     clearAnimation();
 });
 </script>

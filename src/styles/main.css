@@ -1,17 +1,5 @@
 :root {
-    /*
-     * these vars will be assigned by tools/theme.ts,
-     * they are here only for code hinting
-     */
-    --color-primary: #fff;
-    --color-primary-rgb: 0, 0, 0;
-    --color-accent: 0, 0, 0;
-    --color-accent-rgb: #fff;
-    --color-bg: #fff;
-    --color-bg-dark: #fff;
-    --color-text: #fff;
-    --color-text-secondary: #fff;
-    --color-text-dark: #fff;
+    --theme-fade-duration: 0.5s;
 }
 
 * {
@@ -104,4 +92,9 @@ svg {
 
 .invisible {
     opacity: 0;
+}
+
+.themed-text {
+    color: var(--color-text);
+    transition: color var(--theme-fade-duration) ease-in;
 }

@@ -385,7 +385,7 @@ function animate(element: HTMLElement, keyframes: Keyframe[], reverse?: boolean)
     z-index: 101;
     left: v-bind(modalLeft);
     height: v-bind(modalHeight);
-    background: #eee;
+    background: var(--color-bg);
     transform-origin: top left;
     box-shadow: 0 5px 5px -3px #0003, 0 8px 10px 1px #0002, 0 3px 14px 2px #0002;
 }
@@ -428,7 +428,7 @@ function animate(element: HTMLElement, keyframes: Keyframe[], reverse?: boolean)
         flex: 0 0 100%;
         margin-top: var(--padding);
         padding: var(--padding);
-        background: #fff;
+        background: rgba(var(--color-bg-invert-rgb), 0.07);
         overflow: auto;
         transition: opacity 0.2s ease-out;
     }
@@ -442,8 +442,8 @@ function animate(element: HTMLElement, keyframes: Keyframe[], reverse?: boolean)
 
     .title {
         padding-left: var(--padding);
-        background: var(--color-bg-invert);
-        color: var(--color-text-dark);
+        background: var(--color-bg-darken);
+        color: #fff;
         font-size: 36px;
         line-height: 2;
         text-shadow: none;
@@ -454,7 +454,7 @@ function animate(element: HTMLElement, keyframes: Keyframe[], reverse?: boolean)
     .field-row {
         display: flex;
         align-items: center;
-        background: #fff;
+        background: rgba(var(--color-bg-invert-rgb), 0.07);
         line-height: 36px;
         transition: opacity 0.2s ease-out;
 
@@ -473,8 +473,8 @@ function animate(element: HTMLElement, keyframes: Keyframe[], reverse?: boolean)
         display: inline-flex;
         align-items: center;
         padding: 0 16px;
-        background: var(--color-bg-invert);
-        color: var(--color-text-invert);
+        background: var(--color-bg-darken);
+        color: #fff;
     }
 
     .icon {

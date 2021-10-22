@@ -2,7 +2,7 @@
     <router-link class="item selectable gradient" :to="'/articles/' + post.id">
         <h2 class="title">{{ post.title }}</h2>
         <span class="date">{{ date }}</span>
-        <p class="summary">{{ post.summary }}</p>
+        <p class="summary themed-text">{{ post.summary }}</p>
     </router-link>
 </template>
 
@@ -34,7 +34,7 @@ const date = computed(() => (isNaN(props.post.created) ? '' : formatDate(+props.
         bottom: 0;
         left: 16px;
         height: 1px;
-        background: linear-gradient(90deg, #0001, #0000);
+        background: linear-gradient(90deg, rgba(var(--color-bg-invert-rgb), 0.1), #0000);
     }
 
     &:hover {
@@ -44,10 +44,6 @@ const date = computed(() => (isNaN(props.post.created) ? '' : formatDate(+props.
     .title {
         margin-bottom: 12px;
         font-size: 24px;
-    }
-
-    .summary {
-        color: var(--color-text);
     }
 
     .date {

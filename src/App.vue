@@ -1,6 +1,6 @@
 <template>
     <div class="app">
-        <div class="background"></div>
+        <BgTransition />
         <TheHeader />
         <div class="view">
             <router-view />
@@ -11,31 +11,10 @@
 </template>
 
 <script setup lang="ts">
-import { provide } from 'vue';
+import BgTransition from './components/BgTransition.vue';
 import FloatingTitle from './components/FloatingTitle.vue';
 import TheFooter from './components/TheFooter.vue';
 import TheHeader from './components/TheHeader.vue';
-import {
-    colorAccent,
-    colorBg,
-    colorBgDark,
-    colorPrimary,
-    colorText,
-    colorTextDark,
-    INJECTION_COLOR_ACCENT,
-    INJECTION_COLOR_BG,
-    INJECTION_COLOR_BG_DARK,
-    INJECTION_COLOR_PRIMARY,
-    INJECTION_COLOR_TEXT,
-    INJECTION_COLOR_TEXT_DARK,
-} from './tools/theme';
-
-provide(INJECTION_COLOR_PRIMARY, colorPrimary);
-provide(INJECTION_COLOR_ACCENT, colorAccent);
-provide(INJECTION_COLOR_BG, colorBg);
-provide(INJECTION_COLOR_BG_DARK, colorBgDark);
-provide(INJECTION_COLOR_TEXT, colorText);
-provide(INJECTION_COLOR_TEXT_DARK, colorTextDark);
 </script>
 
 <style>
@@ -50,16 +29,7 @@ provide(INJECTION_COLOR_TEXT_DARK, colorTextDark);
     display: flex;
     flex-direction: column;
     color: var(--color-text);
-}
-
-.background {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: -999;
-    background: var(--color-bg);
+    transition: color var(--theme-fade-duration) ease-in;
 }
 
 .view {

@@ -16,7 +16,10 @@
                     </router-link>
                 </nav>
 
-                <mdi-github class="action first toolbar-button" />
+                <LightDarkButton class="action to-right toolbar-button" />
+                <a class="action toolbar-button" href="https://github.com/guansss/penlab-client" target="_blank">
+                    <mdi-github class="icon" />
+                </a>
             </div>
         </div>
     </header>
@@ -29,6 +32,7 @@ import { RouteLocationNormalized, useRoute, useRouter } from 'vue-router';
 import { HEADER_HEIGHT } from '../globals';
 import { ROUTE_ARTICLE, ROUTE_POSTS, ROUTE_WORKS } from '../router';
 import Banner from './Banner.vue';
+import LightDarkButton from './LightDarkButton.vue';
 import Logo from './Logo.vue';
 
 const tabs = reactive([
@@ -106,7 +110,7 @@ function updateIndicator(activeTab?: HTMLElement) {
 .header {
     position: relative;
     background: var(--color-primary);
-    color: var(--color-text-dark);
+    color: #fff;
 }
 
 .content {
@@ -115,6 +119,10 @@ function updateIndicator(activeTab?: HTMLElement) {
     height: v-bind(heightPX);
     display: flex;
     align-items: center;
+}
+
+.to-right {
+    margin-left: auto !important;
 }
 
 .tabs {
@@ -184,10 +192,37 @@ function updateIndicator(activeTab?: HTMLElement) {
 }
 
 .toolbar-button {
-    border-radius: 50%;
+    position: relative;
+    margin-left: 8px;
+    padding: 12px;
+    display: inline-block;
+    color: inherit;
+    line-height: 0;
+    cursor: pointer;
 
-    &.first {
-        margin-left: auto;
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fff4;
+        border-radius: 50%;
+        opacity: 0;
+        transition: opacity 0.15s;
+    }
+
+    &:not(.disabled):hover {
+        &:before {
+            opacity: 0.7;
+        }
+    }
+
+    &:active {
+        &:before {
+            opacity: 1;
+        }
     }
 }
 </style>

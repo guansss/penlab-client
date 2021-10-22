@@ -1,8 +1,19 @@
 import mitt from 'mitt';
 import { BannerAnchor } from './tools/banner';
+import { Theme, ThemeName } from './tools/theme';
 
 export type Events = {
     bannerAnchor: BannerAnchor;
+
+    themeChange: {
+        name: ThemeName;
+        origin?: [x: number, y: number];
+        onBackgroundChanged?: () => void;
+    };
+
+    themeChanged: {
+        theme: Theme;
+    };
 
     articleOpenedByTitle: {
         title: string;

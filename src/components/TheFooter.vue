@@ -18,9 +18,7 @@ export default {
 };
 
 function scrollToTop(elm: HTMLElement) {
-    elm.animate([
-        { scrollTop: elm.scrollTop },
-        { scrollTop: 0 }], {
+    elm.animate([{ scrollTop: elm.scrollTop }, { scrollTop: 0 }], {
         easing: 'ease-out',
         duration: 500,
     });
@@ -29,8 +27,9 @@ function scrollToTop(elm: HTMLElement) {
 
 <style scoped>
 .footer {
-    background: var(--color-bg-dark);
-    color: var(--color-text-dark);
+    background: var(--color-bg-darken);
+    color: #fff;
+    transition: background-color var(--theme-fade-duration) ease-in;
 }
 
 .content {
