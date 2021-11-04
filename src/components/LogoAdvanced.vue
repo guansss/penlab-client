@@ -19,7 +19,7 @@
                     height="300%"
                 >
                     <feFlood flood-color="#700f0f" result="flood1"></feFlood>
-                    <feFlood flood-color="#fff" flood-opacity="0.5" result="flood2"></feFlood>
+                    <feFlood class="flood-bg" flood-opacity="0.5" result="flood2"></feFlood>
                     <feImage
                         xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAwcHgiIGhlaWdodD0iMTAwMHB4Ij48ZGVmcz48cGF0dGVybiBpZD0icGF0dGVybiIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iMCIgeT0iMCIgd2lkdGg9IjQiIGhlaWdodD0iNCI+PHBhdGggZD0iTSAtNCAtNCBMIDggOCBNIC04IC00IEwgNCA4IE0gLTQgLTggTCA4IDQiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3BhdHRlcm4pIi8+PC9zdmc+"
                         x="0"
@@ -27,7 +27,9 @@
                         width="2000"
                         height="1000"
                         result="image"
-                    ></feImage>
+                    >
+                        <animate attributeName="x" values="0;-24px" dur="3s" repeatCount="indefinite" />
+                    </feImage>
                     <feTile in="image" result="tile"></feTile>
                     <feComposite operator="in" in="flood1" in2="tile" result="tile2"></feComposite>
                     <feGaussianBlur in="SourceAlpha" stdDeviation="10" result="blur"></feGaussianBlur>
@@ -73,5 +75,10 @@ export default {};
 
 .fill-accent {
     fill: var(--color-accent);
+}
+
+.flood-bg {
+    flood-color: var(--color-bg);
+    transition: flood-color var(--theme-fade-duration) ease;
 }
 </style>
