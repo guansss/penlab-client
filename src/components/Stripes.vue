@@ -13,6 +13,10 @@ import { useRouter } from 'vue-router';
 import { logger } from '../utils/logger';
 import { clamp } from '../utils/misc';
 
+// equals to vue-router's `ErrorTypes.NAVIGATION_DUPLICATED`,
+// somehow the ErrorTypes enum is not exported
+const NAVIGATION_ERROR_DUPLICATED = 16;
+
 const VELOCITY_EPSILON = 0.001;
 
 const angle = 20; // degrees
@@ -128,7 +132,13 @@ const cancelRouterBeforeEachGuard = router.beforeEach(() => {
     freezeScroll = true;
 });
 
-const cancelRouterAfterEachGuard = router.afterEach(() => {
+const cancelRouterAfterEachGuard = router.afterEach((to, from, failure) => {
+    // when navigating to a duplicated location, beforeEach() is not called and afterEach() is called,
+    // what a stupid design of vue router...
+    if (failure && failure.type === NAVIGATION_ERROR_DUPLICATED) {
+        return;
+    }
+
     StripeManager.velocityScale /= 50;
 
     resetFreezeScrollTimer = setTimeout(() => (freezeScroll = false), 100);
