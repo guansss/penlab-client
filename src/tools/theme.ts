@@ -19,7 +19,7 @@ const themesUntyped = [
         name: 'light',
         bg: '#FAFAFA',
         bgDarken: '#333',
-        bgInvert: '#333',
+        bgInvert: '#000',
         text: '#333',
         textSecondary: '#888',
         primary: '#546e7a',
