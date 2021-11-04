@@ -12,6 +12,7 @@
 <script setup lang="ts">
 import { debounce } from 'lodash';
 import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
+import { onBeforeRouteLeave } from 'vue-router';
 import { emitter } from '../event';
 import { ARTICLE_CRUMB_HEIGHT, HEADER_HEIGHT } from '../globals';
 import { BannerAnchor, getBannerAngle } from '../tools/banner';
@@ -31,7 +32,7 @@ const clipYLeft = ref(-ARTICLE_CRUMB_HEIGHT + 'px');
 const clipYRight = ref(-ARTICLE_CRUMB_HEIGHT + 'px');
 const noTransition = ref(false);
 
-const clearNoTransition = debounce(() => (noTransition.value = false), 100);
+const scheduleClearingNoTransition = debounce(() => (noTransition.value = false), 100);
 
 watch(
     () => props.title,
@@ -44,14 +45,16 @@ watch(
     { immediate: true }
 );
 
+onBeforeRouteLeave(resetClip);
+
 window.addEventListener('resize', resizeHeader);
 
 onBeforeUnmount(() => window.removeEventListener('resize', resizeHeader));
 
-// disable transition when window is resizing
+// disable transition while window is resizing
 function resizeHeader() {
     noTransition.value = true;
-    clearNoTransition();
+    scheduleClearingNoTransition();
     updateHeader();
 }
 
@@ -91,6 +94,11 @@ function updateClip(headerBounds: DOMRect, anchor: BannerAnchor) {
 
     clipYLeft.value = clipBottom + 'px';
     clipYRight.value = clipBottom - headerBounds.width * Math.tan(angle) + 'px';
+}
+
+function resetClip() {
+    clipYLeft.value = -ARTICLE_CRUMB_HEIGHT + 'px';
+    clipYRight.value = -ARTICLE_CRUMB_HEIGHT + 'px';
 }
 </script>
 
