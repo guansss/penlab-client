@@ -1,8 +1,10 @@
 <template>
     <header ref="headerElm" :class="['article-header', { invisible: !visible, 'no-transition': noTransition }]">
-        <h1 class="title">{{ title }}</h1>
-        <small class="date">{{ date }}</small>
-        <div class="clip-header">
+        <div class="top-header">
+            <h1 class="title">{{ title }}</h1>
+            <small class="date">{{ date }}</small>
+        </div>
+        <div class="bottom-header">
             <h1 ref="titleElm" class="title">{{ title }}</h1>
             <small class="date">{{ date }}</small>
         </div>
@@ -106,6 +108,14 @@ function resetClip() {
 .article-header {
     position: relative;
     margin-bottom: calc(v-bind(clipMarginBottom) * 1px + 16px);
+    cursor: default;
+
+    &.no-transition {
+        .top-header,
+        .bottom-header {
+            transition: none;
+        }
+    }
 
     .title {
         color: #fff;
@@ -116,16 +126,19 @@ function resetClip() {
         color: #ccc;
     }
 
-    .clip-header {
+    .top-header {
+        clip-path: polygon(0 v-bind(clipYLeft), 100% v-bind(clipYRight), 100% 0, 0 0);
+        transition: clip-path 0.3s ease-out;
+    }
+
+    .bottom-header {
         position: absolute;
         top: 0;
         width: 100%;
+        pointer-events: none;
+        user-select: none;
         clip-path: polygon(0 v-bind(clipYLeft), 100% v-bind(clipYRight), 100% 100%, 0 100%);
         transition: clip-path 0.3s ease-out;
-
-        &.no-transition {
-            transition: none;
-        }
 
         .title {
             color: var(--color-primary);
