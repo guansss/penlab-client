@@ -54,15 +54,18 @@ const route = useRoute();
 
 defineExpose({ updateHeadings });
 
-onMounted(() => window.addEventListener('scroll', updateActiveHeading, { passive: true }));
-onBeforeUnmount(() => window.removeEventListener('scroll', updateActiveHeading));
+onMounted(() => window.addEventListener('scroll', updateActiveHeadingByScroll, { passive: true }));
+onBeforeUnmount(() => window.removeEventListener('scroll', updateActiveHeadingByScroll));
 
-// always return true, or else the navigation may be canceled because this function can return false
-onBeforeRouteUpdate((to) => updateHeadingByHash(to) || true);
+// do not use the shorthand form of this arrow function, because it may return false,
+// causing the navigation to be canceled
+onBeforeRouteUpdate((to) => {
+    updateActiveHeadingByHash(to);
+});
 
 watch(() => activeHeading.value, updateIndicator);
 
-const updateActiveHeading = debounce(() => {
+const updateActiveHeadingByScroll = debounce(() => {
     const pageTop = window.scrollY - 50;
 
     for (let i = headingsFlat.length - 1; i >= 0; i--) {
@@ -82,7 +85,7 @@ async function updateHeadings(articleBody: HTMLElement, scroll = true) {
     activeHeading.value = headings[0];
 
     if (scroll) {
-        if (updateHeadingByHash(route)) {
+        if (updateActiveHeadingByHash(route)) {
             document.getElementById(activeHeading.value!.id)?.scrollIntoView();
         } else {
             window.scroll({
@@ -137,7 +140,7 @@ function buildHeadings(articleBody: HTMLElement) {
     }
 }
 
-function updateHeadingByHash(_route: RouteLocationNormalized) {
+function updateActiveHeadingByHash(_route: RouteLocationNormalized) {
     if (_route.hash) {
         const matchedHeading = headings.find((h) => h.id === _route.hash.slice(1));
 
@@ -151,7 +154,7 @@ function updateHeadingByHash(_route: RouteLocationNormalized) {
     return false;
 }
 
-// animate the indicator, this is incompatible with <3>
+// animate the indicator, this is incompatible with <h3>
 function updateIndicator() {
     if (!indicator.value || !navList.value || !activeHeading.value) {
         return;
