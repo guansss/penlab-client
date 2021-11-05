@@ -20,6 +20,7 @@
                 <h2>作品</h2>
                 <p>个人近年来的作品，只列出便于展示的项目</p>
                 <p>我比较喜欢花里胡哨的东西，也喜欢折腾各种技术，所以这些作品可能看起来不是那么正经</p>
+                <router-link to="/works">前往>></router-link>
             </div>
         </section>
         <section class="section">
@@ -31,6 +32,7 @@
                 <h2>文章</h2>
                 <p>类似于博客，以开发日志为主，更新随缘</p>
                 <p>其实我不爱写文章，但是作为个人网站总得有点内容才行，不然显得太空洞了 ¯\_(ツ)_/¯</p>
+                <router-link to="/posts">前往>></router-link>
             </div>
         </section>
     </div>
