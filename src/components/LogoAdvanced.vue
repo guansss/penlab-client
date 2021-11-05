@@ -4,9 +4,9 @@
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             class="svg"
-            width="547.191259765625px"
-            height="230.035009765625px"
-            viewBox="-23.59562988281249 -40.0175048828125 547.191259765625 230.035009765625"
+            width="430"
+            height="120"
+            viewBox="40 40 430 70"
             preserveAspectRatio="xMidYMid"
         >
             <defs>
@@ -64,7 +64,6 @@ export default {};
 <style scoped>
 .logo {
     font-size: 64px;
-    font-family: Arial Black;
     dominant-baseline: central;
     text-anchor: middle;
 
