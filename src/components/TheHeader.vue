@@ -30,7 +30,7 @@ import MdiGithub from '@mdi/svg/svg/github.svg';
 import { onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 import { RouteLocationNormalized, useRoute, useRouter } from 'vue-router';
 import { HEADER_HEIGHT } from '../globals';
-import { ROUTE_ARTICLE, ROUTE_POSTS, ROUTE_WORKS } from '../router';
+import { ROUTE_ABOUT, ROUTE_ARTICLE, ROUTE_POSTS, ROUTE_WORKS } from '../router';
 import Banner from './Banner.vue';
 import LightDarkButton from './LightDarkButton.vue';
 import Logo from './Logo.vue';
@@ -39,6 +39,7 @@ const tabs = reactive([
     { path: '/', title: '首页', looselyActive: false },
     { name: ROUTE_WORKS, title: '作品', looselyActive: false },
     { name: ROUTE_POSTS, title: '文章', looselyActive: false },
+    { name: ROUTE_ABOUT, title: '关于', looselyActive: false },
 ]);
 
 const heightPX = HEADER_HEIGHT + 'px';

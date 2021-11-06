@@ -6,6 +6,7 @@ export const ROUTE_WORKS = 'works';
 export const ROUTE_POSTS = 'posts';
 export const ROUTE_POSTS_CREATE = 'posts_create';
 export const ROUTE_ARTICLE = 'article';
+export const ROUTE_ABOUT = 'about';
 
 const routes = [
     {
@@ -48,6 +49,14 @@ const routes = [
             title: '文章',
         },
         props: true,
+    },
+    {
+        path: '/about',
+        name: ROUTE_ABOUT,
+        component: () => import('./views/About.vue'),
+        meta: {
+            title: '关于',
+        },
     },
     {
         path: '/:pathMatch(.*)',
