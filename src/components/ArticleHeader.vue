@@ -127,6 +127,8 @@ function resetClip() {
     }
 
     .date {
+        display: inline-block;
+        margin-top: 8px;
         color: #ccc;
     }
 

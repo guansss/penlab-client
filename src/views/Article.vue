@@ -11,9 +11,9 @@
             <p>错误：{{ ERRORS[error] }}</p>
         </div>
         <template v-else>
+            <ArticleHeader :title="title" :date="date" @anim-start="crumbDark = true" />
             <div class="article-area col-12 col-lg-9">
                 <article class="article">
-                    <ArticleHeader :title="title" :date="date" @anim-start="crumbDark = true" />
                     <div v-img-zoom class="markdown-body" ref="articleBody" v-html="articleHTML"></div>
                 </article>
                 <div v-if="post && (post.prev || post.next)" class="bottom-nav">
