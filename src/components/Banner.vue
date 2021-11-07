@@ -8,14 +8,14 @@
 <script setup lang="ts">
 import { debounce } from 'lodash';
 import { onBeforeUnmount, ref, watch } from 'vue';
-import { RouteLocationNormalized } from 'vue-router';
+import { NavigationFailure, RouteLocationNormalized } from 'vue-router';
 import { emitter } from '../event';
 import { HEADER_HEIGHT } from '../globals';
 import { ROUTE_HOME, ROUTE_POSTS, ROUTE_WORKS, router } from '../router';
 import { BannerAnchor, getBannerAngle, normalizeAnchor } from '../tools/banner';
 import { logger } from '../utils/logger';
 
-const angle = ref('0');
+const angle = ref('0rad');
 const x = ref(0);
 const y = ref(0);
 const container = ref<HTMLElement | undefined>();
@@ -46,8 +46,16 @@ router.afterEach(updateAnchorByRoute);
 // initialize
 updateAnchorByRoute(router.currentRoute as any as RouteLocationNormalized);
 
-function updateAnchorByRoute(dest: RouteLocationNormalized, from?: RouteLocationNormalized) {
-    switch (dest.name) {
+function updateAnchorByRoute(
+    to: RouteLocationNormalized,
+    from?: RouteLocationNormalized,
+    failure?: NavigationFailure | void
+) {
+    if (failure) {
+        return;
+    }
+
+    switch (to.name) {
         case ROUTE_HOME:
             updateAnchor({
                 x: 0,

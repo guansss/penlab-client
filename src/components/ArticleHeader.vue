@@ -13,11 +13,12 @@
 
 <script setup lang="ts">
 import { debounce } from 'lodash';
-import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
+import { onBeforeUnmount, ref, watch } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 import { emitter } from '../event';
 import { ARTICLE_CRUMB_HEIGHT, HEADER_HEIGHT } from '../globals';
 import { BannerAnchor, getBannerAngle } from '../tools/banner';
+import { delay } from '../utils/misc';
 
 const clipMarginBottom = 30;
 
@@ -39,8 +40,11 @@ const scheduleClearingNoTransition = debounce(() => (noTransition.value = false)
 watch(
     () => props.title,
     async () => {
-        // wait until the title has been rendered
-        await nextTick();
+        // the delay has two purpose:
+        // 1. wait for the header to be rendered, which can be achieved by nextTick() as well.
+        // 2. fix an animation issue where the clip's transition is slightly slower than banner's,
+        //    which can't be achieved by nextTick() and I couldn't figure out why.
+        await delay(0);
 
         updateHeader();
     },
