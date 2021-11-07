@@ -8,12 +8,14 @@
         </div>
         <TheFooter />
         <FloatingTitle />
+        <ImgZoom />
     </div>
 </template>
 
 <script setup lang="ts">
 import BgTransition from './components/BgTransition.vue';
 import FloatingTitle from './components/FloatingTitle.vue';
+import ImgZoom from './components/ImgZoom.vue';
 import Stripes from './components/Stripes.vue';
 import TheFooter from './components/TheFooter.vue';
 import TheHeader from './components/TheHeader.vue';

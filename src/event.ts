@@ -38,6 +38,10 @@ export type Events = {
     };
 
     articleClosed: void;
+
+    imgZoom: {
+        img: HTMLImageElement;
+    };
 };
 
 export const emitter = mitt<Events>();

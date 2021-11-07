@@ -14,7 +14,7 @@
             <div class="article-area col-12 col-lg-9">
                 <article class="article">
                     <ArticleHeader :title="title" :date="date" @anim-start="crumbDark = true" />
-                    <div class="markdown-body" ref="articleBody" v-html="articleHTML"></div>
+                    <div v-img-zoom class="markdown-body" ref="articleBody" v-html="articleHTML"></div>
                 </article>
                 <div v-if="post && (post.prev || post.next)" class="bottom-nav">
                     <navigation-arrow

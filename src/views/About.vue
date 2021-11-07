@@ -3,7 +3,7 @@
         <article class="article">
             <div class="markdown-body" v-html="descHTML"></div>
         </article>
-        <div class="timeline">
+        <div class="timeline" v-img-zoom>
             <div v-for="event in events" class="event">
                 <div class="date col-12 col-lg-4">
                     <div class="year">{{ event.year }}</div>

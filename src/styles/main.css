@@ -98,3 +98,7 @@ svg {
     color: var(--color-text);
     transition: color var(--theme-fade-duration) ease-in;
 }
+
+.zoomable {
+    cursor: zoom-in;
+}
