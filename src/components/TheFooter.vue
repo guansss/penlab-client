@@ -1,9 +1,9 @@
 <template>
-    <footer class="footer" @click="raiseLogo">
+    <footer class="footer" @click="raiseLogo" @mousedown="preventDoubleClick">
         <div class="logo-wrapper">
             <div :class="['logo', { shine: logoShine }]">Pencil's Lab</div>
         </div>
-        <div class="content container" @mousedown="preventDoubleClick">
+        <div class="content container">
             <span class="copyright">©Pencil</span>
         </div>
     </footer>
