@@ -78,15 +78,7 @@ function setTheme(name: string) {
 
     document.body.classList.add('theme-' + newTheme.name);
 
-    for (const themeVar of colorVars) {
-        const colorVar = '--color-' + kebabCase(themeVar);
-
-        document.documentElement.style.setProperty(colorVar, newTheme[themeVar]);
-
-        if (colorVarsRGB.includes(themeVar)) {
-            document.documentElement.style.setProperty(colorVar + '-rgb', rgbHexToDecimal(newTheme[themeVar]));
-        }
-    }
+    applyCSSVars();
 
     return true;
 }
@@ -101,4 +93,16 @@ export function changeTheme(data: Events['themeChange']) {
 
 export function getTheme(): Theme {
     return currentTheme;
+}
+
+function applyCSSVars() {
+    for (const themeVar of colorVars) {
+        const colorVar = '--color-' + kebabCase(themeVar);
+
+        document.documentElement.style.setProperty(colorVar, currentTheme[themeVar]);
+
+        if (colorVarsRGB.includes(themeVar)) {
+            document.documentElement.style.setProperty(colorVar + '-rgb', rgbHexToDecimal(currentTheme[themeVar]));
+        }
+    }
 }
