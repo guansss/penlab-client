@@ -102,3 +102,55 @@ svg {
 .zoomable {
     cursor: zoom-in;
 }
+
+
+.shiny {
+    position: relative;
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--color-bg-invert);
+        opacity: 0;
+        transition: opacity .5s;
+    }
+
+    &.shiny-active {
+        &:before {
+            opacity: 0.05;
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(
+                    110deg,
+                    #0000 0,
+                    #0000 48%,
+                    #fffa 49%,
+                    #fffa 51%,
+                    #0000 52%,
+                    #0000 100%
+            );
+            background-size: 280% 100%;
+            animation: bg-slide 2s ease infinite;
+        }
+    }
+}
+
+@keyframes bg-slide {
+    0% {
+        background-position-x: 100%;
+    }
+    100% {
+        background-position-x: 0;
+    }
+}

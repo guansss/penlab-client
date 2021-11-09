@@ -1,5 +1,5 @@
 <template>
-    <div class="list" ref="list">
+    <div :class="['list shiny', { 'shiny-active': loading }]" ref="list">
         <ListTransition offset-y="20px">
             <PostListItem class="item" v-for="post in posts" :key="post.key" :post="post" />
         </ListTransition>

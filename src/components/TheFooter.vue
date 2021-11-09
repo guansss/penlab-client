@@ -91,7 +91,7 @@ function preventDoubleClick(e: MouseEvent) {
         background-size: 215% 100%;
         background-clip: text;
         color: #0000;
-        animation: shine 1s ease;
+        animation: bg-slide 1s ease;
     }
 }
 
@@ -99,14 +99,5 @@ function preventDoubleClick(e: MouseEvent) {
     padding: 16px 0;
     display: flex;
     align-items: center;
-}
-
-@keyframes shine {
-    0% {
-        background-position: 100%;
-    }
-    100% {
-        background-position: 0;
-    }
 }
 </style>
