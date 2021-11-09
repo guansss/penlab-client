@@ -10,6 +10,7 @@
 import { debounce } from 'lodash';
 import { onBeforeUnmount, onMounted, Ref, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { emitter, Events } from '../event';
 import { logger } from '../utils/logger';
 import { clamp } from '../utils/misc';
 
@@ -28,8 +29,8 @@ class StripeManager {
     static baseVelocity = 0.01;
 
     static velocity = this.baseVelocity;
-    static velocityScale = 1;
     static velocityOffset = 0;
+    static velocityScaleFactors: Record<string, number> = {};
 
     // the absolute rate at which the current velocity gradually increases/decreases to scaled velocity
     static acceleration = 0.0003;
@@ -37,7 +38,10 @@ class StripeManager {
     static scheduleResettingVelocityOffset = debounce(() => (this.velocityOffset = 0), 100);
 
     static update(dt: DOMHighResTimeStamp) {
-        const deltaV = this.baseVelocity * this.velocityScale - this.velocity;
+        // multiply all the factors
+        const velocityScale = Object.values(this.velocityScaleFactors).reduce((prev, cur) => prev * cur, 1);
+
+        const deltaV = this.baseVelocity * velocityScale - this.velocity;
 
         if (Math.abs(deltaV) >= VELOCITY_EPSILON) {
             let acceleration = this.acceleration * dt;
@@ -126,7 +130,7 @@ let resetFreezeScrollTimer = -1;
 const router = useRouter();
 
 const cancelRouterBeforeEachGuard = router.beforeEach(() => {
-    StripeManager.velocityScale *= 50;
+    StripeManager.velocityScaleFactors['navigation'] = 50;
 
     clearTimeout(resetFreezeScrollTimer);
     freezeScroll = true;
@@ -139,22 +143,24 @@ const cancelRouterAfterEachGuard = router.afterEach((to, from, failure) => {
         return;
     }
 
-    StripeManager.velocityScale /= 50;
+    StripeManager.velocityScaleFactors['navigation'] = 1;
 
     resetFreezeScrollTimer = setTimeout(() => (freezeScroll = false), 100);
 });
 
 onMounted(() => {
-    tickRafID = requestAnimationFrame(tick);
-
     // remember to record the initial position
     lastScrollY = window.scrollY;
+
+    tickRafID = requestAnimationFrame(tick);
     document.addEventListener('scroll', onscroll, { passive: true });
+    emitter.on('stripesVelocityScale', setVelocityScale);
 });
 
 onBeforeUnmount(() => {
     cancelAnimationFrame(tickRafID);
     document.removeEventListener('scroll', onscroll);
+    emitter.off('stripesVelocityScale', setVelocityScale);
     cancelRouterBeforeEachGuard();
     cancelRouterAfterEachGuard();
 });
@@ -166,6 +172,10 @@ function tick(now: DOMHighResTimeStamp) {
     StripeManager.update(dt);
 
     tickRafID = requestAnimationFrame(tick);
+}
+
+function setVelocityScale(data: Events['stripesVelocityScale']) {
+    StripeManager.velocityScaleFactors[data.id] = data.value;
 }
 
 function onscroll() {
@@ -203,6 +213,7 @@ function onscroll() {
     bottom: 0;
     left: 0;
     right: 0;
+    pointer-events: none;
 }
 
 .stripe {
@@ -211,5 +222,6 @@ function onscroll() {
     bottom: -200px;
     left: 100%;
     background: rgba(var(--color-bg-invert-rgb), 0.02);
+    transition: background-color var(--theme-fade-duration) ease-out;
 }
 </style>

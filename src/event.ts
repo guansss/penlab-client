@@ -42,6 +42,11 @@ export type Events = {
     imgZoom: {
         img: HTMLImageElement;
     };
+
+    stripesVelocityScale: {
+        id: string;
+        value: number;
+    };
 };
 
 export const emitter = mitt<Events>();

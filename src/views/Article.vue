@@ -143,10 +143,14 @@ async function processArticle(postModel: PostModel) {
 function startLoading() {
     loading.value = true;
     error.value = '';
+
+    emitter.emit('stripesVelocityScale', { id: 'article', value: 50 });
 }
 
 function stopLoading() {
     loading.value = false;
+
+    emitter.emit('stripesVelocityScale', { id: 'article', value: 1 });
 }
 
 function animate() {
