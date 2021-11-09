@@ -14,10 +14,10 @@ const spriteFile = '/sprites/al-shop.json';
 export const canvasWidth = 692;
 export const canvasHeight = 568;
 const birdPositions = [
-    [390, 46],
-    [364, 40],
-    [338, 34],
     [312, 28],
+    [338, 34],
+    [364, 40],
+    [390, 46],
 ] as [x: number, y: number][];
 const frameOffsetY = [0, -7, -20, -25];
 const frameDuration = 100; // ms
@@ -47,7 +47,7 @@ export async function loadSpriteSheet() {
             }
 
             function onload() {
-                resolve(Loader.shared.resources[spriteFile].textures as SpriteSheetTextures);
+                resolve(Loader.shared.resources[spriteFile]!.textures as SpriteSheetTextures);
             }
 
             function onerror(e: unknown) {
@@ -82,7 +82,7 @@ export async function setupAnimation(canvas: HTMLCanvasElement) {
     const bg = new Sprite(textures['bg']);
     pixiApp.stage.addChild(bg);
 
-    birds = [3, 2, 1, 0].map((i) => new Bird(textures, birdPositions[i]));
+    birds = birdPositions.map((pos) => new Bird(textures, pos));
 
     shouldRender = true;
 
@@ -111,7 +111,7 @@ function tick(now: DOMHighResTimeStamp) {
 
 export async function jumpBirds() {
     for (let i = birds.length - 1; i >= 0; i--) {
-        birds[i].jump();
+        birds[i]!.jump();
 
         await delay(150);
     }
@@ -145,12 +145,12 @@ class Bird {
             throw new Error('Attempting to create sprites but pixiApp is undefined.');
         }
 
-        // set up 4 frames for jumping animation
-        this.sprites = [0, 1, 2, 3].map((i) => {
+        // set up frames for jumping animation, one sprite per frame
+        this.sprites = frameOffsetY.map((offsetY, i) => {
             const texture = textures[('bird' + 1) as keyof SpriteSheetTextures];
             const sprite = new Sprite(texture);
 
-            sprite.position.set(position[0], position[1] + frameOffsetY[i]);
+            sprite.position.set(position[0], position[1] + offsetY);
             sprite.visible = i === 0; // show first frame as default
 
             pixiApp!.stage.addChild(sprite);
@@ -164,19 +164,23 @@ class Bird {
             return false;
         }
 
-        this.sprites[this.curFrame].visible = false;
+        this.sprites[this.curFrame]!.visible = false;
 
         if (this.state === 'jumping') {
-            if (++this.curFrame === 3) {
+            this.curFrame++;
+
+            if (this.curFrame === this.sprites.length - 1) {
                 this.state = 'falling';
             }
         } else if (this.state === 'falling') {
-            if (--this.curFrame === 0) {
+            this.curFrame--;
+
+            if (this.curFrame === 0) {
                 this.state = 'idle';
             }
         }
 
-        this.sprites[this.curFrame].visible = true;
+        this.sprites[this.curFrame]!.visible = true;
         this.nextTime = now + frameDuration;
 
         return true;

@@ -249,6 +249,11 @@
   resolved "https://registry.yarnpkg.com/@types/marked/-/marked-3.0.1.tgz#748645ecde30d8cf7861c3e1c360c6f694172f92"
   integrity sha512-jry/WUAC511P2NBCeiCkfTRCN2VXobeeQa8p8gImOYsRfnuIVfeEsqOJ1pk+CzCwfMCdv3dkTQRCYaNkkFGtxw==
 
+"@types/offscreencanvas@^2019.6.4":
+  version "2019.6.4"
+  resolved "https://registry.yarnpkg.com/@types/offscreencanvas/-/offscreencanvas-2019.6.4.tgz#64f6d120b53925028299c744fcdd32d2cd525963"
+  integrity sha512-u8SAgdZ8ROtkTF+mfZGOscl0or6BSj9A4g37e6nvxDc+YB/oDut0wHkK2PBBiC2bNR8TS0CPV+1gAk4fNisr1Q==
+
 "@types/q@^1.5.1":
   version "1.5.5"
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.5.tgz#75a2a8e7d8ab4b230414505d92335d1dcb53a6df"

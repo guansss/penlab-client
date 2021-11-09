@@ -19,25 +19,25 @@ export let logLevel = import.meta.env.PROD ? LOG_LEVEL_WARNING : LOG_LEVEL_VERBO
  * ```
  */
 export namespace logger {
-    export function log(tag: string, ...messages: any[]) {
+    export function log(tag: any, ...messages: any[]) {
         if (logLevel <= LOG_LEVEL_VERBOSE) {
             callLog(console.log, tag, messages);
         }
     }
 
-    export function warn(tag: string, ...messages: any[]) {
+    export function warn(tag: any, ...messages: any[]) {
         if (logLevel <= LOG_LEVEL_WARNING) {
             callLog(console.warn, tag, messages);
         }
     }
 
-    export function error(tag: string, ...messages: any[]) {
+    export function error(tag: any, ...messages: any[]) {
         if (logLevel <= LOG_LEVEL_ERROR) {
             callLog(console.error, tag, messages);
         }
     }
 
-    function callLog(fn: (...data: any[]) => void, tag: string, messages: any[]) {
+    function callLog(fn: (...data: any[]) => void, tag: any, messages: any[]) {
         if (messages.length) {
             fn.call(null, `[${tag}]`, ...messages);
         } else {

@@ -19,7 +19,7 @@ import PostListItem from './PostListItem.vue';
 
 interface ListPost extends PostModel {
     // assign a unique key to prevent item reusing, because reused items won't be transitioned
-    key: Symbol;
+    key: symbol;
 }
 
 const props = defineProps({
@@ -45,7 +45,9 @@ const props = defineProps({
     },
 });
 
-const emit = defineEmits(['beforeLoad', 'load']);
+const emit = defineEmits<{
+    (e: 'load', payload: { totalPosts: number }): void;
+}>();
 
 const loading = ref(false);
 const list = ref<HTMLElement | undefined>();
@@ -56,8 +58,6 @@ watch(() => [props.page, props.filter, props.order], updatePosts, { immediate: t
 onBeforeRouteLeave(openArticle);
 
 async function updatePosts() {
-    emit('beforeLoad');
-
     loading.value = true;
 
     try {

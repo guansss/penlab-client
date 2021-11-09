@@ -1,0 +1,8 @@
+// this file fixes typing errors on using CSS variables in Vue template
+// https://github.com/vuejs/vue-next/issues/4741#issuecomment-936275184
+
+declare module 'vue' {
+  interface CSSProperties {
+    [k: `--${string}`]: string;
+  }
+}

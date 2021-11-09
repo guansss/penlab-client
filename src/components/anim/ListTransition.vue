@@ -20,11 +20,11 @@ const props = defineProps({
     },
 });
 
-function beforeEnter(el: HTMLElement) {
-    el.style.opacity = '0';
+function beforeEnter(el: Element) {
+    (el as HTMLElement).style.opacity = '0';
 }
 
-function onEnter(el: HTMLElement, done: () => void) {
+function onEnter(el: Element, done: () => void) {
     if (el.parentNode) {
         const index = Array.prototype.indexOf.call(el.parentNode.children, el);
 
@@ -39,13 +39,13 @@ function onEnter(el: HTMLElement, done: () => void) {
                 easing: 'ease-out',
             }
         ).onfinish = () => {
-            el.style.opacity = '1';
+            (el as HTMLElement).style.opacity = '1';
             done();
         };
     }
 }
 
-function onLeave(el: HTMLElement, done: () => void) {
+function onLeave(el: Element, done: () => void) {
     done();
 }
 </script>
