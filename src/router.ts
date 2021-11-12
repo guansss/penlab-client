@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import { setPageTitle } from './tools/dom';
 
 export const ROUTE_HOME = 'home';
@@ -66,7 +66,7 @@ const routes = [
 
 export const router = createRouter({
     routes,
-    history: createWebHashHistory(),
+    history: createWebHistory(),
 
     scrollBehavior(to, from, savedPosition) {
         if (to.hash) {
