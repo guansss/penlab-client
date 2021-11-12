@@ -68,6 +68,7 @@ const events = [
 
 .date {
     position: relative;
+    margin-bottom: 24px;
     text-align: right;
 
     &:before {

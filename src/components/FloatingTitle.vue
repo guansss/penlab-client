@@ -8,8 +8,8 @@
 import { onBeforeUnmount, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { emitter, Events } from '../event';
-import { ARTICLE_CRUMB_HEIGHT, HEADER_HEIGHT } from '../globals';
 import { ROUTE_ARTICLE } from '../router';
+import { breakpoints, dimensions } from '../tools/dimensions';
 
 const element = ref<HTMLDivElement | undefined>();
 const title = ref('');
@@ -51,36 +51,44 @@ function prepareRaising(data: Events['articleOpenedByTitle']) {
     title.value = data.title;
     visible.value = true;
 
-    intermediateStyles.top = HEADER_HEIGHT + ARTICLE_CRUMB_HEIGHT + 'px';
-    intermediateStyles.left = data.x - 20 + 'px';
-    intermediateStyles.width = data.width + 16 + 'px';
+    const articleContainerPaddingX = 12;
+    const postsContainerPaddingX = innerWidth < breakpoints.sm ? 0 : 12;
+    const postItemPaddingX = 16;
 
-    raisingAnimation = new Animation(
-        new KeyframeEffect(
-            element.value,
-            [
-                {
-                    top: data.y + 'px',
-                    left: data.x + 'px',
-                    width: data.width + 'px',
-                    color: data.pressed ? 'var(--color-accent)' : 'var(--color-primary)',
-                    fontSize: '24px',
-                },
-                {
-                    top: intermediateStyles.top,
-                    left: intermediateStyles.left,
-                    width: intermediateStyles.width,
-                    color: 'var(--color-primary)',
-                    fontSize: '48px',
-                },
-            ],
+    intermediateStyles.top = dimensions.headerHeight + dimensions.articleCrumbHeight + 'px';
+    intermediateStyles.left = data.x + (articleContainerPaddingX - (postItemPaddingX + postsContainerPaddingX)) + 'px';
+    intermediateStyles.width = dimensions.containerWidth - articleContainerPaddingX * 2 + 'px';
+
+    if (raisingAnimation) {
+        raisingAnimation.cancel();
+    }
+
+    raisingAnimation = element.value!.animate(
+        [
             {
-                duration: 300,
-                easing: 'ease-in-out',
-                fill: 'forwards',
-            }
-        )
+                top: data.y + 'px',
+                left: data.x + 'px',
+                width: data.width + 'px',
+                color: data.pressed ? 'var(--color-accent)' : 'var(--color-primary)',
+                fontSize: '24px',
+            },
+            {
+                top: intermediateStyles.top,
+                left: intermediateStyles.left,
+                width: intermediateStyles.width,
+                color: 'var(--color-primary)',
+                fontSize: '48px',
+            },
+        ],
+        {
+            duration: 300,
+            easing: 'ease-in-out',
+            fill: 'forwards',
+        }
     );
+
+    // don't start yet!
+    raisingAnimation.pause();
 }
 
 function startRaising() {

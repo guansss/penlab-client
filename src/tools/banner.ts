@@ -1,4 +1,4 @@
-import { HEADER_HEIGHT } from '../globals';
+import { dimensions } from './dimensions';
 
 export interface BannerAnchor {
     x: number;
@@ -16,7 +16,7 @@ export function normalizeAnchor(anchor: BannerAnchor, containerWidth?: number): 
 
         return {
             x: anchor.x + marginLeft,
-            y: anchor.y + HEADER_HEIGHT,
+            y: anchor.y + dimensions.headerHeight,
             relative: anchor.relative,
         };
     }
@@ -29,5 +29,5 @@ export function normalizeAnchor(anchor: BannerAnchor, containerWidth?: number): 
 }
 
 export function getBannerAngle(anchor: BannerAnchor) {
-    return Math.atan((anchor.y - HEADER_HEIGHT) / (document.body.clientWidth - anchor.x));
+    return Math.atan((anchor.y - dimensions.headerHeight) / (document.body.clientWidth - anchor.x));
 }

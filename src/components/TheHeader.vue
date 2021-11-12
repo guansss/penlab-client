@@ -4,8 +4,14 @@
             <Banner class="banner" />
 
             <div class="content">
-                <Logo />
-                <nav ref="tabsElm" :class="['tabs', { leftwards: indicatorMovingLeft }]">
+                <Logo class="logo" />
+
+                <div class="divider d-none d-md-block"></div>
+
+                <nav
+                    ref="tabsElm"
+                    :class="['tabs col-12 col-md-auto order-3 order-md-1', { leftwards: indicatorMovingLeft }]"
+                >
                     <router-link
                         v-for="tab in tabs"
                         :key="tab.title"
@@ -16,10 +22,12 @@
                     </router-link>
                 </nav>
 
-                <LightDarkButton class="action to-right toolbar-button" />
-                <a class="action toolbar-button" href="https://github.com/guansss/penlab-client" target="_blank">
-                    <mdi-github class="icon" />
-                </a>
+                <div class="toolbar-action order-2">
+                    <LightDarkButton class="action toolbar-button" />
+                    <a class="action toolbar-button" href="https://github.com/guansss/penlab-client" target="_blank">
+                        <mdi-github class="icon" />
+                    </a>
+                </div>
             </div>
         </div>
     </header>
@@ -29,8 +37,8 @@
 import MdiGithub from '@mdi/svg/svg/github.svg';
 import { onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 import { RouteLocationNormalized, useRoute, useRouter } from 'vue-router';
-import { HEADER_HEIGHT } from '../globals';
 import { ROUTE_ABOUT, ROUTE_ARTICLE, ROUTE_POSTS, ROUTE_WORKS } from '../router';
+import { dimensions } from '../tools/dimensions';
 import Banner from './Banner.vue';
 import LightDarkButton from './LightDarkButton.vue';
 import Logo from './Logo.vue';
@@ -42,7 +50,7 @@ const tabs = reactive([
     { name: ROUTE_ABOUT, title: '关于', looselyActive: false },
 ]);
 
-const heightPX = HEADER_HEIGHT + 'px';
+const heightPX = dimensions.headerHeightBasic + 'px';
 const indicatorPadding = 16;
 const indicatorPaddingPX = indicatorPadding + 'px';
 
@@ -117,31 +125,28 @@ function updateIndicator(activeTab?: HTMLElement) {
 .content {
     position: relative;
     z-index: 1;
-    height: v-bind(heightPX);
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
 }
 
-.to-right {
-    margin-left: auto !important;
+.logo {
+    line-height: v-bind(heightPX);
+}
+
+.divider {
+    margin-left: 32px;
+    margin-right: 12px;
+    width: 1px;
+    height: calc(v-bind(heightPX) - 32px);
+    background: #fff3;
+    transform: skew(-20deg);
 }
 
 .tabs {
     position: relative;
-    margin-left: 48px;
     color: #ddd;
     line-height: v-bind(heightPX);
-
-    &:before {
-        content: '';
-        position: absolute;
-        top: 16px;
-        left: -16px;
-        bottom: 16px;
-        width: 1px;
-        background: #fff3;
-        transform: rotate(20deg);
-    }
 
     &:after {
         content: '';
@@ -156,6 +161,13 @@ function updateIndicator(activeTab?: HTMLElement) {
 
     &.leftwards:after {
         transition: left 0.15s, right 0.2s;
+    }
+}
+
+/* should be consistent with the header height breakpoint in tools/dimensions.ts */
+@media (max-width: 768px) {
+    .tabs {
+        margin: 0 calc(-1 * var(--bs-gutter-x, 0.75rem));
     }
 }
 
@@ -190,6 +202,12 @@ function updateIndicator(activeTab?: HTMLElement) {
         height: 2px;
         transition: background-color 0.15s ease-out;
     }
+}
+
+.toolbar-action {
+    margin-left: auto !important;
+    display: flex;
+    align-items: center;
 }
 
 .toolbar-button {

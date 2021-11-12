@@ -16,11 +16,12 @@ import { debounce } from 'lodash';
 import { onBeforeUnmount, ref, watch } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 import { emitter } from '../event';
-import { ARTICLE_CRUMB_HEIGHT, HEADER_HEIGHT } from '../globals';
 import { BannerAnchor, getBannerAngle } from '../tools/banner';
+import { dimensions } from '../tools/dimensions';
 import { delay } from '../utils/misc';
 
 const clipMarginBottom = 30;
+const initialClipY = -dimensions.articleCrumbHeight + 'px';
 
 const props = defineProps({
     title: String,
@@ -31,8 +32,8 @@ const vueEmit = defineEmits(['animStart']);
 
 const headerElm = ref<HTMLHeadingElement | undefined>();
 const visible = ref(false);
-const clipYLeft = ref(-ARTICLE_CRUMB_HEIGHT + 'px');
-const clipYRight = ref(-ARTICLE_CRUMB_HEIGHT + 'px');
+const clipYLeft = ref(initialClipY);
+const clipYRight = ref(initialClipY);
 const noTransition = ref(false);
 
 const scheduleClearingNoTransition = debounce(() => (noTransition.value = false), 100);
@@ -84,7 +85,7 @@ function updateHeader() {
 
             const anchor = {
                 x: bounds.x,
-                y: bounds.height + HEADER_HEIGHT + ARTICLE_CRUMB_HEIGHT + clipMarginBottom,
+                y: bounds.height + dimensions.headerHeight + dimensions.articleCrumbHeight + clipMarginBottom,
             };
 
             emitter.emit('bannerAnchor', anchor);
@@ -103,8 +104,8 @@ function updateClip(headerBounds: DOMRect, anchor: BannerAnchor) {
 }
 
 function resetClip() {
-    clipYLeft.value = -ARTICLE_CRUMB_HEIGHT + 'px';
-    clipYRight.value = -ARTICLE_CRUMB_HEIGHT + 'px';
+    clipYLeft.value = initialClipY;
+    clipYRight.value = initialClipY;
 }
 </script>
 

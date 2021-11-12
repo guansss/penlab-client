@@ -84,9 +84,17 @@ function pagesLoaded(event: { totalPosts: number }) {
 
 <style scoped>
 .posts {
-    padding: 16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
     display: flex;
     flex-wrap: wrap;
+}
+
+@media (max-width: 576px) {
+    .posts {
+        padding-left: 0;
+        padding-right: 0;
+    }
 }
 
 .list-panel {

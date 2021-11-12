@@ -10,7 +10,6 @@ import { debounce } from 'lodash';
 import { onBeforeUnmount, ref, watch } from 'vue';
 import { NavigationFailure, RouteLocationNormalized } from 'vue-router';
 import { emitter } from '../event';
-import { HEADER_HEIGHT } from '../globals';
 import { ROUTE_HOME, ROUTE_POSTS, ROUTE_WORKS, router } from '../router';
 import { BannerAnchor, getBannerAngle, normalizeAnchor } from '../tools/banner';
 import { logger } from '../utils/logger';
@@ -37,7 +36,7 @@ onBeforeUnmount(() => {
 // reset the anchor when navigating to a new route
 router.beforeEach((to, from) => {
     if (to.name !== from.name) {
-        updateAnchor({ x: 0, y: HEADER_HEIGHT });
+        updateAnchor({ x: 0, y: 0, relative: true });
     }
 });
 
@@ -68,14 +67,14 @@ function updateAnchorByRoute(
             updateAnchor({
                 x: 0,
                 y: window.innerHeight / 3,
-                relative: true,
             });
             break;
 
         case ROUTE_POSTS:
             updateAnchor({
                 x: 0,
-                y: HEADER_HEIGHT,
+                y: 0,
+                relative: true,
             });
             break;
     }

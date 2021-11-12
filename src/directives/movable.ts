@@ -10,6 +10,10 @@ import { logger } from '../utils/logger';
 export function movable(app: App) {
     app.directive('movable', {
         mounted(el: HTMLElement, binding) {
+            if (binding.value === false) {
+                return;
+            }
+
             const movingElement = el;
             let handleElement = el;
 
@@ -47,6 +51,12 @@ export function movable(app: App) {
                 document.addEventListener('pointerout', onPointerOut);
                 document.addEventListener('pointerup', onPointerUp);
 
+                // on mobile, pointer events may be canceled by a "pointercancel" event when performing
+                // touch actions (pan, pinch, etc), in this case the "pointerup" will never be fired.
+                // MDN claims that a "pointerout" event will be fired after "pointercancel",
+                // but apparently it's not true
+                document.addEventListener('pointercancel', onPointerUp);
+
                 function onPointerMove(e: PointerEvent) {
                     const translateX = e.clientX - originX;
                     const translateY = e.clientY - originY;
@@ -65,6 +75,7 @@ export function movable(app: App) {
                     document.removeEventListener('pointermove', onPointerMove);
                     document.removeEventListener('pointerout', onPointerOut);
                     document.removeEventListener('pointerup', onPointerUp);
+                    document.removeEventListener('pointercancel', onPointerUp);
                 }
             }
         },

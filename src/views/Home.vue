@@ -9,6 +9,7 @@
                 <LogoAdvanced class="logo" />
                 <p>这里是铅笔的实验室，用于展示一些个人作品和文章</p>
                 <p>当然，这个网站本身也是其中之一</p>
+                <p class="d-md-none">因为使用了大量特效，在手机上可能会有卡顿</p>
             </div>
         </section>
         <section class="section">
@@ -86,6 +87,23 @@ import LogoAdvanced from '../components/LogoAdvanced.vue';
         margin-left: -16px;
         width: 410px;
         line-height: 0;
+    }
+}
+
+@media (max-width: 992px) {
+    .section {
+        &:not(:first-child) {
+            margin: 250px 0;
+        }
+    }
+
+    .logo {
+        width: 100% !important;
+    }
+
+    .figure {
+        transform-origin: top left;
+        transform: scale(0.8);
     }
 }
 </style>

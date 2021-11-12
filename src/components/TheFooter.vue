@@ -96,7 +96,9 @@ function preventDoubleClick(e: MouseEvent) {
 }
 
 .content {
-    padding: 16px 0;
+    /* do not use the padding shorthand as it overwrites the horizontal paddings of .container */
+    padding-top: 16px;
+    padding-bottom: 16px;
     display: flex;
     align-items: center;
 }

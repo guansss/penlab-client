@@ -223,8 +223,9 @@ function tocCreated() {
 }
 
 .bottom-nav {
-    margin: 48px -16px 48px -12px;
+    margin: 48px -12px 48px -12px;
     display: flex;
+    flex-wrap: wrap;
 
     .prev {
         padding-left: 2px;

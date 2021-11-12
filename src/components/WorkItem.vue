@@ -16,9 +16,7 @@
         <div ref="previewTitle" class="preview-title">{{ work.title }}</div>
 
         <div v-if="modalActive" ref="fullscreen" class="fullscreen" @click.stop="active = false">
-            <div ref="modalBG" class="modal-bg">
-                <div class="card"></div>
-            </div>
+            <div ref="modalBG" class="modal-bg"></div>
 
             <div ref="modal" class="modal" @click.stop="">
                 <mdi-window-close class="close button" viewBox="0 0 24 24" @click.stop="active = false" />
@@ -70,6 +68,7 @@ import MdiWeb from '@mdi/svg/svg/web.svg';
 import MdiWindowClose from '@mdi/svg/svg/window-close.svg';
 import { nextTick, PropType, ref, watch } from 'vue';
 import { WORKS } from '../data/works';
+import { lockPageScroll, unlockPageScroll } from '../utils/dom';
 
 const props = defineProps({
     work: {
@@ -83,6 +82,7 @@ const modalActive = ref(false);
 const transitioning = ref(false);
 
 // css vars
+const modalTop = ref('0');
 const modalLeft = ref('0');
 const modalHeight = ref('0');
 
@@ -104,6 +104,8 @@ watch(active, async () => {
         modalActive.value = true;
         transitioning.value = true;
 
+        lockPageScroll();
+
         const movements = [moveModalBG(), moveImage(), moveTitle()];
 
         movements.forEach((m) => m.next());
@@ -122,6 +124,8 @@ watch(active, async () => {
 
         await Promise.all(movements.map((m) => m.next().value));
 
+        unlockPageScroll();
+
         modalActive.value = false;
         transitioning.value = false;
     }
@@ -138,10 +142,12 @@ function* moveModalBG(reverse?: boolean) {
     // give the height to modelBG because it's an empty div, and therefore has a zero height
     modalHeight.value = modalBoundsActive.height + 'px';
 
-    // 1. manually set the left because margin:auto does not work on modalBG
-    // 2. take the clientWidth of the fullscreen element, which is the modal's container,
-    //    instead of document.body because there will be a scrollbar in the fullscreen element
-    //    when the modal exceeds window's height
+    // manually calculate the top (and left) because margin:auto does not work on modalBG
+    modalTop.value = (fullscreen.value!.scrollHeight - modalBoundsActive.height) / 2 + 'px';
+
+    // take the clientWidth of the fullscreen element, which is the modal's container,
+    // instead of window.innerWidth because there can be a scrollbar in the fullscreen element
+    // when the modal exceeds window's height
     modalLeft.value = (fullscreen.value!.clientWidth - modalBoundsActive.width) / 2 + 'px';
 
     // FLIP animation, transforming the element from its beginning state to end state,
@@ -297,9 +303,15 @@ function animate(element: HTMLElement, keyframes: Keyframe[], reverse?: boolean)
 
 .fullscreen {
     display: flex;
+    overflow: hidden auto;
+
+    /*
+    do not set these values to center the modal, use margin:auto on the modal instead
+    https://stackoverflow.com/a/33455342/13237325
+
     justify-content: center;
     align-items: center;
-    overflow: hidden auto;
+    */
 }
 
 .badge,
@@ -383,6 +395,7 @@ function animate(element: HTMLElement, keyframes: Keyframe[], reverse?: boolean)
 .modal-bg {
     position: absolute;
     z-index: 101;
+    top: v-bind(modalTop);
     left: v-bind(modalLeft);
     height: v-bind(modalHeight);
     background: var(--color-bg);
@@ -394,6 +407,7 @@ function animate(element: HTMLElement, keyframes: Keyframe[], reverse?: boolean)
     --padding: 16px;
     position: relative;
     z-index: 102;
+    margin: auto;
     padding: var(--padding);
     display: flex;
     flex-wrap: wrap;
@@ -453,6 +467,7 @@ function animate(element: HTMLElement, keyframes: Keyframe[], reverse?: boolean)
 
     .field-row {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         background: rgba(var(--color-bg-invert-rgb), 0.07);
         line-height: 36px;

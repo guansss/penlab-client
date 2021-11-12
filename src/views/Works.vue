@@ -1,13 +1,13 @@
 <template>
     <div class="main container">
         <div class="works">
-            <WorkItems v-for="(work, i) in WORKS" :key="i" :work="work" />
+            <WorkItem v-for="(work, i) in WORKS" :key="i" :work="work" />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import WorkItems from '../components/WorkItems.vue';
+import WorkItem from '../components/WorkItem.vue';
 import { WORKS } from '../data/works';
 </script>
 

@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
         <div v-if="active" class="img-zoom" @wheel="onMouseWheel" @click="active = false">
-            <div v-movable="'img'">
+            <div v-movable="isMovable && 'img'">
                 <img
                     class="img"
                     :src="src"
@@ -18,16 +18,30 @@
 
 <script setup lang="ts">
 import MdiWindowClose from '@mdi/svg/svg/window-close.svg';
-import { onBeforeUnmount, ref } from 'vue';
+import { onBeforeUnmount, ref, watch } from 'vue';
 import { emitter, Events } from '../event';
+import { lockPageScroll, unlockPageScroll } from '../utils/dom';
+import { supportsTouch } from '../utils/mobile';
 
 const active = ref(false);
 const src = ref('');
 const imgScale = ref(1);
+const isMovable = ref(false);
+
+watch(active, (value) => {
+    if (value) {
+        lockPageScroll();
+    } else {
+        unlockPageScroll();
+    }
+});
 
 emitter.on('imgZoom', imgZoom);
 
-onBeforeUnmount(() => emitter.off('imgZoom', imgZoom));
+onBeforeUnmount(() => {
+    emitter.off('imgZoom', imgZoom);
+    unlockPageScroll();
+});
 
 function imgZoom(data: Events['imgZoom']) {
     if (!data.img.src) {
@@ -37,6 +51,11 @@ function imgZoom(data: Events['imgZoom']) {
     active.value = true;
     imgScale.value = 1;
     src.value = data.img.src;
+
+    // there's no need to provide dragging functionality on a device that supports touch,
+    // as users can easily zoom and move the image by gestures,
+    // in addition, handling dragging by touch events is problematic
+    isMovable.value = !supportsTouch();
 }
 
 function imgLoaded(e: Event) {
