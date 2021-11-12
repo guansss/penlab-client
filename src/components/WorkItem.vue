@@ -66,7 +66,7 @@ import MdiMonitor from '@mdi/svg/svg/monitor.svg';
 import MdiPlay from '@mdi/svg/svg/play-circle-outline.svg';
 import MdiWeb from '@mdi/svg/svg/web.svg';
 import MdiWindowClose from '@mdi/svg/svg/window-close.svg';
-import { nextTick, PropType, ref, watch } from 'vue';
+import { nextTick, onBeforeUnmount, PropType, ref, watch } from 'vue';
 import { WORKS } from '../data/works';
 import { lockPageScroll, unlockPageScroll } from '../utils/dom';
 
@@ -94,6 +94,8 @@ const modal = ref<HTMLElement | undefined>();
 const modalBG = ref<HTMLElement | undefined>();
 const image = ref<HTMLElement | undefined>();
 const title = ref<HTMLElement | undefined>();
+
+onBeforeUnmount(unlockPageScroll);
 
 watch(active, async () => {
     if (!workItem.value) {
@@ -303,6 +305,8 @@ function animate(element: HTMLElement, keyframes: Keyframe[], reverse?: boolean)
 
 .fullscreen {
     display: flex;
+
+    /* FIXME: not scrollable on Via browser */
     overflow: hidden auto;
 
     /*
