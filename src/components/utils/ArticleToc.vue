@@ -10,11 +10,14 @@
                     </router-link>
 
                     <ul class="list level2" v-if="heading.children">
-                        <li v-for="(heading2, j) in heading.children" :key="j">
+                        <li v-for="(subHeading, j) in heading.children" :key="j">
                             <router-link
-                                :class="['heading selectable accent gradient', { active: heading === activeHeading }]"
-                                :to="heading2.id"
-                                >{{ heading.title }}
+                                :class="[
+                                    'heading selectable accent gradient',
+                                    { active: subHeading === activeHeading },
+                                ]"
+                                :to="'#' + subHeading.id"
+                                >{{ subHeading.title }}
                             </router-link>
                         </li>
                     </ul>
@@ -27,8 +30,9 @@
 
 <script setup lang="ts">
 import { debounce } from 'lodash';
-import { nextTick, onBeforeUnmount, onMounted, reactive, ref, unref, watch } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { onBeforeRouteUpdate, RouteLocationNormalized, useRoute } from 'vue-router';
+import { logger } from '../../utils/logger';
 
 interface Heading {
     id: string;
@@ -69,8 +73,8 @@ const updateActiveHeadingByScroll = debounce(() => {
     const pageTop = window.scrollY - 50;
 
     for (let i = headingsFlat.length - 1; i >= 0; i--) {
-        const heading = headingsFlat[i];
-        const elm = document.getElementById(heading!.id);
+        const heading = headingsFlat[i]!;
+        const elm = document.getElementById(heading.id);
 
         if (elm && elm.offsetTop < pageTop) {
             activeHeading.value = heading;
@@ -108,9 +112,7 @@ function buildHeadings(articleBody: HTMLElement) {
     headings.splice(0);
     headingsFlat.splice(0);
 
-    // the selector should actually be "h2, h3", but there are still some issues
-    // when dealing with <h3> together with the indicator
-    const hElements = Array.from(articleBody.querySelectorAll('h2')) as HTMLHeadingElement[];
+    const hElements = Array.from(articleBody.querySelectorAll('h2, h3')) as HTMLHeadingElement[];
 
     const heading2s: Heading[] = [];
 
@@ -142,7 +144,7 @@ function buildHeadings(articleBody: HTMLElement) {
 
 function updateActiveHeadingByHash(_route: RouteLocationNormalized) {
     if (_route.hash) {
-        const matchedHeading = headings.find((h) => h.id === _route.hash.slice(1));
+        const matchedHeading = headingsFlat.find((h) => h.id === _route.hash.slice(1));
 
         if (matchedHeading) {
             activeHeading.value = matchedHeading;
@@ -154,23 +156,64 @@ function updateActiveHeadingByHash(_route: RouteLocationNormalized) {
     return false;
 }
 
-// animate the indicator, this is incompatible with <h3>
 function updateIndicator() {
     if (!indicator.value || !navList.value || !activeHeading.value) {
         return;
     }
 
-    const index = headingsFlat.indexOf(unref(activeHeading)!);
-    const navItem = navList.value.children[index] as HTMLElement;
+    let navItem: HTMLLIElement | undefined;
+
+    let index = headings.indexOf(activeHeading.value);
+    let subIndex = -1;
+
+    if (index === -1) {
+        for (index = 0; index < headings.length; index++) {
+            const children = headings[index]!.children;
+
+            if (children) {
+                subIndex = children.indexOf(activeHeading.value);
+
+                if (subIndex !== -1) {
+                    break;
+                }
+            }
+        }
+    }
+
+    if (index !== -1) {
+        navItem = navList.value.children[index] as HTMLLIElement | undefined;
+    }
+
+    if (subIndex !== -1 && navItem) {
+        const subNavList = navItem.children[navItem.children.length - 1];
+
+        if (!subNavList) {
+            logger.warn('TOC', `Could not find sub-list at [${index}] (active: ${activeHeading.value?.title})`);
+            return;
+        }
+
+        navItem = subNavList.children[index] as HTMLLIElement | undefined;
+    }
 
     if (!navItem) {
+        logger.warn(
+            'TOC',
+            `Could not find nav item at [${index}][${subIndex}] (active: ${activeHeading.value?.title})`
+        );
         return;
     }
 
-    indicatorMovingUp.value = navItem.offsetTop < +indicatorStyles.top.replace('px', '');
+    const link = navItem.children[0] as HTMLAnchorElement | undefined;
 
-    indicatorStyles.top = navItem.offsetTop + 'px';
-    indicatorStyles.bottom = `calc(100% - ${navItem.offsetTop + navItem.clientHeight}px)`;
+    if (link?.tagName !== 'A') {
+        logger.warn('TOC', 'Unexpected element type:', link?.tagName);
+        return;
+    }
+
+    indicatorMovingUp.value = link.offsetTop < +indicatorStyles.top.replace('px', '');
+
+    indicatorStyles.top = link.offsetTop + 'px';
+    indicatorStyles.bottom = `calc(100% - ${link.offsetTop + link.clientHeight}px)`;
 }
 </script>
 
@@ -179,15 +222,16 @@ function updateIndicator() {
     position: relative;
 }
 
-.list {
+.level1 {
     padding: 0 16px;
 }
 
-.level1 {
-}
-
 .level2 {
-    padding-left: 32px;
+    padding: 0;
+
+    .heading {
+        padding-left: 32px;
+    }
 }
 
 .heading {
