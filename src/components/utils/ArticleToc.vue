@@ -192,7 +192,7 @@ function updateIndicator() {
             return;
         }
 
-        navItem = subNavList.children[index] as HTMLLIElement | undefined;
+        navItem = subNavList.children[subIndex] as HTMLLIElement | undefined;
     }
 
     if (!navItem) {
