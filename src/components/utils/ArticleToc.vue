@@ -1,5 +1,5 @@
 <template>
-    <nav class="toc">
+    <nav :class="['toc', { dense }]">
         <ul class="list level1" ref="navList">
             <transition-group name="slide-fade">
                 <li v-for="(heading, i) in headings" :key="i">
@@ -54,6 +54,8 @@ const indicatorStyles = reactive({
 });
 const indicatorMovingUp = ref<boolean>(false);
 
+const dense = ref(false);
+
 const route = useRoute();
 
 defineExpose({ updateHeadings });
@@ -99,7 +101,12 @@ async function updateHeadings(articleBody: HTMLElement, scroll = true) {
         }
     }
 
-    // wait for the DOM to render
+    // wait for the DOM to render (if mounted)
+    await nextTick();
+
+    // enable dense mode when TOC is too high
+    dense.value = (navList.value?.offsetHeight || 0) > innerHeight * 0.8;
+
     await nextTick();
 
     updateIndicator();
@@ -237,6 +244,14 @@ function updateIndicator() {
 .heading {
     display: block;
     padding: 8px 8px;
+}
+
+.dense {
+    .heading {
+        padding-top: 4px;
+        padding-bottom: 4px;
+        font-size: 0.9em;
+    }
 }
 
 .indicator {
