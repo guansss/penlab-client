@@ -3,7 +3,8 @@ import App from './App.vue';
 import { imgZoom } from './directives/img-zoom';
 import { movable } from './directives/movable';
 import { router } from './router';
-import { listenForConsole } from './tools/vconsole';
+import { mountGtag, sendLoadTime } from './tools/gtag';
+import { mountConsole } from './tools/vconsole';
 
 const app = createApp(App);
 
@@ -13,4 +14,7 @@ movable(app);
 app.use(router);
 app.mount('#app');
 
-listenForConsole(router);
+sendLoadTime();
+
+mountGtag(router);
+mountConsole(router);

@@ -31,7 +31,7 @@ import { onBeforeRouteUpdate, RouteLocationNormalized, useRoute } from 'vue-rout
 import Pagination from '../components/Pagination.vue';
 import PostList from '../components/post/PostList.vue';
 import { postOrders } from '../data/post';
-import { qualifyQueryInteger, qualifyQueryString } from '../tools/query';
+import { qualifyQueryInteger, qualifyQueryString } from '../tools/url';
 
 const orderOptions = reactive([
     {

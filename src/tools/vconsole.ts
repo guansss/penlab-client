@@ -14,7 +14,7 @@ declare global {
 
 let importRequested = false;
 
-export function listenForConsole(router: Router) {
+export function mountConsole(router: Router) {
     router.afterEach((to) => {
         if (window.VConsole || importRequested) {
             return;

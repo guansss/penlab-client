@@ -1,5 +1,5 @@
 import { intersection } from 'lodash';
-import { LocationQueryValue } from 'vue-router';
+import { LocationQueryValue, RouteLocationNormalized } from 'vue-router';
 import { clamp } from '../utils/misc';
 
 export function qualifyQueryInteger(
@@ -30,4 +30,11 @@ export function qualifyQueryString<T extends string[] | string>(
     }
 
     return (samples.includes(value as any) ? value : defaultValue) as T;
+}
+
+export function equalsWithoutHash(a: RouteLocationNormalized, b: RouteLocationNormalized) {
+    const purePathA = a.hash.length ? a.fullPath.slice(0, -a.hash.length) : a.fullPath;
+    const purePathB = b.hash.length ? b.fullPath.slice(0, -b.hash.length) : b.fullPath;
+
+    return purePathA === purePathB;
 }

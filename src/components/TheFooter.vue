@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { sendRevealLogo } from '../tools/gtag';
 
 const ANGLE_MIN = -5;
 const ANGLE_STEP = (0 - ANGLE_MIN) / 25;
@@ -18,6 +19,8 @@ const ANGLE_STEP = (0 - ANGLE_MIN) / 25;
 const OPACITY_MAX = 0.2;
 const OPACITY_MIN = 0.1;
 const OPACITY_STEP = (OPACITY_MAX - OPACITY_MIN) / 15;
+
+let logoRevealed = false;
 
 const logoAngle = ref('-5deg');
 const logoOpacity = ref(0.1);
@@ -32,8 +35,11 @@ function raiseLogo() {
 
     logoOpacity.value = Math.min(OPACITY_MAX, logoOpacity.value + OPACITY_STEP);
 
-    if (angle === 0) {
+    if (angle === 0 && !logoRevealed) {
+        logoRevealed = true;
         logoShine.value = true;
+
+        sendRevealLogo();
     }
 }
 
