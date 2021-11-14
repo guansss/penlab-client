@@ -1,8 +1,6 @@
 <template>
     <div class="about container">
-        <article class="article">
-            <div class="markdown-body" v-html="descHTML"></div>
-        </article>
+        <article class="article markdown-body" v-html="descHTML"></article>
         <div class="timeline" v-img-zoom>
             <div v-for="event in events" class="event">
                 <div class="date col-12 col-lg-4">
@@ -18,6 +16,10 @@
                 </div>
             </div>
         </div>
+        <p class="build-time">
+            版本构建时间：
+            <time>{{ buildTime }}</time>
+        </p>
     </div>
 </template>
 
@@ -26,6 +28,7 @@ import capture20181020 from '../assets/img/capture20181020.jpg';
 import capture20181108_1 from '../assets/img/capture20181108-1.jpg';
 import capture20181108 from '../assets/img/capture20181108.jpg';
 import descMD from '../assets/texts/about.md?raw';
+import { BUILD_TIME } from '../globals';
 import { parseMarkdown } from '../tools/markdown';
 
 const descHTML = parseMarkdown(descMD);
@@ -49,6 +52,8 @@ const events = [
         desc: '由于费用的原因，将域名从 penlab.site 换为 penlab.cn',
     },
 ];
+
+const buildTime = new Date(BUILD_TIME).toLocaleString();
 </script>
 
 <style scoped>
@@ -132,5 +137,11 @@ const events = [
     &:hover {
         box-shadow: 0 5px 5px -3px #0003, 0 8px 10px 1px #0002, 0 3px 14px 2px #0002;
     }
+}
+
+.build-time {
+    margin: 8px 0;
+    color: var(--color-text-secondary);
+    font-style: italic;
 }
 </style>
