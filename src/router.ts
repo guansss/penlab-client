@@ -4,7 +4,6 @@ import { setPageTitle } from './tools/dom';
 export const ROUTE_HOME = 'home';
 export const ROUTE_WORKS = 'works';
 export const ROUTE_POSTS = 'posts';
-export const ROUTE_POSTS_CREATE = 'posts_create';
 export const ROUTE_ARTICLE = 'article';
 export const ROUTE_ABOUT = 'about';
 
@@ -31,14 +30,6 @@ const routes = [
         component: () => import('./views/Posts.vue'),
         meta: {
             title: '文章',
-        },
-    },
-    {
-        path: '/posts/create',
-        name: ROUTE_POSTS_CREATE,
-        component: () => import('./views/Create.vue'),
-        meta: {
-            title: '新文章',
         },
     },
     {

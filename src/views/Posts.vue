@@ -29,7 +29,7 @@ import SortIcon from '@mdi/svg/svg/sort.svg';
 import { reactive, ref } from 'vue';
 import { onBeforeRouteUpdate, RouteLocationNormalized, useRoute } from 'vue-router';
 import Pagination from '../components/Pagination.vue';
-import PostList from '../components/post/PostList.vue';
+import PostList from '../components/PostList.vue';
 import { postOrders } from '../data/post';
 import { qualifyQueryInteger, qualifyQueryString } from '../tools/url';
 

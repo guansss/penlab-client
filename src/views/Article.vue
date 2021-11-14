@@ -43,8 +43,8 @@
 import { nextTick, ref } from 'vue';
 import { onBeforeRouteLeave, onBeforeRouteUpdate, RouteLocationNormalized, useRoute } from 'vue-router';
 import ArticleHeader from '../components/ArticleHeader.vue';
+import ArticleToc from '../components/ArticleToc.vue';
 import NavigationArrow from '../components/NavigationArrow.vue';
-import ArticleToc from '../components/utils/ArticleToc.vue';
 import { ERRORS } from '../data/errors';
 import { PostModel } from '../data/post';
 import { emitter } from '../event';

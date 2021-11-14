@@ -1,17 +1,18 @@
 /*
-* the vars are listed here only for IDE's code hinting
+* This file is never referenced, vars here are only for IDE's code hinting
 */
 
 html {
     --color-primary: #fff;
-    --color-primary-rgb: 0, 0, 0;
-    --color-accent: 0, 0, 0;
-    --color-accent-rgb: #fff;
+    --color-accent: #fff;
     --color-bg: #fff;
     --color-bg-darken: #fff;
-    --color-bg-darken-rgb: #fff;
     --color-bg-invert: #fff;
-    --color-bg-invert-rgb: #fff;
     --color-text: #fff;
     --color-text-secondary: #fff;
+
+    --color-primary-rgb: 0, 0, 0;
+    --color-accent-rgb: 0, 0, 0;
+    --color-bg-darken-rgb: 0, 0, 0;
+    --color-bg-invert-rgb: 0, 0, 0;
 }

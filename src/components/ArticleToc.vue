@@ -32,7 +32,7 @@
 import { debounce } from 'lodash';
 import { nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { onBeforeRouteUpdate, RouteLocationNormalized, useRoute } from 'vue-router';
-import { logger } from '../../utils/logger';
+import { logger } from '../utils/logger';
 
 interface Heading {
     id: string;

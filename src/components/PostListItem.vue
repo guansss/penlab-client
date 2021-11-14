@@ -8,8 +8,8 @@
 
 <script setup lang="ts">
 import { computed, PropType } from 'vue';
-import { PostModel } from '../../data/post';
-import { formatDate } from '../../utils/string';
+import { PostModel } from '../data/post';
+import { formatDate } from '../utils/string';
 
 const props = defineProps({
     post: {

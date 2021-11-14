@@ -9,12 +9,12 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue';
 import { onBeforeRouteLeave, RouteLocationNormalized } from 'vue-router';
-import { PostModel } from '../../data/post';
-import { emitter } from '../../event';
-import { getPosts } from '../../net/apis';
-import { ROUTE_ARTICLE } from '../../router';
-import { logger } from '../../utils/logger';
-import ListTransition from '../anim/ListTransition.vue';
+import { PostModel } from '../data/post';
+import { emitter } from '../event';
+import { getPosts } from '../net/apis';
+import { ROUTE_ARTICLE } from '../router';
+import { logger } from '../utils/logger';
+import ListTransition from './ListTransition.vue';
 import PostListItem from './PostListItem.vue';
 
 interface ListPost extends PostModel {
