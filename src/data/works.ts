@@ -2,7 +2,7 @@ import imgLive2dWeb from '../assets/img/work-live2d-web.jpg';
 import imgMagic from '../assets/img/work-magic.jpg';
 import imgMaika from '../assets/img/work-maika.jpg';
 import imgNep from '../assets/img/work-nep.jpg';
-import imgPaint from '../assets/img/work-paint.png';
+import imgPaint from '../assets/img/work-paint.jpg';
 import imgPixiLive2d from '../assets/img/work-pixi-live2d.jpg';
 import { parseMarkdown } from '../tools/markdown';
 
@@ -64,7 +64,7 @@ export const WORKS = [
         title: 'AL Combat Counter',
         type: '应用',
         icon: 'pc',
-        img: 'https://github.com/guansss/al-combat-counter/raw/master/preview.jpg',
+        img: 'https://cdn.jsdelivr.net/gh/guansss/al-combat-counter/preview.jpg',
         date: '2020.02',
         github: 'https://github.com/guansss/al-combat-counter',
         desc: `### 碧蓝航线战斗计数器
