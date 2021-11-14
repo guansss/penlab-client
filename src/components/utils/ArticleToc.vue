@@ -227,6 +227,7 @@ function updateIndicator() {
 <style scoped>
 .toc {
     position: relative;
+    overflow: hidden;
 }
 
 .level1 {
@@ -271,10 +272,10 @@ function updateIndicator() {
 
 .slide-fade-enter-active,
 .slide-fade-leave-active {
-    transition: opacity 0.1s ease-out, transform 0.1s ease-out;
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
 }
 
-.slide-fade-enter,
+.slide-fade-enter-from,
 .slide-fade-leave-to {
     transform: translateX(30px);
     opacity: 0;
