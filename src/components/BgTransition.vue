@@ -77,9 +77,9 @@ async function transition(data: Events['themeChange']) {
     position: fixed;
     z-index: -999;
     top: 0;
-    right: 0;
-    bottom: 0;
     left: 0;
+    width: 100vw;
+    height: 100vh;
     background: v-bind(currentColor);
     overflow: hidden;
 }
