@@ -78,7 +78,12 @@ const updateActiveHeadingByScroll = debounce(() => {
         const heading = headingsFlat[i]!;
         const elm = document.getElementById(heading.id);
 
-        if (elm && elm.offsetTop < pageTop) {
+        // `i === 0` means that all but the first header are not matched, then there are two cases:
+        // a) pageTop is below the first header, then the first header is matched
+        // b) pageTop is above the first header, then none of the headers is matched, but there should
+        //    always be an active header, so we'll choose the first one
+        // as a result, in both cases, the first header should be active
+        if ((elm && elm.offsetTop < pageTop) || i === 0) {
             activeHeading.value = heading;
             break;
         }
