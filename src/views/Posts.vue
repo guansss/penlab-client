@@ -46,7 +46,7 @@ const orderOptions = reactive([
 const order = ref('-created');
 const page = ref(1);
 const pages = ref(0);
-const postsPerPage = ref(10);
+const postsPerPage = 8;
 
 const route = useRoute();
 
@@ -77,7 +77,7 @@ function updateParams(route: RouteLocationNormalized) {
 
 function pagesLoaded(event: { totalPosts: number }) {
     if (!isNaN(event.totalPosts)) {
-        pages.value = Math.max(Math.ceil(event.totalPosts / postsPerPage.value), 1);
+        pages.value = Math.max(Math.ceil(event.totalPosts / postsPerPage), 1);
     }
 }
 </script>
