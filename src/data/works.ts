@@ -71,7 +71,7 @@ export const WORKS = [
 
 为了在直播碧蓝航线的 EX 挑战时对战斗数据进行统计而开发的工具，可以检测游戏画面以自动记录出击次数
 
-因为除了我之外基本上没有人会直播这个挑战，所以就懒得公开发布了`,
+因为除了我之外基本上没有人会直播这个挑战，所以就懒得公开发布了🙃`,
     },
     {
         title: 'Magic of Stella',
@@ -79,12 +79,16 @@ export const WORKS = [
         icon: 'web',
         img: imgMagic,
         date: '2020.01',
+        webpage: 'https://guansss.github.io/magic-of-stella/',
+        github: 'https://github.com/guansss/magic-of-stella',
         dist: 'https://steamcommunity.com/sharedfiles/filedetails/?id=1973329389',
         desc: `### 运行在 [Wallpaper Engine](https://store.steampowered.com/app/431960/Wallpaper_Engine/) 上的粒子特效壁纸
 
 为了还原动画《斯特拉的魔法》的片尾而做的壁纸
 
-带有音频响应效果，但是只能在作为壁纸使用时生效，因为普通网页不能读取电脑上的实时音频`,
+带有音频响应效果，作为壁纸使用时可以响应电脑上的实时音频，在线访问时则直接播放音乐以读取音频
+
+最初基于 PixiJS 开发，但是性能较差，于是改用了 three.js`,
     },
     {
         title: 'Bad Paint',
@@ -96,7 +100,7 @@ export const WORKS = [
         video: 'https://www.bilibili.com/video/BV16b411S7ka/',
         desc: `### 在游戏《碧蓝航线》中播放 Bad Apple 动画
 
-游戏中存在一个像素点阵的画板，通过脚本控制像素绘制的位置和颜色，再将每张图片逐张播放，即可模拟出连续的动画效果`,
+游戏中存在一个像素点阵的画板，通过脚本控制像素绘制的位置和颜色，再将每张图片逐一播放，即可模拟出连续的动画效果`,
     },
     {
         title: 'Blend-S Maika',
@@ -104,11 +108,12 @@ export const WORKS = [
         icon: 'web',
         img: imgMaika,
         date: '2018.01',
+        dist: 'https://steamcommunity.com/sharedfiles/filedetails/?id=1285334213',
         desc: `### 运行在 [Wallpaper Engine](https://store.steampowered.com/app/431960/Wallpaper_Engine/) 上的动画壁纸
 
 从动画视频中截取出一帧制作成动态壁纸，并添加了简单的粒子特效
 
-尝试做了一个物理系统，但是对动画原理的理解比较浅薄，导致头发的效果非常拉胯`,
+尝试做了一个简易的物理系统，但是对动画原理的理解比较浅薄，导致头发的效果非常拉胯 :/`,
     },
 ];
 
