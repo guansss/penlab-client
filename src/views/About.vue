@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-1 d-none d-lg-block"></div>
                 <div class="content col-12 col-lg-5">
-                    <div class="desc">{{ event.desc }}</div>
+                    <div class="desc" v-html="event.desc"></div>
                     <div v-if="event.images" class="image-list">
                         <img v-for="image in event.images" class="image" :src="image" alt="截图" />
                     </div>
@@ -50,6 +50,11 @@ const events = [
         year: '2019',
         date: '10-17',
         desc: '由于费用的原因，将域名从 penlab.site 换为 penlab.cn',
+    },
+    {
+        year: '2021',
+        date: '11-18',
+        desc: '进行了彻底翻新，详情参考<a href="/articles/19">更新公告</a>',
     },
 ];
 
