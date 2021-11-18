@@ -122,6 +122,10 @@ function resetClip() {
         }
     }
 
+    :deep(::selection) {
+        background-color: #fff6;
+    }
+
     .title {
         color: #fff;
         font-size: 48px;

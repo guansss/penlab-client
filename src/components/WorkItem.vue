@@ -13,7 +13,7 @@
                 <mdi-monitor v-else-if="work.icon === 'pc'" class="icon" viewBox="0 0 24 24" />
             </div>
         </div>
-        <div ref="previewTitle" class="preview-title">{{ work.title }}</div>
+        <div ref="previewTitle" class="title preview-title">{{ work.title }}</div>
 
         <div v-if="modalActive" ref="fullscreen" class="fullscreen" @click.stop="active = false">
             <div ref="modalBG" class="modal-bg"></div>
@@ -24,7 +24,7 @@
                     <img :src="work.img" alt="Preview" class="img" />
                 </div>
                 <div class="details">
-                    <div ref="title" class="title">{{ work.title }}</div>
+                    <div ref="title" class="title modal-title">{{ work.title }}</div>
                     <div class="field-row">
                         <div class="field">类型</div>
                         <div>{{ work.type }}</div>
@@ -281,7 +281,7 @@ function animate(element: HTMLElement, keyframes: Keyframe[], reverse?: boolean)
         transition: opacity 0.1s ease-out !important;
     }
 
-    .title {
+    .modal-title {
         background: #0000 !important;
         text-shadow: 0 2px 2px #0000006b, 0 2px 9px #000000 !important;
         transition: background-color 0.1s ease-out, text-shadow 0.1s ease-out !important;
@@ -371,21 +371,25 @@ function animate(element: HTMLElement, keyframes: Keyframe[], reverse?: boolean)
     right: 0;
     bottom: 0;
     left: 0;
-    background-image: linear-gradient(to bottom right, #0000 0, #0000 45%, #0006 55%, #0006 100%);
+    background-image: linear-gradient(to bottom right, #0000 0, #0000 45%, #0008 55%, #0008 100%);
     background-size: 220% 220%;
     background-position: bottom right;
     cursor: pointer;
     transition: background-position 0.2s ease-out;
 }
 
+.title {
+    color: #fff;
+    font-size: 36px;
+    font-weight: 300;
+    line-height: 2;
+    white-space: nowrap;
+}
+
 .preview-title {
     position: absolute;
     top: 50%;
     left: 50%;
-    color: #fffe;
-    font-size: 36px;
-    line-height: 2;
-    white-space: nowrap;
     pointer-events: none;
     transform: translate(-50%, -50%);
     transition: text-shadow 0.2s ease-out;
@@ -458,12 +462,9 @@ function animate(element: HTMLElement, keyframes: Keyframe[], reverse?: boolean)
     display: flex;
     flex-direction: column;
 
-    .title {
+    .modal-title {
         padding-left: var(--padding);
         background: var(--color-bg-darken);
-        color: #fff;
-        font-size: 36px;
-        line-height: 2;
         text-shadow: none;
         transform-origin: top left;
         transition: background-color 0.3s, text-shadow 0.3s;

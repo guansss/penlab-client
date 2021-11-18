@@ -120,6 +120,7 @@ function updateIndicator(activeTab?: HTMLElement) {
     position: relative;
     background: var(--color-primary);
     color: #fff;
+    user-select: none;
 }
 
 .content {

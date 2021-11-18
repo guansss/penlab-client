@@ -17,7 +17,7 @@ export interface Theme {
 const themesUntyped = [
     {
         name: 'light',
-        bg: '#FAFAFA',
+        bg: '#FFF',
         bgDarken: '#333',
         bgInvert: '#000',
         text: '#333',

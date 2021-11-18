@@ -20,7 +20,7 @@ body {
 }
 
 ::selection {
-    background-color: rgba(var(--color-primary), 0.8);
+    background-color: rgba(var(--color-primary-rgb), 0.8);
     color: #FFF;
 }
 
@@ -42,7 +42,7 @@ a {
 }
 
 h1, h2, h3 {
-    font-weight: normal;
+    font-weight: 300;
 }
 
 ul {

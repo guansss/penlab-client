@@ -20,13 +20,16 @@
         list-style-type: initial;
     }
 
-    h1, h2, h3 {
+    h1, h2 {
         font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, "Microsoft YaHei UI Light", sans-serif, Apple Color Emoji, Segoe UI Emoji;;
+        font-weight: 300;
     }
 
     h1, h2 {
         position: relative;
-        border-image: linear-gradient(90deg, #0001, #0000) 1;
+        margin-top: 64px;
+        margin-bottom: 24px;
+        border-image: linear-gradient(90deg, rgba(var(--color-bg-invert-rgb), 0.1), #0000) 1;
 
         &:before {
             content: '';
@@ -47,6 +50,11 @@
     pre, pre code {
         background: #2b2b2b !important;
         color: #f8f8f2
+    }
+
+    img, video {
+        max-width: 100%;
+        background-color: rgba(var(--color-bg-invert-rgb), 0.05);
     }
 }
 

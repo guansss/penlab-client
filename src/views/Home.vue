@@ -67,7 +67,6 @@ import LogoAdvanced from '../components/LogoAdvanced.vue';
 
         :deep(h2) {
             font-size: 2.7em;
-            font-weight: bold;
         }
 
         :deep(p) {

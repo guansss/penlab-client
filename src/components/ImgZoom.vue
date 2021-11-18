@@ -91,6 +91,7 @@ function onMouseWheel(e: WheelEvent) {
 
 .img {
     width: 80vw;
+    background: #888;
     box-shadow: 0 2px 20px 2px #0009;
 }
 
