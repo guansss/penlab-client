@@ -4,6 +4,7 @@
             <transition-group name="slide-fade">
                 <li v-for="(heading, i) in headings" :key="i">
                     <router-link
+                        replace
                         :class="['heading selectable accent gradient', { active: heading === activeHeading }]"
                         :to="'#' + heading.id"
                         >{{ heading.title }}
@@ -12,6 +13,7 @@
                     <ul class="list level2" v-if="heading.children">
                         <li v-for="(subHeading, j) in heading.children" :key="j">
                             <router-link
+                                replace
                                 :class="[
                                     'heading selectable accent gradient',
                                     { active: subHeading === activeHeading },
