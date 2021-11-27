@@ -1,15 +1,18 @@
+import imgDigits from '../assets/img/work-digits.jpg';
+import imgGlove from '../assets/img/work-glove.jpg';
 import imgLive2dWeb from '../assets/img/work-live2d-web.jpg';
 import imgMagic from '../assets/img/work-magic.jpg';
 import imgMaika from '../assets/img/work-maika.jpg';
 import imgNep from '../assets/img/work-nep.jpg';
 import imgPaint from '../assets/img/work-paint.jpg';
 import imgPixiLive2d from '../assets/img/work-pixi-live2d.jpg';
+import imgTravel from '../assets/img/work-travel.jpg';
 import { parseMarkdown } from '../tools/markdown';
 
 export const WORKS = [
     {
         title: 'Pixi Live2D Display',
-        type: 'Web 插件',
+        type: 'Web 工具库',
         icon: 'web',
         img: imgPixiLive2d,
         date: '2020.03 - 2021.03',
@@ -42,6 +45,18 @@ export const WORKS = [
 - 对模型仓库的在线浏览，可以直接从中选取并加载在线模型`,
     },
     {
+        title: 'Puzzle #2',
+        type: '网页',
+        icon: 'web',
+        img: imgTravel,
+        date: '2020.10',
+        webpage:
+            'https://guansss.github.io/puzzles/travel/index.html?dst=https%3A%2F%2Fpenlab.cn%2Fpuzzle%3Fsolved%3Dtravel%26key%3D%24ID%24',
+        desc: `### The Travel 谜题
+
+一道同时存在于网页与代码里的双重谜题，似乎散发着神秘的气息……？`,
+    },
+    {
         title: 'Neptune Live2D',
         type: 'Web 壁纸',
         icon: 'web',
@@ -62,7 +77,7 @@ export const WORKS = [
     },
     {
         title: 'AL Combat Counter',
-        type: '应用',
+        type: '桌面应用',
         icon: 'pc',
         img: 'https://cdn.jsdelivr.net/gh/guansss/al-combat-counter/preview.jpg',
         date: '2020.02',
@@ -100,7 +115,7 @@ export const WORKS = [
         video: 'https://www.bilibili.com/video/BV16b411S7ka/',
         desc: `### 在游戏《碧蓝航线》中播放 Bad Apple 动画
 
-游戏中存在一个像素点阵的画板，通过脚本控制像素绘制的位置和颜色，再将每张图片逐一播放，即可模拟出连续的动画效果`,
+游戏中存在一个像素点阵画板，通过脚本控制像素绘制的位置和颜色，再将每张图片逐一播放，即可模拟出连续的动画效果`,
     },
     {
         title: 'Blend-S Maika',
@@ -114,6 +129,44 @@ export const WORKS = [
 从动画视频中截取出一帧制作成动态壁纸，并添加了简单的粒子特效
 
 尝试做了一个简易的物理系统，但是对动画原理的理解比较浅薄，导致头发的效果非常拉胯 :/`,
+    },
+    {
+        title: 'Data Glove',
+        type: '硬件/嵌入式',
+        icon: 'hardware',
+        img: imgGlove,
+        date: '2017.06 - 2017.10',
+        desc: `### 数据手套
+
+<video autoplay muted loop width="600" height="338" src="https://penlab.cn/res/vids/glove_gesture.webm"></video>
+
+未来道具二号
+
+由 Arduino 驱动的无线数据手套，可以捕获手部的位移与角度，以及手指的弯曲度数据，并通过 wifi 传输至上位机
+
+至于手势识别，仅仅是能判断各手指的“弯曲”与“伸直”状态而已，更复杂的手势识别则缺少实现的技术
+
+本来一直很想加上触觉反馈功能，但毕业之后就不了了之了`,
+    },
+    {
+        title: 'Digits Calculator',
+        type: 'Android 应用',
+        icon: 'android',
+        img: imgDigits,
+        date: '2016.10 - 2017.06',
+        desc: `### 游戏 [Two Digits](https://store.steampowered.com/app/371330/Two_Digits/) 的外挂程序
+
+<video autoplay controls muted loop width="400" height="649" src="https://penlab.cn/res/vids/digits_calculator.webm"></video>
+
+Two Digits 的游戏规则为从 9 个数字中选择不重复的两组，使得它们的和相等，共 250 个关卡
+
+游戏本身实在太过枯燥，于是开发了这个外挂 app，功能是利用手机摄像头来识别屏幕上的数字，并给出答案
+
+纯手写的图像识别算法，准确率还不错
+
+之所以不直接在屏幕上截图而是用手机摄像头来识别，是因为当时对桌面开发还不熟悉，用 Android 来做反而会比较简单
+
+（然而事实上并没有，如果用截图的话至少不用处理变形后的图像）`,
     },
 ];
 

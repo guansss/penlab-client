@@ -11,6 +11,8 @@
             <div class="inner">
                 <mdi-web v-if="work.icon === 'web'" class="icon" viewBox="0 0 24 24" />
                 <mdi-monitor v-else-if="work.icon === 'pc'" class="icon" viewBox="0 0 24 24" />
+                <mdi-android v-else-if="work.icon === 'android'" class="icon" viewBox="0 0 24 24" />
+                <mdi-chip v-else-if="work.icon === 'hardware'" class="icon" viewBox="0 0 24 24" />
             </div>
         </div>
         <div ref="previewTitle" class="title preview-title">{{ work.title }}</div>
@@ -60,6 +62,8 @@
 </template>
 
 <script setup lang="ts">
+import MdiAndroid from '@mdi/svg/svg/android.svg';
+import MdiChip from '@mdi/svg/svg/chip.svg';
 import MdiCloud from '@mdi/svg/svg/cloud-download.svg';
 import MdiGithub from '@mdi/svg/svg/github.svg';
 import MdiMonitor from '@mdi/svg/svg/monitor.svg';
@@ -270,10 +274,6 @@ function animate(element: HTMLElement, keyframes: Keyframe[], reverse?: boolean)
 }
 
 .transitioning {
-    .fullscreen {
-        overflow: hidden;
-    }
-
     .close,
     .field-row,
     .desc {
@@ -330,6 +330,7 @@ function animate(element: HTMLElement, keyframes: Keyframe[], reverse?: boolean)
 .badge {
     color: #fff;
     filter: drop-shadow(2px 2px 3px #0005);
+    pointer-events: none;
 
     .inner {
         z-index: 1;
@@ -341,9 +342,9 @@ function animate(element: HTMLElement, keyframes: Keyframe[], reverse?: boolean)
     }
 
     .icon {
-        margin: 4px;
-        width: 36px;
-        height: 36px;
+        margin: 6px;
+        width: 28px;
+        height: 28px;
     }
 }
 
