@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref } from 'vue';
+import { nextTick, onBeforeUnmount, ref } from 'vue';
 import { onBeforeRouteLeave, onBeforeRouteUpdate, RouteLocationNormalized, useRoute } from 'vue-router';
 import ArticleHeader from '../components/ArticleHeader.vue';
 import ArticleToc from '../components/ArticleToc.vue';
@@ -70,6 +70,7 @@ const crumbDark = ref(false);
 
 onBeforeRouteUpdate(updateID);
 onBeforeRouteLeave(() => emitter.emit('articleClosed'));
+onBeforeUnmount(stopLoading);
 
 updateID(useRoute());
 
@@ -107,8 +108,6 @@ async function loadArticle() {
             return;
         }
 
-        stopLoading();
-
         await processArticle(postModel);
     } catch (e: any) {
         if (e) {
@@ -121,6 +120,8 @@ async function loadArticle() {
 
         logger.warn(LOG_TAG, 'Failed to load article.', e);
     }
+
+    stopLoading();
 }
 
 async function processArticle(postModel: PostModel) {
