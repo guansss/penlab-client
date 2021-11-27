@@ -68,6 +68,10 @@ const buildTime = new Date(BUILD_TIME).toLocaleString();
 
 .timeline {
     margin-top: 80px;
+
+    :deep(a) {
+        font-weight: bold;
+    }
 }
 
 .event {

@@ -6,6 +6,7 @@ export const ROUTE_WORKS = 'works';
 export const ROUTE_POSTS = 'posts';
 export const ROUTE_ARTICLE = 'article';
 export const ROUTE_ABOUT = 'about';
+export const ROUTE_PUZZLE = 'puzzle';
 
 const routes = [
     {
@@ -47,6 +48,14 @@ const routes = [
         component: () => import('./views/About.vue'),
         meta: {
             title: '关于',
+        },
+    },
+    {
+        path: '/puzzle',
+        name: ROUTE_PUZZLE,
+        component: () => import('./views/Puzzle.vue'),
+        meta: {
+            title: '谜题',
         },
     },
     {
